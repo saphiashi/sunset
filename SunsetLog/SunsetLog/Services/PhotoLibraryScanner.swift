@@ -62,7 +62,7 @@ final class PhotoLibraryScanner {
         }
     }
 
-    private static func fetchCandidates(latitude: Double, longitude: Double) -> [ScanCandidate] {
+    nonisolated private static func fetchCandidates(latitude: Double, longitude: Double) -> [ScanCandidate] {
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         options.fetchLimit = 400
@@ -125,7 +125,7 @@ final class PhotoLibraryScanner {
         return results
     }
 
-    private static func warmthScore(_ image: UIImage?) -> Double {
+    nonisolated private static func warmthScore(_ image: UIImage?) -> Double {
         guard let image, let cg = image.cgImage else { return 0 }
         let width = 24
         let height = 24
