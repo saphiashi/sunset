@@ -1,6 +1,7 @@
 import Foundation
 import SwiftData
 
+@MainActor
 enum Persistence {
     static let schema = Schema([
         Spot.self,

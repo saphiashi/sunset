@@ -1,6 +1,7 @@
 import Foundation
 import SwiftData
 
+@MainActor
 enum SeedStore {
     static func bootstrapIfNeeded(_ context: ModelContext) {
         let spots = (try? context.fetch(FetchDescriptor<Spot>())) ?? []
