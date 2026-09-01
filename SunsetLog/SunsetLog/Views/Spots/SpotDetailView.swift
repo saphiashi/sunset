@@ -99,53 +99,11 @@ struct SpotDetailView: View {
     }
 
     private func actions(_ spot: Spot) -> some View {
-        VStack(spacing: 10) {
-            EmberButton(
-                title: spot.isSaved ? "Saved to your atlas" : "Save this spot",
-                systemImage: spot.isSaved ? "bookmark.fill" : "bookmark"
-            ) {
-                spot.isSaved.toggle()
-                try? context.save()
-            }
-            ShareLink(
-                item: DeepLink.spotURL(spot.id),
-                subject: Text(spot.name),
-                message: Text("A sunset place: \(spot.name). Open in Sunset Log.")
-            ) {
-                HStack {
-                    Image(systemName: "square.and.arrow.up")
-                    Text("Share this pin")
-                        .font(Typeface.body(16, weight: .semibold))
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(Palette.ember.opacity(0.45), lineWidth: 1)
-                }
-                .foregroundStyle(Palette.ember)
-            }
-            let friends = people.filter { !$0.isMe }
-            if !friends.isEmpty {
-                Menu {
-                    ForEach(friends, id: \.id) { person in
-                        Button(person.displayName) {
-                            shareFriend = person
-                        }
-                    }
-                } label: {
-                    HStack {
-                        Image(systemName: "paperplane")
-                        Text("Send to someone in your circle")
-                            .font(Typeface.body(16, weight: .semibold))
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .foregroundStyle(Palette.ember)
-                }
-            }
-        }
-        .padding(.horizontal, 20)
+        SpotActionBar(
+            spot: spot,
+            friends: people.filter { !$0.isMe },
+            shareFriend: $shareFriend
+        )
     }
 
     private func incoming(_ spot: Spot) -> some View {
@@ -167,28 +125,18 @@ struct SpotDetailView: View {
     }
 
     private func recent(_ spot: Spot) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let photos = spot.entries.sorted { $0.capturedAt > $1.capturedAt }
+        return VStack(alignment: .leading, spacing: 12) {
             Text("Recent skies")
                 .font(Typeface.display(22))
-            if spot.entries.isEmpty {
+            if photos.isEmpty {
                 Text("No evenings logged here yet.")
                     .foregroundStyle(.secondary)
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
-                        ForEach(spot.entries.sorted { $0.capturedAt > $1.capturedAt }, id: \.id) { entry in
-                            NavigationLink(value: Route.entry(entry.id)) {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    SkyPhoto(entry: entry, corner: 16)
-                                        .frame(width: 150, height: 190)
-                                    Text(entry.authorName)
-                                        .font(Typeface.caption(12))
-                                    Text(ScoreFormat.oneDecimal(entry.overallScore))
-                                        .font(Typeface.display(18))
-                                }
-                                .frame(width: 150)
-                            }
-                            .buttonStyle(.plain)
+                        ForEach(photos, id: \.id) { entry in
+                            SpotRecentThumb(entry: entry)
                         }
                     }
                 }
@@ -231,5 +179,80 @@ struct SpotDetailView: View {
             }
         }
         .presentationDetents([.medium])
+    }
+}
+
+private struct SpotActionBar: View {
+    @Environment(\.modelContext) private var context
+    let spot: Spot
+    let friends: [Person]
+    @Binding var shareFriend: Person?
+
+    var body: some View {
+        VStack(spacing: 10) {
+            EmberButton(
+                title: spot.isSaved ? "Saved to your atlas" : "Save this spot",
+                systemImage: spot.isSaved ? "bookmark.fill" : "bookmark"
+            ) {
+                spot.isSaved.toggle()
+                try? context.save()
+            }
+            ShareLink(
+                item: DeepLink.spotURL(spot.id),
+                subject: Text(spot.name),
+                message: Text("A sunset place: \(spot.name). Open in Sunset Log.")
+            ) {
+                HStack {
+                    Image(systemName: "square.and.arrow.up")
+                    Text("Share this pin")
+                        .font(Typeface.body(16, weight: .semibold))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Palette.ember.opacity(0.45), lineWidth: 1)
+                }
+                .foregroundStyle(Palette.ember)
+            }
+            if !friends.isEmpty {
+                Menu {
+                    ForEach(friends, id: \.id) { person in
+                        Button(person.displayName) {
+                            shareFriend = person
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "paperplane")
+                        Text("Send to someone in your circle")
+                            .font(Typeface.body(16, weight: .semibold))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .foregroundStyle(Palette.ember)
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+}
+
+private struct SpotRecentThumb: View {
+    let entry: SunsetEntry
+
+    var body: some View {
+        NavigationLink(value: Route.entry(entry.id)) {
+            VStack(alignment: .leading, spacing: 6) {
+                SkyPhoto(entry: entry, corner: 16)
+                    .frame(width: 150, height: 190)
+                Text(entry.authorName)
+                    .font(Typeface.caption(12))
+                Text(ScoreFormat.oneDecimal(entry.overallScore))
+                    .font(Typeface.display(18))
+            }
+            .frame(width: 150)
+        }
+        .buttonStyle(.plain)
     }
 }

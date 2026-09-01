@@ -20,29 +20,12 @@ struct AtlasView: View {
             Map(position: $position) {
                 ForEach(visible, id: \.id) { spot in
                     Annotation(spot.name, coordinate: spot.coordinate) {
-                        NavigationLink(value: Route.spot(spot.id)) {
-                            VStack(spacing: 2) {
-                                Text(ScoreFormat.oneDecimal(spot.averageOverall ?? spot.entries.map(\.overallScore).max() ?? 7.0))
-                                    .font(Typeface.caption(11))
-                                    .padding(.horizontal, 7)
-                                    .padding(.vertical, 4)
-                                    .background(Palette.ember)
-                                    .foregroundStyle(.white)
-                                    .clipShape(Capsule())
-                                Image(systemName: "mappin.circle.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(Palette.ember)
-                                    .shadow(radius: 3)
-                            }
-                        }
+                        SpotMapPin(spot: spot)
                     }
                 }
                 if let here = session.location.coordinate {
                     Annotation("You", coordinate: here) {
-                        Circle()
-                            .fill(Color.blue)
-                            .frame(width: 12, height: 12)
-                            .overlay { Circle().stroke(.white, lineWidth: 2) }
+                        YouMapDot()
                     }
                 }
             }
@@ -82,5 +65,40 @@ struct AtlasView: View {
                 span: MKCoordinateSpan(latitudeDelta: 1.2, longitudeDelta: 1.2)
             )
         )
+    }
+}
+
+private struct SpotMapPin: View {
+    let spot: Spot
+
+    private var scoreLabel: String {
+        ScoreFormat.oneDecimal(spot.averageOverall ?? spot.entries.map(\.overallScore).max() ?? 7.0)
+    }
+
+    var body: some View {
+        NavigationLink(value: Route.spot(spot.id)) {
+            VStack(spacing: 2) {
+                Text(scoreLabel)
+                    .font(Typeface.caption(11))
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 4)
+                    .background(Palette.ember)
+                    .foregroundStyle(.white)
+                    .clipShape(Capsule())
+                Image(systemName: "mappin.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(Palette.ember)
+                    .shadow(radius: 3)
+            }
+        }
+    }
+}
+
+private struct YouMapDot: View {
+    var body: some View {
+        Circle()
+            .fill(Color.blue)
+            .frame(width: 12, height: 12)
+            .overlay { Circle().stroke(.white, lineWidth: 2) }
     }
 }

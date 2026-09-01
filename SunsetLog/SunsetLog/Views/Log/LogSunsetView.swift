@@ -129,20 +129,13 @@ struct LogSunsetView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(spots, id: \.id) { spot in
-                        let on = selectedSpot?.id == spot.id
-                        Button {
+                        LogSpotChip(
+                            title: spot.name,
+                            isOn: selectedSpot?.id == spot.id
+                        ) {
                             selectedSpot = spot
                             draftSpotName = ""
-                        } label: {
-                            Text(spot.name)
-                                .font(Typeface.caption(13))
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 8)
-                                .background(on ? Palette.ember : Palette.card)
-                                .foregroundStyle(on ? Color.white : Color.primary)
-                                .clipShape(Capsule())
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -220,5 +213,24 @@ struct LogSunsetView: View {
         } catch {
             self.error = "Could not save this evening."
         }
+    }
+}
+
+private struct LogSpotChip: View {
+    let title: String
+    let isOn: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(Typeface.caption(13))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(isOn ? Palette.ember : Palette.card)
+                .foregroundStyle(isOn ? Color.white : Color.primary)
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 }
