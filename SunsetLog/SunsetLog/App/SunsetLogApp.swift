@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 
+@MainActor
 @main
 struct SunsetLogApp: App {
     @State private var session = AppSession()

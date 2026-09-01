@@ -17,11 +17,22 @@ final class AppSession {
 
     private var clockTask: Task<Void, Never>?
 
+    /// Default arguments are evaluated in a nonisolated context, so MainActor
+    /// services are created here in the isolated body instead of as defaults.
+    init() {
+        self.init(
+            location: LocationService(),
+            notifications: NotificationService(),
+            scanner: PhotoLibraryScanner(),
+            social: MockSocialClient()
+        )
+    }
+
     init(
-        location: LocationService = LocationService(),
-        notifications: NotificationService = NotificationService(),
-        scanner: PhotoLibraryScanner = PhotoLibraryScanner(),
-        social: SocialClient = MockSocialClient()
+        location: LocationService,
+        notifications: NotificationService,
+        scanner: PhotoLibraryScanner,
+        social: SocialClient
     ) {
         self.location = location
         self.notifications = notifications
