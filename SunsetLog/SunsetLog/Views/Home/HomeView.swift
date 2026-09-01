@@ -106,12 +106,12 @@ struct HomeView: View {
                     session.logPresented = true
                 }
             } else {
-                VStack(spacing: -72) {
-                    ForEach(Array(mine.enumerated()), id: \.element.id) { index, entry in
+                VStack(spacing: VeilStyle.compact.overlap) {
+                    ForEach(mine, id: \.id) { entry in
                         Button {
                             router.open(.entry(entry.id), in: .journal)
                         } label: {
-                            JournalVeil(entry: entry, style: .compact, staggered: index.isMultiple(of: 2) == false)
+                            JournalVeil(entry: entry, style: .compact)
                         }
                         .buttonStyle(VeilPressStyle())
                     }

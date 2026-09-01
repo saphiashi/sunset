@@ -260,8 +260,10 @@ struct SkyPhoto: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: corner, style: .continuous))
         .background {
-            RoundedRectangle(cornerRadius: corner, style: .continuous)
-                .fill(SkyGradient.dusk)
+            if corner > 0 {
+                RoundedRectangle(cornerRadius: corner, style: .continuous)
+                    .fill(SkyGradient.dusk)
+            }
         }
     }
 

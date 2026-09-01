@@ -3,62 +3,85 @@ import SwiftUI
 enum VeilStyle {
     case page
     case compact
+
+    var height: CGFloat {
+        switch self {
+        case .page: return 540
+        case .compact: return 300
+        }
+    }
+
+    /// Negative VStack spacing: ~60% of height so skies crossfade, not stack.
+    var overlap: CGFloat {
+        switch self {
+        case .page: return -330
+        case .compact: return -180
+        }
+    }
 }
 
 struct JournalVeil: View {
     let entry: SunsetEntry
     var style: VeilStyle = .page
-    var staggered: Bool = false
-
-    private var height: CGFloat {
-        switch style {
-        case .page: return staggered ? 400 : 460
-        case .compact: return 250
-        }
-    }
 
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            bloom
-            photograph
-            SkyGradient.veil
+        ZStack(alignment: .center) {
+            wash
             VeilCaption(entry: entry, compact: style == .compact)
-                .padding(.horizontal, 22)
-                .padding(.bottom, style == .page ? 36 : 22)
+                .padding(.horizontal, 24)
+                .padding(.bottom, style == .page ? 8 : 4)
+                .frame(maxHeight: .infinity, alignment: .center)
         }
-        .frame(height: height)
-        .padding(.horizontal, staggered ? 22 : 0)
+        .frame(height: style.height)
+        .compositingGroup()
+        .mask { WashMask() }
+        .mask { EdgeSoftMask() }
     }
 
-    private var bloom: some View {
-        SkyPhoto(entry: entry, corner: 0)
-            .blur(radius: 28)
-            .scaleEffect(1.12)
-            .opacity(0.55)
-            .allowsHitTesting(false)
+    private var wash: some View {
+        ZStack {
+            SkyPhoto(entry: entry, corner: 0)
+                .blur(radius: 52)
+                .scaleEffect(1.2)
+                .opacity(0.38)
+            SkyPhoto(entry: entry, corner: 0)
+                .opacity(0.94)
+            captionScrim
+        }
+        .allowsHitTesting(false)
     }
 
-    private var photograph: some View {
-        SkyPhoto(entry: entry, corner: 0)
-            .mask(FeatherMask(top: style == .compact ? 0.06 : 0.12, bottom: 0.84))
+    private var captionScrim: some View {
+        LinearGradient(
+            stops: [
+                .init(color: .clear, location: 0),
+                .init(color: .black.opacity(0.08), location: 0.32),
+                .init(color: .black.opacity(0.38), location: 0.48),
+                .init(color: .black.opacity(0.22), location: 0.62),
+                .init(color: .clear, location: 0.82)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .allowsHitTesting(false)
     }
 }
 
 struct JournalRibbon: View {
     let entries: [SunsetEntry]
+    var style: VeilStyle = .page
 
     var body: some View {
-        VStack(spacing: -118) {
-            ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
+        VStack(spacing: style.overlap) {
+            ForEach(entries, id: \.id) { entry in
                 NavigationLink(value: Route.entry(entry.id)) {
-                    JournalVeil(entry: entry, style: .page, staggered: index.isMultiple(of: 2) == false)
+                    JournalVeil(entry: entry, style: style)
                 }
                 .buttonStyle(VeilPressStyle())
-                .zIndex(Double(entries.count - index))
             }
         }
-        .padding(.top, 12)
-        .padding(.bottom, 72)
+        .padding(.top, style == .page ? 4 : 0)
+        .padding(.bottom, 48)
     }
 }
 
@@ -67,19 +90,21 @@ struct VeilCaption: View {
     var compact: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: compact ? 8 : 12) {
+        VStack(alignment: .leading, spacing: compact ? 6 : 10) {
             Text(entry.spot?.name ?? "An unmarked sky")
                 .font(Typeface.display(compact ? 26 : 34))
                 .foregroundStyle(.white)
-                .shadow(color: .black.opacity(0.35), radius: 8, y: 2)
+                .shadow(color: .black.opacity(0.45), radius: 12, y: 2)
             Text(meta)
                 .font(Typeface.italic(14))
-                .foregroundStyle(.white.opacity(0.84))
+                .foregroundStyle(.white.opacity(0.88))
+                .shadow(color: .black.opacity(0.4), radius: 6, y: 1)
             if !compact, !entry.note.isEmpty {
                 Text(entry.note)
                     .font(Typeface.italic(16))
-                    .foregroundStyle(.white.opacity(0.9))
+                    .foregroundStyle(.white.opacity(0.92))
                     .lineLimit(2)
+                    .shadow(color: .black.opacity(0.4), radius: 6, y: 1)
             }
             VeilScores(color: entry.colorScore, drama: entry.dramaScore, overall: entry.overallScore)
         }
@@ -99,7 +124,7 @@ struct VeilScores: View {
     let overall: Double
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 14) {
             scoreChip("Color", color)
             scoreChip("Drama", drama)
             scoreChip("Overall", overall)
@@ -107,33 +132,27 @@ struct VeilScores: View {
     }
 
     private func scoreChip(_ name: String, _ value: Double) -> some View {
-        HStack(spacing: 6) {
-            Text(name)
+        VStack(alignment: .leading, spacing: 1) {
+            Text(name.uppercased())
                 .font(Typeface.caption(9))
-                .tracking(0.7)
+                .tracking(0.8)
                 .foregroundStyle(.white.opacity(0.7))
             Text(ScoreFormat.oneDecimal(value))
-                .font(Typeface.display(16))
+                .font(Typeface.display(18))
                 .foregroundStyle(.white)
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(.ultraThinMaterial.opacity(0.55), in: Capsule())
-        .overlay {
-            Capsule().stroke(Color.white.opacity(0.18), lineWidth: 0.8)
-        }
+        .shadow(color: .black.opacity(0.45), radius: 8, y: 1)
     }
 }
 
 struct VeilPressStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.985 : 1)
-            .animation(.easeOut(duration: 0.22), value: configuration.isPressed)
+            .opacity(configuration.isPressed ? 0.92 : 1)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
 }
 
-/// Shared compact overlay used on Tonight, Circle, and the day calendar.
 struct EntryCard: View {
     let entry: SunsetEntry
     var compact: Bool

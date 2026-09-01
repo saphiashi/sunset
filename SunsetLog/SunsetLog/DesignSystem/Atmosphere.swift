@@ -92,3 +92,41 @@ struct FeatherMask: View {
         )
     }
 }
+
+/// Long ease-in/out so adjacent skies dissolve instead of meeting at a ledge.
+struct WashMask: View {
+    var body: some View {
+        LinearGradient(
+            stops: [
+                .init(color: .clear, location: 0),
+                .init(color: .black.opacity(0.12), location: 0.06),
+                .init(color: .black.opacity(0.40), location: 0.16),
+                .init(color: .black.opacity(0.78), location: 0.30),
+                .init(color: .black, location: 0.42),
+                .init(color: .black, location: 0.54),
+                .init(color: .black.opacity(0.72), location: 0.64),
+                .init(color: .black.opacity(0.38), location: 0.76),
+                .init(color: .black.opacity(0.12), location: 0.88),
+                .init(color: .clear, location: 1)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+}
+
+struct EdgeSoftMask: View {
+    var body: some View {
+        LinearGradient(
+            stops: [
+                .init(color: .clear, location: 0),
+                .init(color: .black, location: 0.04),
+                .init(color: .black, location: 0.96),
+                .init(color: .clear, location: 1)
+            ],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+    }
+}
+
