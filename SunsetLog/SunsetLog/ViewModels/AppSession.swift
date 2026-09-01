@@ -19,7 +19,7 @@ final class AppSession {
 
     /// Default arguments are evaluated in a nonisolated context, so MainActor
     /// services are created here in the isolated body instead of as defaults.
-    init() {
+    convenience init() {
         self.init(
             location: LocationService(),
             notifications: NotificationService(),
