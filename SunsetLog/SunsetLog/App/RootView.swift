@@ -14,18 +14,18 @@ struct RootView: View {
                     .navigationDestination(for: Route.self) { RouteDestination(route: $0) }
             }
             .tag(AppTab.tonight)
-            .tabItem { Label("Tonight", systemImage: "sun.horizon") }
+            .tabItem { Label("Tonight", systemImage: "moon.haze.fill") }
 
             NavigationStack(path: $router.journalPath) {
                 JournalView()
                     .navigationDestination(for: Route.self) { RouteDestination(route: $0) }
             }
             .tag(AppTab.journal)
-            .tabItem { Label("Journal", systemImage: "book.closed") }
+            .tabItem { Label("Journal", systemImage: "book.closed.fill") }
 
             Color.clear
                 .tag(AppTab.log)
-                .tabItem { Label("Log", systemImage: "plus.circle.fill") }
+                .tabItem { Label("Log", systemImage: "plus") }
 
             NavigationStack(path: $router.atlasPath) {
                 AtlasView()
@@ -42,6 +42,8 @@ struct RootView: View {
             .tabItem { Label("Circle", systemImage: "sparkles") }
         }
         .tint(Palette.ember)
+        .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
         .onChange(of: router.tab) { _, new in
             if new == .log {
                 session.logPresented = true

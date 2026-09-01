@@ -56,7 +56,7 @@ struct CollectionDetailView: View {
                 QuietEmpty(symbol: "square.grid.2x2", title: "Missing collection", detail: "This shelf was put away.")
             }
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if collection != nil {

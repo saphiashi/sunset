@@ -38,8 +38,7 @@ struct LogSunsetView: View {
                         TextField("What did the sky do?", text: $note, axis: .vertical)
                             .lineLimit(3...6)
                             .padding(14)
-                            .background(Palette.card)
-                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .background(.ultraThinMaterial.opacity(0.5), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                     }
                     if let error {
                         Text(error)
@@ -52,7 +51,7 @@ struct LogSunsetView: View {
                 }
                 .padding(20)
             }
-            .background(Palette.canvas.ignoresSafeArea())
+            .duskBackdrop()
             .navigationTitle("Log a sunset")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -110,16 +109,14 @@ struct LogSunsetView: View {
             .font(Typeface.body(14, weight: .semibold))
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(Palette.card)
-            .clipShape(Capsule())
+            .background(.ultraThinMaterial.opacity(0.5), in: Capsule())
     }
 
     private var timeBlock: some View {
         DatePicker("When the light went", selection: $capturedAt)
             .font(Typeface.body(15, weight: .semibold))
             .padding(14)
-            .background(Palette.card)
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background(.ultraThinMaterial.opacity(0.5), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     private var spotBlock: some View {
@@ -141,8 +138,7 @@ struct LogSunsetView: View {
             }
             TextField("Or name a new spot", text: $draftSpotName)
                 .padding(14)
-                .background(Palette.card)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .background(.ultraThinMaterial.opacity(0.5), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .onChange(of: draftSpotName) { _, text in
                     if !text.isEmpty { selectedSpot = nil }
                 }

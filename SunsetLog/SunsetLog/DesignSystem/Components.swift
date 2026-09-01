@@ -18,15 +18,26 @@ struct EmberButton: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
-            .background(fill ? Palette.ember : Color.clear)
+            .background {
+                if fill {
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [Palette.bloom, Palette.ember],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .shadow(color: Palette.ember.opacity(0.35), radius: 16, y: 6)
+                }
+            }
             .foregroundStyle(fill ? Color.white : Palette.ember)
             .overlay {
                 if !fill {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(Palette.ember.opacity(0.45), lineWidth: 1)
+                    Capsule()
+                        .stroke(Palette.gold.opacity(0.45), lineWidth: 1)
                 }
             }
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
         .buttonStyle(.plain)
     }
@@ -41,11 +52,11 @@ struct SectionHeader: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(eyebrow.uppercased())
                 .font(Typeface.caption(11))
-                .tracking(1.4)
-                .foregroundStyle(Palette.ember)
+                .tracking(2.2)
+                .foregroundStyle(Palette.gold)
             HStack(alignment: .firstTextBaseline) {
                 Text(title)
-                    .font(Typeface.display(28))
+                    .font(Typeface.italic(30))
                 Spacer()
                 if let accessory {
                     Text(accessory)
@@ -107,11 +118,10 @@ struct ScoreRail: View {
             .frame(height: 28)
         }
         .padding(16)
-        .background(Palette.card)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .background(.ultraThinMaterial.opacity(0.55), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
         .overlay {
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(Palette.hairline, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .stroke(Color.white.opacity(0.12), lineWidth: 1)
         }
         .animation(.snappy(duration: 0.18), value: value)
     }
@@ -141,8 +151,7 @@ struct ScorePills: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
-        .background(Palette.card.opacity(0.92))
-        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(.ultraThinMaterial.opacity(0.5), in: Capsule())
     }
 }
 
@@ -154,12 +163,15 @@ struct QuietEmpty: View {
     var action: (() -> Void)? = nil
 
     var body: some View {
-        VStack(spacing: 14) {
-            Image(systemName: symbol)
-                .font(.system(size: 34, weight: .light))
-                .foregroundStyle(Palette.ember)
+        VStack(spacing: 16) {
+            ZStack {
+                GlowOrb(color: Palette.gold, size: 90)
+                Image(systemName: symbol)
+                    .font(.system(size: 30, weight: .ultraLight))
+                    .foregroundStyle(.white)
+            }
             Text(title)
-                .font(Typeface.display(24))
+                .font(Typeface.italic(26))
                 .multilineTextAlignment(.center)
             Text(detail)
                 .font(Typeface.body(15))
@@ -192,11 +204,10 @@ struct PermissionCard: View {
             EmberButton(title: button, systemImage: "gear", action: action)
         }
         .padding(20)
-        .background(Palette.card)
-        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .background(.ultraThinMaterial.opacity(0.55), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
         .overlay {
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .stroke(Palette.hairline, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .stroke(Color.white.opacity(0.12), lineWidth: 1)
         }
     }
 }
@@ -283,12 +294,14 @@ struct SoftBanner: View {
     let text: String
     var body: some View {
         Text(text)
-            .font(Typeface.caption(12))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .font(Typeface.italic(13))
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Palette.gold.opacity(0.18))
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .background(.ultraThinMaterial.opacity(0.45), in: Capsule())
+            .overlay {
+                Capsule().stroke(Palette.gold.opacity(0.22), lineWidth: 0.8)
+            }
     }
 }
 

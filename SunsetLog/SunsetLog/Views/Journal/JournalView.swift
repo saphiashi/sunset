@@ -11,33 +11,50 @@ struct JournalView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 8) {
                 journalHeader
-                Picker("Filter", selection: $showMineOnly) {
-                    Text("Yours").tag(true)
-                    Text("Circle").tag(false)
-                }
-                .pickerStyle(.segmented)
+                    .padding(.horizontal, 22)
+                    .padding(.top, 8)
+                filterChips
+                    .padding(.horizontal, 22)
+                    .padding(.bottom, 8)
                 journalList
             }
-            .padding(20)
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
+        .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private var journalHeader: some View {
-        HStack {
-            SectionHeader(eyebrow: "Evenings kept", title: "Journal")
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("EVENINGS KEPT")
+                    .font(Typeface.caption(11))
+                    .tracking(2.4)
+                    .foregroundStyle(Palette.gold)
+                Text("The journal")
+                    .font(Typeface.italic(34))
+            }
             Spacer()
             Button {
                 router.open(.calendar, in: .journal)
             } label: {
                 Image(systemName: "calendar")
                     .font(.title3)
+                    .foregroundStyle(.white.opacity(0.9))
+                    .padding(12)
+                    .background(.ultraThinMaterial.opacity(0.5), in: Circle())
             }
             .accessibilityLabel("Calendar")
+        }
+    }
+
+    private var filterChips: some View {
+        HStack(spacing: 10) {
+            JournalFilterChip(title: "Yours", isOn: showMineOnly) { showMineOnly = true }
+            JournalFilterChip(title: "Circle", isOn: !showMineOnly) { showMineOnly = false }
         }
     }
 
@@ -51,53 +68,31 @@ struct JournalView: View {
                     ? "Your own evenings will live here."
                     : "Follow someone, then their skies appear."
             )
+            .padding(.top, 40)
         } else {
-            ForEach(visible, id: \.id) { entry in
-                NavigationLink(value: Route.entry(entry.id)) {
-                    EntryCard(entry: entry, compact: false)
-                }
-                .buttonStyle(.plain)
-            }
+            JournalRibbon(entries: visible)
         }
     }
 }
 
-struct EntryCard: View {
-    let entry: SunsetEntry
-    var compact: Bool
+private struct JournalFilterChip: View {
+    let title: String
+    let isOn: Bool
+    let action: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            SkyPhoto(entry: entry, corner: 20)
-                .frame(height: compact ? 210 : 280)
-            HStack(alignment: .firstTextBaseline) {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(entry.spot?.name ?? "An unmarked sky")
-                        .font(Typeface.display(22))
-                    Text(meta)
-                        .font(Typeface.caption(12))
-                        .foregroundStyle(.secondary)
+        Button(action: action) {
+            Text(title)
+                .font(Typeface.italic(16))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .foregroundStyle(isOn ? Color.white : Palette.dusk)
+                .background {
+                    Capsule()
+                        .fill(isOn ? Palette.ember.opacity(0.85) : Color.white.opacity(0.28))
                 }
-                Spacer()
-                Text(ScoreFormat.oneDecimal(entry.overallScore))
-                    .font(Typeface.display(28))
-                    .foregroundStyle(Palette.ember)
-            }
-            if !entry.note.isEmpty && !compact {
-                Text(entry.note)
-                    .font(Typeface.body(15))
-                    .foregroundStyle(.primary.opacity(0.85))
-                    .lineLimit(3)
-            }
         }
-    }
-
-    private var meta: String {
-        let day = entry.capturedAt.formatted(.dateTime.month(.abbreviated).day().hour().minute())
-        if entry.isMine {
-            return day
-        }
-        return "\(entry.authorName) · \(day)"
+        .buttonStyle(.plain)
     }
 }
 
@@ -114,7 +109,8 @@ struct EntryDetailView: View {
                 QuietEmpty(symbol: "photo", title: "This evening left", detail: "The entry is no longer in the journal.")
             }
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
+        .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -124,56 +120,50 @@ private struct EntryDetailLoaded: View {
     let collections: [SkyCollection]
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                SkyPhoto(entry: entry, corner: 26)
-                    .frame(height: 420)
-                EntryDetailHeader(entry: entry)
-                ScorePills(color: entry.colorScore, drama: entry.dramaScore, overall: entry.overallScore)
-                if !entry.note.isEmpty {
-                    Text(entry.note)
-                        .font(Typeface.body(17))
-                        .lineSpacing(4)
-                }
-                if let spot = entry.spot {
-                    NavigationLink(value: Route.spot(spot.id)) {
-                        Label("Open \(spot.name)", systemImage: "mappin.and.ellipse")
-                            .font(Typeface.body(16, weight: .semibold))
-                    }
-                }
-                if entry.isMine {
-                    CollectionMembershipEditor(entry: entry, collections: collections)
-                }
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 0) {
+                hero
+                detailPanel
+                    .offset(y: -48)
+                    .padding(.bottom, -24)
             }
-            .padding(20)
         }
+        .ignoresSafeArea(edges: .top)
     }
-}
 
-private struct EntryDetailHeader: View {
-    let entry: SunsetEntry
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(entry.spot?.name ?? "An unmarked sky")
-                .font(Typeface.display(34))
-            Text(whenLine)
-                .foregroundStyle(.secondary)
-            if !entry.isMine {
-                Text("Logged by \(entry.authorName)")
-                    .font(Typeface.caption(13))
-                    .foregroundStyle(Palette.ember)
-            }
-            if entry.importedFromLibrary {
-                Text("Imported from the camera roll")
-                    .font(Typeface.caption(12))
-                    .foregroundStyle(.secondary)
-            }
+    private var hero: some View {
+        ZStack(alignment: .bottomLeading) {
+            SkyPhoto(entry: entry, corner: 0)
+                .frame(height: 520)
+                .overlay { SkyGradient.veil }
+            VeilCaption(entry: entry, compact: false)
+                .padding(.horizontal, 22)
+                .padding(.bottom, 64)
         }
     }
 
-    private var whenLine: String {
-        entry.capturedAt.formatted(.dateTime.weekday(.wide).month(.wide).day().hour().minute())
+    private var detailPanel: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            if !entry.note.isEmpty {
+                Text(entry.note)
+                    .font(Typeface.italic(20))
+                    .lineSpacing(5)
+            }
+            if let spot = entry.spot {
+                NavigationLink(value: Route.spot(spot.id)) {
+                    Label("Open \(spot.name)", systemImage: "mappin.and.ellipse")
+                        .font(Typeface.body(16, weight: .semibold))
+                        .foregroundStyle(Palette.ember)
+                }
+            }
+            if entry.isMine {
+                CollectionMembershipEditor(entry: entry, collections: collections)
+            }
+        }
+        .padding(22)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.ultraThinMaterial.opacity(0.72), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
+        .padding(.horizontal, 16)
     }
 }
 
@@ -184,7 +174,7 @@ private struct CollectionMembershipEditor: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Collections")
-                .font(Typeface.display(22))
+                .font(Typeface.italic(22))
             ForEach(collections, id: \.id) { collection in
                 CollectionMembershipRow(entry: entry, collection: collection)
             }

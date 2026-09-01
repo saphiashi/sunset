@@ -7,9 +7,9 @@
 	objects = {
 		FCC2C40F178E31CF0B71860C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		233D23F241FAD1643D5F6093 /* SunsetLogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunsetLogApp.swift; sourceTree = "<group>"; };
+		F15F2E0CF8A9E0D74BCDD8FD /* Atmosphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atmosphere.swift; sourceTree = "<group>"; };
 		80268B71845341EAC7D54B25 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		C9D0BD099F3559AC664AF505 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
-		0175511AB19885C127D38B78 /* Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
 		C3B208E2FFB91E21B28E90E1 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		E1B5B36203858414A3FC508D /* SeedIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedIDs.swift; sourceTree = "<group>"; };
 		49183045CB3EA66460058FA3 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
@@ -28,6 +28,7 @@
 		741E769763DA07CB7E70F22C /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		926D59CF6D059F1BF47757E4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4566CAA29666A020C2575879 /* CalendarJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarJournalView.swift; sourceTree = "<group>"; };
+		243707850FBFA91817492877 /* JournalVeil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalVeil.swift; sourceTree = "<group>"; };
 		B757FAFBA0A933236950F8AC /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
 		B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSunsetView.swift; sourceTree = "<group>"; };
 		F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryScanView.swift; sourceTree = "<group>"; };
@@ -58,9 +59,9 @@
 		0CC7D2D6C39A5AABAF9D614A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E2CF2CBE61FED8C7036F9A3C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC2C40F178E31CF0B71860C /* RootView.swift */; };
 		E46058F1F8477E66EE56775E /* SunsetLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233D23F241FAD1643D5F6093 /* SunsetLogApp.swift */; };
+		1482DDEE3D859B5E4C41F769 /* Atmosphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15F2E0CF8A9E0D74BCDD8FD /* Atmosphere.swift */; };
 		EB458FB12D76D2EA792E8977 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80268B71845341EAC7D54B25 /* Components.swift */; };
 		8E5CFB792BF0902C1D11B1BA /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0BD099F3559AC664AF505 /* Palette.swift */; };
-		4E88A55C23BB1D7C9D99D5BD /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175511AB19885C127D38B78 /* Type.swift */; };
 		AF44BA769E90BE605BB59FFF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B208E2FFB91E21B28E90E1 /* Models.swift */; };
 		33EB9AC01C947F3AD9CB8F7D /* SeedIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B5B36203858414A3FC508D /* SeedIDs.swift */; };
 		6B4389650E6FC4FC10168CDC /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49183045CB3EA66460058FA3 /* DeepLink.swift */; };
@@ -79,6 +80,7 @@
 		6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E769763DA07CB7E70F22C /* CollectionsView.swift */; };
 		398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D59CF6D059F1BF47757E4 /* HomeView.swift */; };
 		035B1A33F7B0141E51A6E1E5 /* CalendarJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4566CAA29666A020C2575879 /* CalendarJournalView.swift */; };
+		B01FC73C859324684284E947 /* JournalVeil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243707850FBFA91817492877 /* JournalVeil.swift */; };
 		BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757FAFBA0A933236950F8AC /* JournalView.swift */; };
 		1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */; };
 		D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */; };
@@ -133,9 +135,9 @@
 		88F6051D365956F1766DE80E /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
-				0175511AB19885C127D38B78 /* Type.swift */,
 				80268B71845341EAC7D54B25 /* Components.swift */,
 				C9D0BD099F3559AC664AF505 /* Palette.swift */,
+				F15F2E0CF8A9E0D74BCDD8FD /* Atmosphere.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -255,6 +257,7 @@
 		DA8C9336BB1173179839ADDE /* Journal */ = {
 			isa = PBXGroup;
 			children = (
+				243707850FBFA91817492877 /* JournalVeil.swift */,
 				4566CAA29666A020C2575879 /* CalendarJournalView.swift */,
 				B757FAFBA0A933236950F8AC /* JournalView.swift */,
 			);
@@ -335,9 +338,9 @@
 			files = (
 				E2CF2CBE61FED8C7036F9A3C /* RootView.swift in Sources */,
 				E46058F1F8477E66EE56775E /* SunsetLogApp.swift in Sources */,
+				1482DDEE3D859B5E4C41F769 /* Atmosphere.swift in Sources */,
 				EB458FB12D76D2EA792E8977 /* Components.swift in Sources */,
 				8E5CFB792BF0902C1D11B1BA /* Palette.swift in Sources */,
-				4E88A55C23BB1D7C9D99D5BD /* Type.swift in Sources */,
 				AF44BA769E90BE605BB59FFF /* Models.swift in Sources */,
 				33EB9AC01C947F3AD9CB8F7D /* SeedIDs.swift in Sources */,
 				6B4389650E6FC4FC10168CDC /* DeepLink.swift in Sources */,
@@ -356,6 +359,7 @@
 				6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */,
 				398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */,
 				035B1A33F7B0141E51A6E1E5 /* CalendarJournalView.swift in Sources */,
+				B01FC73C859324684284E947 /* JournalVeil.swift in Sources */,
 				BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */,
 				1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */,
 				D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */,

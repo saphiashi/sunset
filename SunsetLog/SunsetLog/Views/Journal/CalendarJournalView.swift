@@ -39,8 +39,13 @@ struct CalendarJournalView: View {
                                         .frame(width: 6, height: 6)
                                 }
                                 .frame(maxWidth: .infinity, minHeight: 44)
-                                .background(key == day ? Palette.ember.opacity(0.12) : Color.clear)
-                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                .background {
+                                    if key == day {
+                                        Circle()
+                                            .fill(Palette.gold.opacity(0.28))
+                                            .blur(radius: 2)
+                                    }
+                                }
                             }
                             .buttonStyle(.plain)
                         } else {
@@ -67,7 +72,7 @@ struct CalendarJournalView: View {
             }
             .padding(20)
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
         .navigationTitle("Days")
         .navigationBarTitleDisplayMode(.inline)
     }

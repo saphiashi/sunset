@@ -29,12 +29,14 @@ struct AtlasView: View {
                     }
                 }
             }
-            .mapStyle(.standard(elevation: .realistic))
+            .mapStyle(.hybrid(elevation: .realistic))
             .ignoresSafeArea(edges: .top)
 
             VStack(alignment: .leading, spacing: 10) {
                 Text("Evenings near you")
-                    .font(Typeface.display(26))
+                    .font(Typeface.italic(28))
+                    .foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.4), radius: 8, y: 2)
                     .padding(.horizontal, 4)
                 if session.location.isDenied {
                     SoftBanner(text: "Location is off. The atlas is showing California seed spots.")

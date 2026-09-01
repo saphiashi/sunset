@@ -73,6 +73,8 @@ struct SettingsView: View {
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .scrollContentBackground(.hidden)
+        .duskBackdrop()
         .task {
             await session.notifications.refresh()
             await syncReminder()

@@ -37,7 +37,7 @@ struct SpotDetailView: View {
                 QuietEmpty(symbol: "mappin.slash", title: "Unknown place", detail: "This pin is no longer in the atlas.")
             }
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $shareFriend) { person in
             shareSheet(person)
@@ -46,25 +46,32 @@ struct SpotDetailView: View {
 
     private func hero(_ spot: Spot) -> some View {
         let photo = spot.entries.sorted { $0.overallScore > $1.overallScore }.first
-        return SkyPhoto(
-            bundleName: photo?.photoBundleName,
-            fileName: photo?.photoFileName,
-            corner: 0
-        )
-        .frame(height: 360)
+        return ZStack(alignment: .bottomLeading) {
+            SkyPhoto(
+                bundleName: photo?.photoBundleName,
+                fileName: photo?.photoFileName,
+                corner: 0
+            )
+            .frame(height: 380)
+            .overlay { SkyGradient.veil }
+            VStack(alignment: .leading, spacing: 6) {
+                Text(spot.name)
+                    .font(Typeface.italic(36))
+                    .foregroundStyle(.white)
+                Text(spot.placeLine)
+                    .font(Typeface.italic(14))
+                    .foregroundStyle(.white.opacity(0.8))
+            }
+            .padding(22)
+            .padding(.bottom, 8)
+        }
     }
 
     private func header(_ spot: Spot) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(spot.name)
-                .font(Typeface.display(36))
-            Text(spot.placeLine)
-                .foregroundStyle(.secondary)
-            Text(spot.blurb)
-                .font(Typeface.body(16))
-                .padding(.top, 4)
-        }
-        .padding(.horizontal, 20)
+        Text(spot.blurb)
+            .font(Typeface.italic(17))
+            .padding(.horizontal, 20)
+            .padding(.top, 8)
     }
 
     private func scores(_ spot: Spot) -> some View {

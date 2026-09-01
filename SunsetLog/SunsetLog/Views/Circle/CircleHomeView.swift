@@ -23,7 +23,7 @@ struct CircleHomeView: View {
             }
             .padding(20)
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -72,16 +72,15 @@ struct CircleHomeView: View {
                                 Image(systemName: collection.symbol)
                                     .foregroundStyle(collection.accent)
                                 Text(collection.name)
-                                    .font(Typeface.display(20))
+                                    .font(Typeface.italic(20))
                                     .foregroundStyle(.primary)
                                 Text("\(collection.entries.count) evenings")
                                     .font(Typeface.caption(12))
                                     .foregroundStyle(.secondary)
                             }
                             .padding(16)
-                            .frame(width: 160, alignment: .leading)
-                            .background(Palette.card)
-                            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                            .frame(width: 168, alignment: .leading)
+                            .background(.ultraThinMaterial.opacity(0.5), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                         }
                         .buttonStyle(.plain)
                     }
@@ -108,8 +107,7 @@ struct CircleHomeView: View {
                     .foregroundStyle(.tertiary)
             }
             .padding(16)
-            .background(Palette.card)
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .background(.ultraThinMaterial.opacity(0.45), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
         }
         .buttonStyle(.plain)
     }
@@ -249,7 +247,7 @@ struct FriendProfileView: View {
                 QuietEmpty(symbol: "person", title: "Missing person", detail: "They are not in this mock circle.")
             }
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -296,7 +294,7 @@ struct SavedSpotsView: View {
             }
             .padding(20)
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
     }
 }

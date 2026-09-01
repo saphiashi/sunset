@@ -77,7 +77,7 @@ struct LibraryScanView: View {
             }
             .padding(20)
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .duskBackdrop()
         .navigationTitle("Scan")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -172,7 +172,7 @@ struct ScanReviewView: View {
                 }
                 .padding(20)
             }
-            .background(Palette.canvas.ignoresSafeArea())
+            .duskBackdrop()
             .navigationTitle("Review")
             .navigationBarTitleDisplayMode(.inline)
         }
