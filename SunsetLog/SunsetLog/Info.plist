@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.sunsetlog.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sunsetlog</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Sunset Log uses the camera so you can photograph tonight’s sky as you log it.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Sunset Log looks through your camera roll for evenings taken near sunset, with a warm sky, so you can import them into your journal. Photographs stay on this device.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Sunset Log does not save back to your library; this is only requested if the system treats a read as a write.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Sunset Log uses your location to time golden hour, place you on the atlas, and tag where you stood. If you decline, the app falls back to San Francisco seed spots.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>Sunset Log can remind you locally when tonight’s light is about to go. You can turn this off anytime.</string>
+</dict>
+</plist>

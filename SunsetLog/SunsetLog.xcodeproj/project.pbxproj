@@ -1,0 +1,740 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+		FCC2C40F178E31CF0B71860C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		233D23F241FAD1643D5F6093 /* SunsetLogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunsetLogApp.swift; sourceTree = "<group>"; };
+		80268B71845341EAC7D54B25 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		C9D0BD099F3559AC664AF505 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		0175511AB19885C127D38B78 /* Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
+		C3B208E2FFB91E21B28E90E1 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		E1B5B36203858414A3FC508D /* SeedIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedIDs.swift; sourceTree = "<group>"; };
+		49183045CB3EA66460058FA3 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		88C6F70208346416D4590BD4 /* ImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
+		FCE566C959062C2C63C7D4D4 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		8029B5C43E2BEE142D7FDA99 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		98DC4954A1ADEFA60A0B9826 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		A4FB93CB3B32366DD2E79D01 /* PhotoLibraryScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryScanner.swift; sourceTree = "<group>"; };
+		219E0970FD0A16E28EA1D788 /* SeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedStore.swift; sourceTree = "<group>"; };
+		702E291F723533AC681904C5 /* SocialClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialClient.swift; sourceTree = "<group>"; };
+		42A4098FE71586B4DBBE8349 /* SolarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarService.swift; sourceTree = "<group>"; };
+		A620FB8DFB432EAF4E728E29 /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
+		EE344EB50D3D451B0BB7D9BE /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		04023099296A0B851FDFBBC7 /* AtlasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasView.swift; sourceTree = "<group>"; };
+		2307D87D97AAECB283B78023 /* CircleHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleHomeView.swift; sourceTree = "<group>"; };
+		741E769763DA07CB7E70F22C /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
+		926D59CF6D059F1BF47757E4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		4566CAA29666A020C2575879 /* CalendarJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarJournalView.swift; sourceTree = "<group>"; };
+		B757FAFBA0A933236950F8AC /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSunsetView.swift; sourceTree = "<group>"; };
+		F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryScanView.swift; sourceTree = "<group>"; };
+		4551F193AE4BFA0611F14667 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		21198954065416E432333218 /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
+		9DD8FDAD8D1928D52A25D782 /* RouteDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDestination.swift; sourceTree = "<group>"; };
+		BB08E27AE624C78124D8581E /* SpotDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
+		4B2DB3CB79514A3A8182C0CD /* DeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkTests.swift; sourceTree = "<group>"; };
+		6811AB5489D7F11F5502E373 /* SolarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarServiceTests.swift; sourceTree = "<group>"; };
+		732E1816F41268BD6F487124 /* alamo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = alamo.jpg; sourceTree = "<group>"; };
+		5DC79ABA3601254F451565D8 /* baker_beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = baker_beach.jpg; sourceTree = "<group>"; };
+		BE192EE8A2438FD88A7A0229 /* bixby.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bixby.jpg; sourceTree = "<group>"; };
+		B0F8681C97DA9C371141B077 /* el_matador.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = el_matador.jpg; sourceTree = "<group>"; };
+		DA18B1092F790ADC4E93D849 /* gold_hour.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gold_hour.jpg; sourceTree = "<group>"; };
+		794FFC515FD146A35F01FD86 /* griffith.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = griffith.jpg; sourceTree = "<group>"; };
+		FA06264411131339C658C971 /* lands_end.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lands_end.jpg; sourceTree = "<group>"; };
+		1A2D8D7255FC6EB7B3957FB9 /* lavender_dusk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lavender_dusk.jpg; sourceTree = "<group>"; };
+		8D6A959099C63FA70E19C208 /* ocean_beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ocean_beach.jpg; sourceTree = "<group>"; };
+		041AB356D9C62CE9F6E75020 /* pink_wash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pink_wash.jpg; sourceTree = "<group>"; };
+		044667D1F31517DBA267E3D2 /* santa_monica.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = santa_monica.jpg; sourceTree = "<group>"; };
+		85A1AB36FE36876F3F5ABD47 /* storm_light.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = storm_light.jpg; sourceTree = "<group>"; };
+		8ACEF5FD970C13FFFEF9244F /* tamalpais.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tamalpais.jpg; sourceTree = "<group>"; };
+		AA6A8201D0FFAC5D99AE802E /* twin_peaks.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = twin_peaks.jpg; sourceTree = "<group>"; };
+		7BCCADA3021C07D12E775CB5 /* SunsetLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SunsetLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		195F9293022CEE80C9E8D0C0 /* SunsetLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SunsetLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB9789B743FD1F453202AC6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3A4031D710B812EFE2895878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0CC7D2D6C39A5AABAF9D614A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E2CF2CBE61FED8C7036F9A3C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC2C40F178E31CF0B71860C /* RootView.swift */; };
+		E46058F1F8477E66EE56775E /* SunsetLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233D23F241FAD1643D5F6093 /* SunsetLogApp.swift */; };
+		EB458FB12D76D2EA792E8977 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80268B71845341EAC7D54B25 /* Components.swift */; };
+		8E5CFB792BF0902C1D11B1BA /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0BD099F3559AC664AF505 /* Palette.swift */; };
+		4E88A55C23BB1D7C9D99D5BD /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0175511AB19885C127D38B78 /* Type.swift */; };
+		AF44BA769E90BE605BB59FFF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B208E2FFB91E21B28E90E1 /* Models.swift */; };
+		33EB9AC01C947F3AD9CB8F7D /* SeedIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B5B36203858414A3FC508D /* SeedIDs.swift */; };
+		6B4389650E6FC4FC10168CDC /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49183045CB3EA66460058FA3 /* DeepLink.swift */; };
+		C8E916CE63F792068E6CB8D4 /* ImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C6F70208346416D4590BD4 /* ImageStore.swift */; };
+		D344AA43E7ACC46C027EC53C /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE566C959062C2C63C7D4D4 /* LocationService.swift */; };
+		349FD398B35E8CD56F70CE73 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8029B5C43E2BEE142D7FDA99 /* NotificationService.swift */; };
+		32E018DDCAC65E70D7747E81 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DC4954A1ADEFA60A0B9826 /* Persistence.swift */; };
+		9794EF082CA72B0089CD353D /* PhotoLibraryScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FB93CB3B32366DD2E79D01 /* PhotoLibraryScanner.swift */; };
+		138B242CBDF9C8B87546B9DF /* SeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E0970FD0A16E28EA1D788 /* SeedStore.swift */; };
+		B906226FE5497DF4B3FA32DA /* SocialClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702E291F723533AC681904C5 /* SocialClient.swift */; };
+		9F0053586EFE8AD0413B2CE4 /* SolarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A4098FE71586B4DBBE8349 /* SolarService.swift */; };
+		A716C8CBCF8F4CCBE48A4ED2 /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620FB8DFB432EAF4E728E29 /* AppSession.swift */; };
+		4D3483D1FA959727692DDEB2 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE344EB50D3D451B0BB7D9BE /* Router.swift */; };
+		BD6BA74A8E4086A1180ADB38 /* AtlasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04023099296A0B851FDFBBC7 /* AtlasView.swift */; };
+		8C805E49C6BA3BB12C2D5A9A /* CircleHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2307D87D97AAECB283B78023 /* CircleHomeView.swift */; };
+		6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E769763DA07CB7E70F22C /* CollectionsView.swift */; };
+		398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D59CF6D059F1BF47757E4 /* HomeView.swift */; };
+		035B1A33F7B0141E51A6E1E5 /* CalendarJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4566CAA29666A020C2575879 /* CalendarJournalView.swift */; };
+		BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757FAFBA0A933236950F8AC /* JournalView.swift */; };
+		1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */; };
+		D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */; };
+		4A9CACB3A1DACC98F3A6EE8D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4551F193AE4BFA0611F14667 /* SettingsView.swift */; };
+		34C182BECABA7ED90C3A6243 /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21198954065416E432333218 /* CameraPicker.swift */; };
+		B00AE166D8D9D3F54EFB3F9C /* RouteDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD8FDAD8D1928D52A25D782 /* RouteDestination.swift */; };
+		BE6CBC396D4BF40DCC248591 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB08E27AE624C78124D8581E /* SpotDetailView.swift */; };
+		3145004E431CE2502E5CB755 /* DeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DB3CB79514A3A8182C0CD /* DeepLinkTests.swift */; };
+		B650111110409E4A48261214 /* SolarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811AB5489D7F11F5502E373 /* SolarServiceTests.swift */; };
+		2F2D3D609FC3EAFB2D8A833C /* alamo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 732E1816F41268BD6F487124 /* alamo.jpg */; };
+		78CD3434378446B7261761C2 /* baker_beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5DC79ABA3601254F451565D8 /* baker_beach.jpg */; };
+		C3944B658EED6C0273B2724D /* bixby.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BE192EE8A2438FD88A7A0229 /* bixby.jpg */; };
+		50FC64A4572A22D1C33500D9 /* el_matador.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B0F8681C97DA9C371141B077 /* el_matador.jpg */; };
+		2F208D6DD1420BE6AEA7CB40 /* gold_hour.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DA18B1092F790ADC4E93D849 /* gold_hour.jpg */; };
+		D45621B7DC6E2699725ED977 /* griffith.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 794FFC515FD146A35F01FD86 /* griffith.jpg */; };
+		F80A6B26C99B44635BD519B3 /* lands_end.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA06264411131339C658C971 /* lands_end.jpg */; };
+		C04902AF1B8A4F47102B153B /* lavender_dusk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1A2D8D7255FC6EB7B3957FB9 /* lavender_dusk.jpg */; };
+		A40C8F96D94C87F4A9E66BFE /* ocean_beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8D6A959099C63FA70E19C208 /* ocean_beach.jpg */; };
+		5407E0DD10CD402FB7F46113 /* pink_wash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 041AB356D9C62CE9F6E75020 /* pink_wash.jpg */; };
+		2F86BE420231497E5A499FB2 /* santa_monica.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 044667D1F31517DBA267E3D2 /* santa_monica.jpg */; };
+		1FF733DEECCBC34D145CA2B0 /* storm_light.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 85A1AB36FE36876F3F5ABD47 /* storm_light.jpg */; };
+		481DAED0F5EB56DEE854971D /* tamalpais.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8ACEF5FD970C13FFFEF9244F /* tamalpais.jpg */; };
+		368CEF8D988CD3505E89BCD6 /* twin_peaks.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AA6A8201D0FFAC5D99AE802E /* twin_peaks.jpg */; };
+		04A7814E4EEC70DE7D6C41B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB9789B743FD1F453202AC6 /* Assets.xcassets */; };
+		7E80ECB52890434CF074B07A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0CC7D2D6C39A5AABAF9D614A /* PrivacyInfo.xcprivacy */; };
+		095FEE2E633C50D24407F2D6 /* SunsetLog */ = {
+			isa = PBXGroup;
+			children = (
+				D1D0524B025E57AFFF263442 /* App */,
+				88F6051D365956F1766DE80E /* DesignSystem */,
+				A1C86A29E589D48EC70B6A32 /* Models */,
+				887A6F90336FF23D95C3914B /* Resources */,
+				609874F33224C0C09F1FEE42 /* Services */,
+				8C82CBDAB62AC804C92AACD0 /* ViewModels */,
+				38DF21AEF4612506D6BE5CBE /* Views */,
+				0CC7D2D6C39A5AABAF9D614A /* PrivacyInfo.xcprivacy */,
+				3A4031D710B812EFE2895878 /* Info.plist */,
+				DCB9789B743FD1F453202AC6 /* Assets.xcassets */,
+			);
+			path = SunsetLog;
+			sourceTree = "<group>";
+		};
+		D1D0524B025E57AFFF263442 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				233D23F241FAD1643D5F6093 /* SunsetLogApp.swift */,
+				FCC2C40F178E31CF0B71860C /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		88F6051D365956F1766DE80E /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				0175511AB19885C127D38B78 /* Type.swift */,
+				80268B71845341EAC7D54B25 /* Components.swift */,
+				C9D0BD099F3559AC664AF505 /* Palette.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		A1C86A29E589D48EC70B6A32 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C3B208E2FFB91E21B28E90E1 /* Models.swift */,
+				E1B5B36203858414A3FC508D /* SeedIDs.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		887A6F90336FF23D95C3914B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A4913EBA077092E5DF82A197 /* SeedPhotos */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A4913EBA077092E5DF82A197 /* SeedPhotos */ = {
+			isa = PBXGroup;
+			children = (
+				041AB356D9C62CE9F6E75020 /* pink_wash.jpg */,
+				044667D1F31517DBA267E3D2 /* santa_monica.jpg */,
+				1A2D8D7255FC6EB7B3957FB9 /* lavender_dusk.jpg */,
+				5DC79ABA3601254F451565D8 /* baker_beach.jpg */,
+				732E1816F41268BD6F487124 /* alamo.jpg */,
+				794FFC515FD146A35F01FD86 /* griffith.jpg */,
+				85A1AB36FE36876F3F5ABD47 /* storm_light.jpg */,
+				8ACEF5FD970C13FFFEF9244F /* tamalpais.jpg */,
+				8D6A959099C63FA70E19C208 /* ocean_beach.jpg */,
+				AA6A8201D0FFAC5D99AE802E /* twin_peaks.jpg */,
+				B0F8681C97DA9C371141B077 /* el_matador.jpg */,
+				BE192EE8A2438FD88A7A0229 /* bixby.jpg */,
+				DA18B1092F790ADC4E93D849 /* gold_hour.jpg */,
+				FA06264411131339C658C971 /* lands_end.jpg */,
+			);
+			path = SeedPhotos;
+			sourceTree = "<group>";
+		};
+		609874F33224C0C09F1FEE42 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				219E0970FD0A16E28EA1D788 /* SeedStore.swift */,
+				42A4098FE71586B4DBBE8349 /* SolarService.swift */,
+				49183045CB3EA66460058FA3 /* DeepLink.swift */,
+				702E291F723533AC681904C5 /* SocialClient.swift */,
+				8029B5C43E2BEE142D7FDA99 /* NotificationService.swift */,
+				88C6F70208346416D4590BD4 /* ImageStore.swift */,
+				98DC4954A1ADEFA60A0B9826 /* Persistence.swift */,
+				A4FB93CB3B32366DD2E79D01 /* PhotoLibraryScanner.swift */,
+				FCE566C959062C2C63C7D4D4 /* LocationService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8C82CBDAB62AC804C92AACD0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A620FB8DFB432EAF4E728E29 /* AppSession.swift */,
+				EE344EB50D3D451B0BB7D9BE /* Router.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		38DF21AEF4612506D6BE5CBE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9A2882F9C0944ABA42EB9C56 /* Atlas */,
+				7EF528E2CE640582F090A001 /* Circle */,
+				264886E6A6E20F9064D23601 /* Collections */,
+				F8B2B8769456F41ED54C8DA0 /* Home */,
+				DA8C9336BB1173179839ADDE /* Journal */,
+				CA28A6C04614A34D1DB6655A /* Log */,
+				78E1AC313FB9E523DCAD1839 /* Scan */,
+				0D7626413CCF860C82715CA5 /* Settings */,
+				F4F2BA776A0C7F929FA2D0A5 /* Shared */,
+				9EC7F756DB2B74074488DD27 /* Spots */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9A2882F9C0944ABA42EB9C56 /* Atlas */ = {
+			isa = PBXGroup;
+			children = (
+				04023099296A0B851FDFBBC7 /* AtlasView.swift */,
+			);
+			path = Atlas;
+			sourceTree = "<group>";
+		};
+		7EF528E2CE640582F090A001 /* Circle */ = {
+			isa = PBXGroup;
+			children = (
+				2307D87D97AAECB283B78023 /* CircleHomeView.swift */,
+			);
+			path = Circle;
+			sourceTree = "<group>";
+		};
+		264886E6A6E20F9064D23601 /* Collections */ = {
+			isa = PBXGroup;
+			children = (
+				741E769763DA07CB7E70F22C /* CollectionsView.swift */,
+			);
+			path = Collections;
+			sourceTree = "<group>";
+		};
+		F8B2B8769456F41ED54C8DA0 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				926D59CF6D059F1BF47757E4 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		DA8C9336BB1173179839ADDE /* Journal */ = {
+			isa = PBXGroup;
+			children = (
+				4566CAA29666A020C2575879 /* CalendarJournalView.swift */,
+				B757FAFBA0A933236950F8AC /* JournalView.swift */,
+			);
+			path = Journal;
+			sourceTree = "<group>";
+		};
+		CA28A6C04614A34D1DB6655A /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */,
+			);
+			path = Log;
+			sourceTree = "<group>";
+		};
+		78E1AC313FB9E523DCAD1839 /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */,
+			);
+			path = Scan;
+			sourceTree = "<group>";
+		};
+		0D7626413CCF860C82715CA5 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4551F193AE4BFA0611F14667 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		F4F2BA776A0C7F929FA2D0A5 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				21198954065416E432333218 /* CameraPicker.swift */,
+				9DD8FDAD8D1928D52A25D782 /* RouteDestination.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		9EC7F756DB2B74074488DD27 /* Spots */ = {
+			isa = PBXGroup;
+			children = (
+				BB08E27AE624C78124D8581E /* SpotDetailView.swift */,
+			);
+			path = Spots;
+			sourceTree = "<group>";
+		};
+		8F31C73D90E2A9A9741F91EE /* SunsetLogTests */ = {
+			isa = PBXGroup;
+			children = (
+				4B2DB3CB79514A3A8182C0CD /* DeepLinkTests.swift */,
+				6811AB5489D7F11F5502E373 /* SolarServiceTests.swift */,
+			);
+			path = SunsetLogTests;
+			sourceTree = "<group>";
+		};
+		BF7A2D27A78D590BDEF15AF2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7BCCADA3021C07D12E775CB5 /* SunsetLog.app */,
+				195F9293022CEE80C9E8D0C0 /* SunsetLogTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5928955287B8089ED2177128 = {
+			isa = PBXGroup;
+			children = (
+				095FEE2E633C50D24407F2D6 /* SunsetLog */,
+				8F31C73D90E2A9A9741F91EE /* SunsetLogTests */,
+				BF7A2D27A78D590BDEF15AF2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E7209FB05162B7572F88D05E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2CF2CBE61FED8C7036F9A3C /* RootView.swift in Sources */,
+				E46058F1F8477E66EE56775E /* SunsetLogApp.swift in Sources */,
+				EB458FB12D76D2EA792E8977 /* Components.swift in Sources */,
+				8E5CFB792BF0902C1D11B1BA /* Palette.swift in Sources */,
+				4E88A55C23BB1D7C9D99D5BD /* Type.swift in Sources */,
+				AF44BA769E90BE605BB59FFF /* Models.swift in Sources */,
+				33EB9AC01C947F3AD9CB8F7D /* SeedIDs.swift in Sources */,
+				6B4389650E6FC4FC10168CDC /* DeepLink.swift in Sources */,
+				C8E916CE63F792068E6CB8D4 /* ImageStore.swift in Sources */,
+				D344AA43E7ACC46C027EC53C /* LocationService.swift in Sources */,
+				349FD398B35E8CD56F70CE73 /* NotificationService.swift in Sources */,
+				32E018DDCAC65E70D7747E81 /* Persistence.swift in Sources */,
+				9794EF082CA72B0089CD353D /* PhotoLibraryScanner.swift in Sources */,
+				138B242CBDF9C8B87546B9DF /* SeedStore.swift in Sources */,
+				B906226FE5497DF4B3FA32DA /* SocialClient.swift in Sources */,
+				9F0053586EFE8AD0413B2CE4 /* SolarService.swift in Sources */,
+				A716C8CBCF8F4CCBE48A4ED2 /* AppSession.swift in Sources */,
+				4D3483D1FA959727692DDEB2 /* Router.swift in Sources */,
+				BD6BA74A8E4086A1180ADB38 /* AtlasView.swift in Sources */,
+				8C805E49C6BA3BB12C2D5A9A /* CircleHomeView.swift in Sources */,
+				6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */,
+				398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */,
+				035B1A33F7B0141E51A6E1E5 /* CalendarJournalView.swift in Sources */,
+				BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */,
+				1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */,
+				D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */,
+				4A9CACB3A1DACC98F3A6EE8D /* SettingsView.swift in Sources */,
+				34C182BECABA7ED90C3A6243 /* CameraPicker.swift in Sources */,
+				B00AE166D8D9D3F54EFB3F9C /* RouteDestination.swift in Sources */,
+				BE6CBC396D4BF40DCC248591 /* SpotDetailView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66F8606E9F0A136E2228EBCB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F2D3D609FC3EAFB2D8A833C /* alamo.jpg in Resources */,
+				78CD3434378446B7261761C2 /* baker_beach.jpg in Resources */,
+				C3944B658EED6C0273B2724D /* bixby.jpg in Resources */,
+				50FC64A4572A22D1C33500D9 /* el_matador.jpg in Resources */,
+				2F208D6DD1420BE6AEA7CB40 /* gold_hour.jpg in Resources */,
+				D45621B7DC6E2699725ED977 /* griffith.jpg in Resources */,
+				F80A6B26C99B44635BD519B3 /* lands_end.jpg in Resources */,
+				C04902AF1B8A4F47102B153B /* lavender_dusk.jpg in Resources */,
+				A40C8F96D94C87F4A9E66BFE /* ocean_beach.jpg in Resources */,
+				5407E0DD10CD402FB7F46113 /* pink_wash.jpg in Resources */,
+				2F86BE420231497E5A499FB2 /* santa_monica.jpg in Resources */,
+				1FF733DEECCBC34D145CA2B0 /* storm_light.jpg in Resources */,
+				481DAED0F5EB56DEE854971D /* tamalpais.jpg in Resources */,
+				368CEF8D988CD3505E89BCD6 /* twin_peaks.jpg in Resources */,
+				04A7814E4EEC70DE7D6C41B1 /* Assets.xcassets in Resources */,
+				7E80ECB52890434CF074B07A /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29B2D46AA747A59804D46E1F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6E010B3D85AA514D3FB28B7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3145004E431CE2502E5CB755 /* DeepLinkTests.swift in Sources */,
+				B650111110409E4A48261214 /* SolarServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72EAF812E2D653AC0BDA8C73 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6439CF22188FA14BBD363342 /* SunsetLog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E850913E5F419DF1836B1B18 /* Build configuration list for PBXNativeTarget "SunsetLog" */;
+			buildPhases = (
+				E7209FB05162B7572F88D05E /* Sources */,
+				29B2D46AA747A59804D46E1F /* Frameworks */,
+				66F8606E9F0A136E2228EBCB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SunsetLog;
+			productName = SunsetLog;
+			productReference = 7BCCADA3021C07D12E775CB5 /* SunsetLog.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BA128F9D3C0D15FFB32AEEA8 /* SunsetLogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48EA9C817F74F26250070E59 /* Build configuration list for PBXNativeTarget "SunsetLogTests" */;
+			buildPhases = (
+				6E010B3D85AA514D3FB28B7F /* Sources */,
+				72EAF812E2D653AC0BDA8C73 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				510290ADB44D7898777E64AF /* PBXTargetDependency */,
+			);
+			name = SunsetLogTests;
+			productName = SunsetLogTests;
+			productReference = 195F9293022CEE80C9E8D0C0 /* SunsetLogTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6B2499D4585F0CF1B69A1E54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6439CF22188FA14BBD363342;
+			remoteInfo = SunsetLog;
+		};
+		510290ADB44D7898777E64AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6439CF22188FA14BBD363342 /* SunsetLog */;
+			targetProxy = 6B2499D4585F0CF1B69A1E54 /* PBXContainerItemProxy */;
+		};
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					6439CF22188FA14BBD363342 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					BA128F9D3C0D15FFB32AEEA8 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 6439CF22188FA14BBD363342;
+					};
+				};
+			};
+			buildConfigurationList = 9D908D8792E5642B2623649E /* Build configuration list for PBXProject "SunsetLog" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5928955287B8089ED2177128;
+			productRefGroup = BF7A2D27A78D590BDEF15AF2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6439CF22188FA14BBD363342 /* SunsetLog */,
+				BA128F9D3C0D15FFB32AEEA8 /* SunsetLogTests */,
+			);
+		};
+		EC86DC4F4B4C60C3EC031655 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+
+			};
+			name = Debug;
+		};
+		7BF40F069D95C38DE60AA602 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0F9FC8EE2C99E07A9753399D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SunsetLog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Sunset Log";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlog.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+
+			};
+			name = Debug;
+		};
+		1483FA26082F598A11F242FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SunsetLog/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Sunset Log";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlog.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+
+			};
+			name = Release;
+		};
+		7CB61F3D2D3B2A7FBA3915B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlog.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SunsetLog.app/SunsetLog";
+
+			};
+			name = Debug;
+		};
+		C3B1D3E1EA0DF0CA96EE4015 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sunsetlog.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SunsetLog.app/SunsetLog";
+
+			};
+			name = Release;
+		};
+		9D908D8792E5642B2623649E /* Build configuration list for PBXProject "SunsetLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC86DC4F4B4C60C3EC031655 /* Debug */,
+				7BF40F069D95C38DE60AA602 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E850913E5F419DF1836B1B18 /* Build configuration list for PBXNativeTarget "SunsetLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F9FC8EE2C99E07A9753399D /* Debug */,
+				1483FA26082F598A11F242FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		48EA9C817F74F26250070E59 /* Build configuration list for PBXNativeTarget "SunsetLogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CB61F3D2D3B2A7FBA3915B0 /* Debug */,
+				C3B1D3E1EA0DF0CA96EE4015 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}
