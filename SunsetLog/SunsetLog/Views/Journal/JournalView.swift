@@ -5,6 +5,7 @@ struct JournalView: View {
     @Environment(Router.self) private var router
     @Query(sort: \SunsetEntry.capturedAt, order: .reverse) private var entries: [SunsetEntry]
     @State private var showMineOnly = true
+    @State private var expanded: ExpandedPhoto?
 
     private var visible: [SunsetEntry] {
         entries.filter { showMineOnly ? $0.isMine : true }
@@ -27,6 +28,13 @@ struct JournalView: View {
         .duskBackdrop()
         .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
+        .fullScreenCover(item: $expanded) { item in
+            JournalLightbox(entryID: item.id) {
+                expanded = nil
+                router.open(.entry(item.id), in: .journal)
+            }
+            .presentationBackground(.black)
+        }
     }
 
     private var journalHeader: some View {
@@ -72,7 +80,9 @@ struct JournalView: View {
             )
             .padding(.top, 40)
         } else {
-            JournalRibbon(entries: visible)
+            JournalRibbon(entries: visible) { entry in
+                expanded = ExpandedPhoto(id: entry.id)
+            }
         }
     }
 }

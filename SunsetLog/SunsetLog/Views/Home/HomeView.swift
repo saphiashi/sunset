@@ -5,6 +5,7 @@ struct HomeView: View {
     @Environment(AppSession.self) private var session
     @Environment(Router.self) private var router
     @Query(sort: \SunsetEntry.capturedAt, order: .reverse) private var entries: [SunsetEntry]
+    @State private var expanded: ExpandedPhoto?
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -22,6 +23,13 @@ struct HomeView: View {
         .duskBackdrop()
         .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
+        .fullScreenCover(item: $expanded) { item in
+            JournalLightbox(entryID: item.id) {
+                expanded = nil
+                router.open(.entry(item.id), in: .journal)
+            }
+            .presentationBackground(.black)
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Text("Sunset Log")
@@ -111,12 +119,13 @@ struct HomeView: View {
                 VStack(spacing: VeilStyle.compact.overlap) {
                     ForEach(mine, id: \.id) { entry in
                         Button {
-                            router.open(.entry(entry.id), in: .journal)
+                            expanded = ExpandedPhoto(id: entry.id)
                         } label: {
                             JournalVeil(entry: entry, style: .compact)
                         }
                         .buttonStyle(VeilPressStyle())
                         .frame(maxWidth: .infinity)
+                        .accessibilityHint("Opens the photograph full screen")
                     }
                 }
                 .frame(maxWidth: .infinity)

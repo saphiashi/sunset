@@ -7,16 +7,16 @@ enum VeilStyle {
     var height: CGFloat {
         switch self {
         case .page: return 700
-        case .compact: return 390
+        case .compact: return 540
         }
     }
 
-    /// Negative VStack spacing. Keep ~57% overlap so taller veils still dissolve,
-    /// while the unique visible band grows with height.
+    /// Negative VStack spacing. Compact uses a slightly lighter overlap so
+    /// Recent Evenings reads as a taller photo, not a crushed band.
     var overlap: CGFloat {
         switch self {
         case .page: return -400
-        case .compact: return -220
+        case .compact: return -270
         }
     }
 }
@@ -71,15 +71,19 @@ struct JournalVeil: View {
 struct JournalRibbon: View {
     let entries: [SunsetEntry]
     var style: VeilStyle = .page
+    var onExpand: (SunsetEntry) -> Void
 
     var body: some View {
         VStack(spacing: style.overlap) {
             ForEach(entries, id: \.id) { entry in
-                NavigationLink(value: Route.entry(entry.id)) {
+                Button {
+                    onExpand(entry)
+                } label: {
                     JournalVeil(entry: entry, style: style)
                 }
                 .buttonStyle(VeilPressStyle())
                 .frame(maxWidth: .infinity)
+                .accessibilityHint("Opens the photograph full screen")
             }
         }
         .frame(maxWidth: .infinity)

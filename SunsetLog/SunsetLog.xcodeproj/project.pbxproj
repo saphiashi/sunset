@@ -28,6 +28,7 @@
 		741E769763DA07CB7E70F22C /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		926D59CF6D059F1BF47757E4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4566CAA29666A020C2575879 /* CalendarJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarJournalView.swift; sourceTree = "<group>"; };
+		316D46BC5A7A01A9574A670A /* JournalLightbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalLightbox.swift; sourceTree = "<group>"; };
 		243707850FBFA91817492877 /* JournalVeil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalVeil.swift; sourceTree = "<group>"; };
 		B757FAFBA0A933236950F8AC /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
 		B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSunsetView.swift; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 		6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E769763DA07CB7E70F22C /* CollectionsView.swift */; };
 		398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D59CF6D059F1BF47757E4 /* HomeView.swift */; };
 		035B1A33F7B0141E51A6E1E5 /* CalendarJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4566CAA29666A020C2575879 /* CalendarJournalView.swift */; };
+		6007940C28F2454B6AD14EE2 /* JournalLightbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316D46BC5A7A01A9574A670A /* JournalLightbox.swift */; };
 		B01FC73C859324684284E947 /* JournalVeil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243707850FBFA91817492877 /* JournalVeil.swift */; };
 		BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757FAFBA0A933236950F8AC /* JournalView.swift */; };
 		1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */; };
@@ -258,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				243707850FBFA91817492877 /* JournalVeil.swift */,
+				316D46BC5A7A01A9574A670A /* JournalLightbox.swift */,
 				4566CAA29666A020C2575879 /* CalendarJournalView.swift */,
 				B757FAFBA0A933236950F8AC /* JournalView.swift */,
 			);
@@ -359,6 +362,7 @@
 				6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */,
 				398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */,
 				035B1A33F7B0141E51A6E1E5 /* CalendarJournalView.swift in Sources */,
+				6007940C28F2454B6AD14EE2 /* JournalLightbox.swift in Sources */,
 				B01FC73C859324684284E947 /* JournalVeil.swift in Sources */,
 				BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */,
 				1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */,
