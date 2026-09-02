@@ -136,8 +136,6 @@ private struct EntryDetailLoaded: View {
             VStack(spacing: 0) {
                 hero
                 detailPanel
-                    .offset(y: -48)
-                    .padding(.bottom, -24)
             }
         }
         .ignoresSafeArea(edges: .top)
@@ -148,9 +146,9 @@ private struct EntryDetailLoaded: View {
             SkyPhoto(entry: entry, corner: 0)
                 .frame(height: 520)
                 .overlay { SkyGradient.veil }
-            VeilCaption(entry: entry, compact: false)
+            VeilCaption(entry: entry, compact: true)
                 .padding(.horizontal, 22)
-                .padding(.bottom, 64)
+                .padding(.bottom, 28)
         }
     }
 
@@ -174,8 +172,8 @@ private struct EntryDetailLoaded: View {
         }
         .padding(22)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.ultraThinMaterial.opacity(0.72), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
-        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 32)
     }
 }
 

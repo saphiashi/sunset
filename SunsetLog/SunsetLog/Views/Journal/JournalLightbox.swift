@@ -18,19 +18,13 @@ struct JournalLightbox: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.72)
-                .ignoresSafeArea()
-                .onTapGesture { dismiss() }
-            DuskCanvas()
-                .opacity(0.55)
-                .allowsHitTesting(false)
+            Palette.night.ignoresSafeArea()
             if let entry {
                 photoStack(entry)
             } else {
                 QuietEmpty(symbol: "photo", title: "This evening left", detail: "The photograph is no longer in the journal.")
             }
         }
-        .ignoresSafeArea()
         .offset(y: drag)
         .gesture(dismissDrag)
         .accessibilityAddTraits(.isModal)
@@ -38,34 +32,50 @@ struct JournalLightbox: View {
 
     private func photoStack(_ entry: SunsetEntry) -> some View {
         VStack(spacing: 0) {
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "xmark")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .padding(12)
-                        .background(.ultraThinMaterial.opacity(0.45), in: Circle())
-                }
-                .accessibilityLabel("Close")
-                Spacer()
+            ZStack(alignment: .topLeading) {
+                SkyPhoto(entry: entry, corner: 0)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                LinearGradient(
+                    colors: [.black.opacity(0.35), .clear, .black.opacity(0.45)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .allowsHitTesting(false)
+                closeButton
+                VeilCaption(entry: entry, compact: true)
+                    .padding(.horizontal, 22)
+                    .padding(.bottom, 20)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                    .allowsHitTesting(false)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .layoutPriority(1)
 
-            SkyPhoto(entry: entry, corner: 0)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onTapGesture { dismiss() }
-
-            VStack(alignment: .leading, spacing: 10) {
-                VeilCaption(entry: entry, compact: false)
+            VStack(alignment: .leading, spacing: 12) {
                 EmberButton(title: "Open this evening", systemImage: "book.closed") {
                     onOpenDetails()
                 }
             }
             .padding(.horizontal, 22)
-            .padding(.top, 12)
+            .padding(.top, 16)
             .padding(.bottom, 28)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Palette.night)
         }
+        .ignoresSafeArea(edges: .top)
+    }
+
+    private var closeButton: some View {
+        Button(action: { dismiss() }) {
+            Image(systemName: "xmark")
+                .font(.body.weight(.semibold))
+                .foregroundStyle(.white)
+                .padding(12)
+                .background(.ultraThinMaterial.opacity(0.45), in: Circle())
+        }
+        .accessibilityLabel("Close")
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
     }
 
     private var dismissDrag: some Gesture {
