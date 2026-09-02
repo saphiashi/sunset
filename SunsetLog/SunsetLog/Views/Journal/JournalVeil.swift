@@ -6,16 +6,17 @@ enum VeilStyle {
 
     var height: CGFloat {
         switch self {
-        case .page: return 540
-        case .compact: return 300
+        case .page: return 700
+        case .compact: return 390
         }
     }
 
-    /// Negative VStack spacing: ~60% of height so skies crossfade, not stack.
+    /// Negative VStack spacing. Keep ~57% overlap so taller veils still dissolve,
+    /// while the unique visible band grows with height.
     var overlap: CGFloat {
         switch self {
-        case .page: return -330
-        case .compact: return -180
+        case .page: return -400
+        case .compact: return -220
         }
     }
 }
