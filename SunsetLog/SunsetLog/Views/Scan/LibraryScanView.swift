@@ -22,7 +22,7 @@ struct LibraryScanView: View {
                 case .denied:
                     PermissionCard(
                         title: "Photos are closed",
-                        detail: "Sunset Log only reads the library to find old skies. Nothing is uploaded.",
+                        detail: "Sunset Log only reads the library to find old skies. If you sign in, evenings you import can sync to your account.",
                         button: "Open Settings"
                     ) {
                         SettingsDeeplink.open()
@@ -132,6 +132,7 @@ struct ScanReviewView: View {
     var onFinish: (Bool) -> Void
 
     @Environment(\.modelContext) private var context
+    @Environment(AppSession.self) private var session
     @Query(sort: \Spot.name) private var spots: [Spot]
     @State private var color = 7.5
     @State private var drama = 6.5
@@ -195,14 +196,16 @@ struct ScanReviewView: View {
             photoBundleName: candidate.isSimulatorDemo ? String(candidate.assetID.dropFirst(5)) : nil,
             photoFileName: file,
             photoAssetId: candidate.isSimulatorDemo ? nil : candidate.assetID,
-            authorHandle: "you",
-            authorName: "You",
+            authorHandle: session.auth.profile?.handle ?? "you",
+            authorName: session.auth.profile?.displayName ?? "You",
             isMine: true,
-            importedFromLibrary: true
+            importedFromLibrary: true,
+            needsSync: true
         )
         entry.spot = spots.first { $0.id == selectedSpotID }
         context.insert(entry)
         try? context.save()
+        session.cloud.schedule()
         onFinish(true)
     }
 }

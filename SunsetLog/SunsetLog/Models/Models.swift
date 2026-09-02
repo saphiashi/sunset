@@ -15,6 +15,8 @@ final class Spot {
     var isSaved: Bool
     var isSeed: Bool
     var createdAt: Date
+    var photoURL: String?
+    var needsSync: Bool
 
     @Relationship(deleteRule: .nullify, inverse: \SunsetEntry.spot)
     var entries: [SunsetEntry]
@@ -29,7 +31,9 @@ final class Spot {
         longitude: Double,
         isSaved: Bool = false,
         isSeed: Bool = false,
-        createdAt: Date = .now
+        createdAt: Date = .now,
+        photoURL: String? = nil,
+        needsSync: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -41,6 +45,8 @@ final class Spot {
         self.isSaved = isSaved
         self.isSeed = isSeed
         self.createdAt = createdAt
+        self.photoURL = photoURL
+        self.needsSync = needsSync
         self.entries = []
     }
 
@@ -86,11 +92,14 @@ final class SunsetEntry {
     var overallScore: Double
     var photoBundleName: String?
     var photoFileName: String?
+    var photoURL: String?
     var photoAssetId: String?
     var authorHandle: String
     var authorName: String
     var isMine: Bool
     var importedFromLibrary: Bool
+    var isSeed: Bool
+    var needsSync: Bool
     var createdAt: Date
 
     var spot: Spot?
@@ -107,11 +116,14 @@ final class SunsetEntry {
         overallScore: Double,
         photoBundleName: String? = nil,
         photoFileName: String? = nil,
+        photoURL: String? = nil,
         photoAssetId: String? = nil,
         authorHandle: String,
         authorName: String,
         isMine: Bool,
         importedFromLibrary: Bool = false,
+        isSeed: Bool = false,
+        needsSync: Bool = false,
         createdAt: Date = .now
     ) {
         self.id = id
@@ -122,11 +134,14 @@ final class SunsetEntry {
         self.overallScore = overallScore
         self.photoBundleName = photoBundleName
         self.photoFileName = photoFileName
+        self.photoURL = photoURL
         self.photoAssetId = photoAssetId
         self.authorHandle = authorHandle
         self.authorName = authorName
         self.isMine = isMine
         self.importedFromLibrary = importedFromLibrary
+        self.isSeed = isSeed
+        self.needsSync = needsSync
         self.createdAt = createdAt
         self.collections = []
     }
@@ -146,6 +161,7 @@ final class SkyCollection {
     var symbol: String
     var accentToken: String
     var createdAt: Date
+    var isSeed: Bool
     var entries: [SunsetEntry]
 
     init(
@@ -154,7 +170,8 @@ final class SkyCollection {
         detail: String,
         symbol: String,
         accentToken: String,
-        createdAt: Date = .now
+        createdAt: Date = .now,
+        isSeed: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -162,6 +179,7 @@ final class SkyCollection {
         self.symbol = symbol
         self.accentToken = accentToken
         self.createdAt = createdAt
+        self.isSeed = isSeed
         self.entries = []
     }
 
@@ -185,6 +203,7 @@ final class Person: Identifiable {
     var isFollowing: Bool
     var isMe: Bool
     var avatarHue: Double
+    var isSeed: Bool
 
     init(
         id: UUID = UUID(),
@@ -194,7 +213,8 @@ final class Person: Identifiable {
         bio: String,
         isFollowing: Bool = false,
         isMe: Bool = false,
-        avatarHue: Double
+        avatarHue: Double,
+        isSeed: Bool = false
     ) {
         self.id = id
         self.displayName = displayName
@@ -204,6 +224,7 @@ final class Person: Identifiable {
         self.isFollowing = isFollowing
         self.isMe = isMe
         self.avatarHue = avatarHue
+        self.isSeed = isSeed
     }
 }
 

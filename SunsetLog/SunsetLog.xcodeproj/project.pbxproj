@@ -21,9 +21,17 @@
 		219E0970FD0A16E28EA1D788 /* SeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedStore.swift; sourceTree = "<group>"; };
 		702E291F723533AC681904C5 /* SocialClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialClient.swift; sourceTree = "<group>"; };
 		42A4098FE71586B4DBBE8349 /* SolarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarService.swift; sourceTree = "<group>"; };
+		C7553E75EFAEEC1136AC0F30 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
+		3DCF44CDF5F89EE551895598 /* AuthNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNonce.swift; sourceTree = "<group>"; };
+		3009B6FF8F75AA1C4885FD50 /* CloudDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudDTOs.swift; sourceTree = "<group>"; };
+		6ADB77BD95997BB3A06148D9 /* CloudSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSync.swift; sourceTree = "<group>"; };
+		56820543EC441B5D305081DF /* PhotoUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUploader.swift; sourceTree = "<group>"; };
+		E7BB571BB7304136DF4ECFB4 /* SupabaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseConfig.swift; sourceTree = "<group>"; };
+		E5B2039F69D34DCE50EAF046 /* SupabaseSocialClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseSocialClient.swift; sourceTree = "<group>"; };
 		A620FB8DFB432EAF4E728E29 /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
 		EE344EB50D3D451B0BB7D9BE /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		04023099296A0B851FDFBBC7 /* AtlasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasView.swift; sourceTree = "<group>"; };
+		D3E6F3B3E395041E4F32B5D4 /* SignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheet.swift; sourceTree = "<group>"; };
 		2307D87D97AAECB283B78023 /* CircleHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleHomeView.swift; sourceTree = "<group>"; };
 		741E769763DA07CB7E70F22C /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		926D59CF6D059F1BF47757E4 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -39,6 +47,7 @@
 		BB08E27AE624C78124D8581E /* SpotDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
 		4B2DB3CB79514A3A8182C0CD /* DeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkTests.swift; sourceTree = "<group>"; };
 		6811AB5489D7F11F5502E373 /* SolarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarServiceTests.swift; sourceTree = "<group>"; };
+		078DD918EFD41EE6B3295D1A /* SupabaseConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseConfigTests.swift; sourceTree = "<group>"; };
 		732E1816F41268BD6F487124 /* alamo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = alamo.jpg; sourceTree = "<group>"; };
 		5DC79ABA3601254F451565D8 /* baker_beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = baker_beach.jpg; sourceTree = "<group>"; };
 		BE192EE8A2438FD88A7A0229 /* bixby.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bixby.jpg; sourceTree = "<group>"; };
@@ -58,6 +67,8 @@
 		DCB9789B743FD1F453202AC6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A4031D710B812EFE2895878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0CC7D2D6C39A5AABAF9D614A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		06CF9B5775BCF621072FED01 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		86B3BC083DF59791BE56CFAE /* SunsetLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SunsetLog.entitlements; sourceTree = "<group>"; };
 		E2CF2CBE61FED8C7036F9A3C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCC2C40F178E31CF0B71860C /* RootView.swift */; };
 		E46058F1F8477E66EE56775E /* SunsetLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233D23F241FAD1643D5F6093 /* SunsetLogApp.swift */; };
 		1482DDEE3D859B5E4C41F769 /* Atmosphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15F2E0CF8A9E0D74BCDD8FD /* Atmosphere.swift */; };
@@ -74,9 +85,17 @@
 		138B242CBDF9C8B87546B9DF /* SeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E0970FD0A16E28EA1D788 /* SeedStore.swift */; };
 		B906226FE5497DF4B3FA32DA /* SocialClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702E291F723533AC681904C5 /* SocialClient.swift */; };
 		9F0053586EFE8AD0413B2CE4 /* SolarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A4098FE71586B4DBBE8349 /* SolarService.swift */; };
+		B51A5BDACD9ACFF59A0717F9 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7553E75EFAEEC1136AC0F30 /* AuthController.swift */; };
+		1DA7B7419CA763AC3EB9A13B /* AuthNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF44CDF5F89EE551895598 /* AuthNonce.swift */; };
+		55B3A0E089287C4762F2B614 /* CloudDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3009B6FF8F75AA1C4885FD50 /* CloudDTOs.swift */; };
+		E019D6AAA4951A6A4D00477D /* CloudSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB77BD95997BB3A06148D9 /* CloudSync.swift */; };
+		2E19750977FC3199B9D67838 /* PhotoUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56820543EC441B5D305081DF /* PhotoUploader.swift */; };
+		21C785E1B86634A9AADA9413 /* SupabaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BB571BB7304136DF4ECFB4 /* SupabaseConfig.swift */; };
+		0E68520236AB9868574E9C20 /* SupabaseSocialClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B2039F69D34DCE50EAF046 /* SupabaseSocialClient.swift */; };
 		A716C8CBCF8F4CCBE48A4ED2 /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A620FB8DFB432EAF4E728E29 /* AppSession.swift */; };
 		4D3483D1FA959727692DDEB2 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE344EB50D3D451B0BB7D9BE /* Router.swift */; };
 		BD6BA74A8E4086A1180ADB38 /* AtlasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04023099296A0B851FDFBBC7 /* AtlasView.swift */; };
+		3EBA81852F6CCF6E94F9CDC8 /* SignInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E6F3B3E395041E4F32B5D4 /* SignInSheet.swift */; };
 		8C805E49C6BA3BB12C2D5A9A /* CircleHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2307D87D97AAECB283B78023 /* CircleHomeView.swift */; };
 		6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E769763DA07CB7E70F22C /* CollectionsView.swift */; };
 		398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926D59CF6D059F1BF47757E4 /* HomeView.swift */; };
@@ -92,6 +111,7 @@
 		BE6CBC396D4BF40DCC248591 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB08E27AE624C78124D8581E /* SpotDetailView.swift */; };
 		3145004E431CE2502E5CB755 /* DeepLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DB3CB79514A3A8182C0CD /* DeepLinkTests.swift */; };
 		B650111110409E4A48261214 /* SolarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811AB5489D7F11F5502E373 /* SolarServiceTests.swift */; };
+		C415E050824F126A25CEA512 /* SupabaseConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078DD918EFD41EE6B3295D1A /* SupabaseConfigTests.swift */; };
 		2F2D3D609FC3EAFB2D8A833C /* alamo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 732E1816F41268BD6F487124 /* alamo.jpg */; };
 		78CD3434378446B7261761C2 /* baker_beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5DC79ABA3601254F451565D8 /* baker_beach.jpg */; };
 		C3944B658EED6C0273B2724D /* bixby.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BE192EE8A2438FD88A7A0229 /* bixby.jpg */; };
@@ -108,6 +128,7 @@
 		368CEF8D988CD3505E89BCD6 /* twin_peaks.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AA6A8201D0FFAC5D99AE802E /* twin_peaks.jpg */; };
 		04A7814E4EEC70DE7D6C41B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCB9789B743FD1F453202AC6 /* Assets.xcassets */; };
 		7E80ECB52890434CF074B07A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0CC7D2D6C39A5AABAF9D614A /* PrivacyInfo.xcprivacy */; };
+		C8F471639A7921330AF87E3D /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = F78D47EE2B6F69C2ACF8C0D7 /* Supabase */; };
 		095FEE2E633C50D24407F2D6 /* SunsetLog */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +141,7 @@
 				38DF21AEF4612506D6BE5CBE /* Views */,
 				0CC7D2D6C39A5AABAF9D614A /* PrivacyInfo.xcprivacy */,
 				3A4031D710B812EFE2895878 /* Info.plist */,
+				86B3BC083DF59791BE56CFAE /* SunsetLog.entitlements */,
 				DCB9789B743FD1F453202AC6 /* Assets.xcassets */,
 			);
 			path = SunsetLog;
@@ -185,6 +207,7 @@
 		609874F33224C0C09F1FEE42 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				717BD32B1A1FFBF9C1A58A3C /* Supabase */,
 				219E0970FD0A16E28EA1D788 /* SeedStore.swift */,
 				42A4098FE71586B4DBBE8349 /* SolarService.swift */,
 				49183045CB3EA66460058FA3 /* DeepLink.swift */,
@@ -196,6 +219,20 @@
 				FCE566C959062C2C63C7D4D4 /* LocationService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		717BD32B1A1FFBF9C1A58A3C /* Supabase */ = {
+			isa = PBXGroup;
+			children = (
+				3009B6FF8F75AA1C4885FD50 /* CloudDTOs.swift */,
+				3DCF44CDF5F89EE551895598 /* AuthNonce.swift */,
+				56820543EC441B5D305081DF /* PhotoUploader.swift */,
+				6ADB77BD95997BB3A06148D9 /* CloudSync.swift */,
+				C7553E75EFAEEC1136AC0F30 /* AuthController.swift */,
+				E5B2039F69D34DCE50EAF046 /* SupabaseSocialClient.swift */,
+				E7BB571BB7304136DF4ECFB4 /* SupabaseConfig.swift */,
+			);
+			path = Supabase;
 			sourceTree = "<group>";
 		};
 		8C82CBDAB62AC804C92AACD0 /* ViewModels */ = {
@@ -211,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				9A2882F9C0944ABA42EB9C56 /* Atlas */,
+				59FF05999F88E5CD1DA1CFD5 /* Auth */,
 				7EF528E2CE640582F090A001 /* Circle */,
 				264886E6A6E20F9064D23601 /* Collections */,
 				F8B2B8769456F41ED54C8DA0 /* Home */,
@@ -230,6 +268,14 @@
 				04023099296A0B851FDFBBC7 /* AtlasView.swift */,
 			);
 			path = Atlas;
+			sourceTree = "<group>";
+		};
+		59FF05999F88E5CD1DA1CFD5 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				D3E6F3B3E395041E4F32B5D4 /* SignInSheet.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		7EF528E2CE640582F090A001 /* Circle */ = {
@@ -313,6 +359,7 @@
 			children = (
 				4B2DB3CB79514A3A8182C0CD /* DeepLinkTests.swift */,
 				6811AB5489D7F11F5502E373 /* SolarServiceTests.swift */,
+				078DD918EFD41EE6B3295D1A /* SupabaseConfigTests.swift */,
 			);
 			path = SunsetLogTests;
 			sourceTree = "<group>";
@@ -332,6 +379,7 @@
 				095FEE2E633C50D24407F2D6 /* SunsetLog */,
 				8F31C73D90E2A9A9741F91EE /* SunsetLogTests */,
 				BF7A2D27A78D590BDEF15AF2 /* Products */,
+				06CF9B5775BCF621072FED01 /* Config.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -355,9 +403,17 @@
 				138B242CBDF9C8B87546B9DF /* SeedStore.swift in Sources */,
 				B906226FE5497DF4B3FA32DA /* SocialClient.swift in Sources */,
 				9F0053586EFE8AD0413B2CE4 /* SolarService.swift in Sources */,
+				B51A5BDACD9ACFF59A0717F9 /* AuthController.swift in Sources */,
+				1DA7B7419CA763AC3EB9A13B /* AuthNonce.swift in Sources */,
+				55B3A0E089287C4762F2B614 /* CloudDTOs.swift in Sources */,
+				E019D6AAA4951A6A4D00477D /* CloudSync.swift in Sources */,
+				2E19750977FC3199B9D67838 /* PhotoUploader.swift in Sources */,
+				21C785E1B86634A9AADA9413 /* SupabaseConfig.swift in Sources */,
+				0E68520236AB9868574E9C20 /* SupabaseSocialClient.swift in Sources */,
 				A716C8CBCF8F4CCBE48A4ED2 /* AppSession.swift in Sources */,
 				4D3483D1FA959727692DDEB2 /* Router.swift in Sources */,
 				BD6BA74A8E4086A1180ADB38 /* AtlasView.swift in Sources */,
+				3EBA81852F6CCF6E94F9CDC8 /* SignInSheet.swift in Sources */,
 				8C805E49C6BA3BB12C2D5A9A /* CircleHomeView.swift in Sources */,
 				6A3127BA798329BE2B12708E /* CollectionsView.swift in Sources */,
 				398CD17CB182CD2B5AE61BE0 /* HomeView.swift in Sources */,
@@ -401,6 +457,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8F471639A7921330AF87E3D /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +467,7 @@
 			files = (
 				3145004E431CE2502E5CB755 /* DeepLinkTests.swift in Sources */,
 				B650111110409E4A48261214 /* SolarServiceTests.swift in Sources */,
+				C415E050824F126A25CEA512 /* SupabaseConfigTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +491,9 @@
 			dependencies = (
 			);
 			name = SunsetLog;
+			packageProductDependencies = (
+				F78D47EE2B6F69C2ACF8C0D7 /* Supabase */,
+			);
 			productName = SunsetLog;
 			productReference = 7BCCADA3021C07D12E775CB5 /* SunsetLog.app */;
 			productType = "com.apple.product-type.application";
@@ -494,6 +555,9 @@
 			productRefGroup = BF7A2D27A78D590BDEF15AF2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
+			packageReferences = (
+				2B8FEB0452E7D05ADB055D87 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			targets = (
 				6439CF22188FA14BBD363342 /* SunsetLog */,
 				BA128F9D3C0D15FFB32AEEA8 /* SunsetLogTests */,
@@ -608,9 +672,11 @@
 		};
 		0F9FC8EE2C99E07A9753399D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06CF9B5775BCF621072FED01 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SunsetLog/SunsetLog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -643,9 +709,11 @@
 		};
 		1483FA26082F598A11F242FF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06CF9B5775BCF621072FED01 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SunsetLog/SunsetLog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -742,6 +810,19 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		2B8FEB0452E7D05ADB055D87 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.29.0;
+			};
+		};
+		F78D47EE2B6F69C2ACF8C0D7 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B8FEB0452E7D05ADB055D87 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
 		};
 	};
 	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;

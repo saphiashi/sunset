@@ -4,20 +4,32 @@ import SwiftData
 struct CircleHomeView: View {
     @Environment(AppSession.self) private var session
     @Environment(Router.self) private var router
+    @Environment(\.modelContext) private var context
     @Query(sort: \SunsetEntry.capturedAt, order: .reverse) private var entries: [SunsetEntry]
     @Query(sort: \Person.displayName) private var people: [Person]
     @Query(sort: \SkyCollection.name) private var collections: [SkyCollection]
     @Query private var spots: [Spot]
     @Query private var notes: [SharedSpotNote]
     @State private var newCollection = false
+    @State private var handleQuery = ""
+    @State private var lookupNote: String?
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 profile
+                accountCard
                 collectionsRow
                 savedRow
-                friends
+                if session.auth.isSignedIn {
+                    findSomeone
+                    friends(title: "Circle", people: people.filter { !$0.isMe && !$0.isSeed })
+                    if people.contains(where: { !$0.isMe && $0.isSeed }) {
+                        friends(title: "On this phone", people: people.filter { !$0.isMe && $0.isSeed })
+                    }
+                } else {
+                    friends(title: "Circle", people: people.filter { !$0.isMe })
+                }
                 inbox
                 feed
             }
@@ -25,6 +37,9 @@ struct CircleHomeView: View {
         }
         .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
+        .refreshable {
+            await session.cloud.syncNow()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -35,8 +50,16 @@ struct CircleHomeView: View {
                 .accessibilityLabel("New collection")
             }
             ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink(value: Route.settings) {
-                    Image(systemName: "gearshape")
+                HStack(spacing: 12) {
+                    Button {
+                        session.signInPresented = true
+                    } label: {
+                        Image(systemName: session.auth.isSignedIn ? "person.crop.circle.badge.checkmark" : "person.crop.circle")
+                    }
+                    .accessibilityLabel(session.auth.isSignedIn ? "Account" : "Sign in")
+                    NavigationLink(value: Route.settings) {
+                        Image(systemName: "gearshape")
+                    }
                 }
             }
         }
@@ -59,6 +82,62 @@ struct CircleHomeView: View {
                     .foregroundStyle(.secondary)
             }
         }
+    }
+
+    private var accountCard: some View {
+        Group {
+            if session.auth.isSignedIn {
+                SoftBanner(text: session.cloud.lastStatus)
+            } else {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("The circle lives in the cloud")
+                        .font(Typeface.display(22))
+                    Text("This phone still keeps your journal. Sign in to sync evenings and follow people whose skies you want.")
+                        .font(Typeface.body(15))
+                        .foregroundStyle(.secondary)
+                    EmberButton(title: "Sign in", systemImage: "person.crop.circle") {
+                        session.signInPresented = true
+                    }
+                }
+                .padding(18)
+                .background(.ultraThinMaterial.opacity(0.45), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            }
+        }
+    }
+
+    private var findSomeone: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            SectionHeader(eyebrow: "Find", title: "A handle")
+            HStack {
+                TextField("maya", text: $handleQuery)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .padding(12)
+                    .background(.ultraThinMaterial.opacity(0.5), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                Button("Look up") {
+                    Task { await lookup() }
+                }
+                .font(Typeface.body(14, weight: .semibold))
+                .foregroundStyle(Palette.ember)
+            }
+            if let lookupNote {
+                Text(lookupNote)
+                    .font(Typeface.caption(12))
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private func lookup() async {
+        lookupNote = nil
+        guard let row = await session.cloud.lookupHandle(handleQuery) else {
+            lookupNote = "No one uses that handle yet."
+            return
+        }
+        session.cloud.rememberRemotePerson(row, context: context)
+        try? context.save()
+        lookupNote = "Found @\(row.handle). Open them below to follow."
+        handleQuery = ""
     }
 
     private var collectionsRow: some View {
@@ -112,38 +191,49 @@ struct CircleHomeView: View {
         .buttonStyle(.plain)
     }
 
-    private var friends: some View {
+    private func friends(title: String, people list: [Person]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionHeader(eyebrow: "People who look up", title: "Circle")
-            ForEach(people.filter { !$0.isMe }, id: \.id) { person in
-                NavigationLink(value: Route.friend(person.id)) {
-                    HStack(spacing: 12) {
-                        PersonMark(name: person.displayName, hue: person.avatarHue)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(person.displayName)
-                                .font(Typeface.body(16, weight: .semibold))
-                                .foregroundStyle(.primary)
-                            Text("\(person.city) · @\(person.handle)")
+            SectionHeader(eyebrow: "People who look up", title: title)
+            if list.isEmpty {
+                QuietEmpty(
+                    symbol: "person.2",
+                    title: session.auth.isSignedIn ? "No one yet" : "A quiet circle",
+                    detail: session.auth.isSignedIn
+                        ? "Look someone up by handle to follow their public skies."
+                        : "Sign in to follow people across devices."
+                )
+            } else {
+                ForEach(list, id: \.id) { person in
+                    NavigationLink(value: Route.friend(person.id)) {
+                        HStack(spacing: 12) {
+                            PersonMark(name: person.displayName, hue: person.avatarHue)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(person.displayName)
+                                    .font(Typeface.body(16, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                                Text("\(person.city) · @\(person.handle)")
+                                    .font(Typeface.caption(12))
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Text(person.isFollowing ? "Following" : "Follow")
                                 .font(Typeface.caption(12))
-                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(person.isFollowing ? Palette.ember.opacity(0.15) : Palette.card)
+                                .foregroundStyle(Palette.ember)
+                                .clipShape(Capsule())
                         }
-                        Spacer()
-                        Text(person.isFollowing ? "Following" : "Follow")
-                            .font(Typeface.caption(12))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(person.isFollowing ? Palette.ember.opacity(0.15) : Palette.card)
-                            .foregroundStyle(Palette.ember)
-                            .clipShape(Capsule())
                     }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
         }
     }
 
     private var inbox: some View {
-        let incoming = notes.filter { $0.toHandle == "you" }
+        let myHandle = me?.handle ?? "you"
+        let incoming = notes.filter { $0.toHandle == myHandle || $0.toHandle == "you" }
         return Group {
             if !incoming.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
@@ -228,7 +318,9 @@ struct FriendProfileView: View {
                                 context: context
                             )
                         }
-                        SoftBanner(text: "Follow state lives in the mock social client — swap the client to go online.")
+                        if person.isSeed {
+                            SoftBanner(text: "This person is on this phone’s demo circle. Sign in and look up a real handle to follow someone in the cloud.")
+                        }
                         let theirs = entries.filter { $0.authorHandle == person.handle }
                         if theirs.isEmpty {
                             QuietEmpty(symbol: "sunset", title: "No evenings yet", detail: "When they log, their skies will land here.")
@@ -244,7 +336,7 @@ struct FriendProfileView: View {
                     .padding(20)
                 }
             } else {
-                QuietEmpty(symbol: "person", title: "Missing person", detail: "They are not in this mock circle.")
+                QuietEmpty(symbol: "person", title: "Missing person", detail: "They are not in this circle.")
             }
         }
         .duskBackdrop()
@@ -270,7 +362,7 @@ struct SavedSpotsView: View {
                     ForEach(saved, id: \.id) { spot in
                         NavigationLink(value: Route.spot(spot.id)) {
                             HStack(spacing: 12) {
-                                SkyPhoto(bundleName: spot.heroPhotoName, corner: 12)
+                                SavedSpotThumb(spot: spot)
                                     .frame(width: 72, height: 88)
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(spot.name)
@@ -296,5 +388,17 @@ struct SavedSpotsView: View {
         }
         .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct SavedSpotThumb: View {
+    let spot: Spot
+
+    var body: some View {
+        if let entry = spot.entries.sorted(by: { $0.overallScore > $1.overallScore }).first {
+            SkyPhoto(entry: entry, corner: 12)
+        } else {
+            SkyPhoto(corner: 12)
+        }
     }
 }

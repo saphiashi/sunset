@@ -10,21 +10,28 @@ final class AppSession {
     var notifications: NotificationService
     var scanner: PhotoLibraryScanner
     var social: SocialClient
+    var auth: AuthController
+    var cloud: CloudSync
     var now: Date = .now
     var pendingLink: DeepLink?
     var logPresented = false
     var scanPresented = false
+    var signInPresented = false
 
     private var clockTask: Task<Void, Never>?
 
     /// Default arguments are evaluated in a nonisolated context, so MainActor
     /// services are created here in the isolated body instead of as defaults.
     convenience init() {
+        let auth = AuthController()
+        let cloud = CloudSync(auth: auth)
         self.init(
             location: LocationService(),
             notifications: NotificationService(),
             scanner: PhotoLibraryScanner(),
-            social: MockSocialClient()
+            social: SupabaseSocialClient(cloud: cloud, auth: auth),
+            auth: auth,
+            cloud: cloud
         )
     }
 
@@ -32,12 +39,19 @@ final class AppSession {
         location: LocationService,
         notifications: NotificationService,
         scanner: PhotoLibraryScanner,
-        social: SocialClient
+        social: SocialClient,
+        auth: AuthController,
+        cloud: CloudSync
     ) {
         self.location = location
         self.notifications = notifications
         self.scanner = scanner
         self.social = social
+        self.auth = auth
+        self.cloud = cloud
+        auth.onSessionChange = { [weak cloud] in
+            cloud?.schedule()
+        }
     }
 
     var solar: SolarService.Event? {
@@ -67,7 +81,8 @@ final class AppSession {
         return .waiting(sunset)
     }
 
-    func start() {
+    func start(context: ModelContext) {
+        cloud.attach(context)
         location.request()
         scanner.refreshAccess()
         clockTask?.cancel()
@@ -78,10 +93,25 @@ final class AppSession {
             }
         }
         Task { await notifications.refresh() }
+        Task {
+            await auth.restoreSession()
+            await cloud.syncNow()
+        }
     }
 
     func stop() {
         clockTask?.cancel()
+    }
+
+    func handleOpenURL(_ url: URL) {
+        if url.host == "auth-callback"
+            || url.path.contains("auth-callback")
+            || url.absoluteString.contains("access_token")
+            || url.absoluteString.contains("type=magiclink") {
+            Task { await auth.handleOpenURL(url) }
+            return
+        }
+        pendingLink = DeepLink.parse(url)
     }
 
     nonisolated static func streak(from entries: [SunsetEntry], now: Date = .now, calendar: Calendar = .current) -> Int {

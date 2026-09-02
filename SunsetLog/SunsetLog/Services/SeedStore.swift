@@ -50,7 +50,9 @@ enum SeedStore {
                 authorHandle: draft.handle,
                 authorName: draft.author,
                 isMine: draft.mine,
-                importedFromLibrary: draft.imported
+                importedFromLibrary: draft.imported,
+                isSeed: true,
+                needsSync: false
             )
             if let spot = byID[draft.spot] {
                 entry.spot = spot
@@ -111,32 +113,32 @@ enum SeedStore {
     private static func makePeople() -> [Person] {
         [
             Person(id: SeedID.me, displayName: "You", handle: "you", city: "San Francisco",
-                   bio: "Collecting last light.", isFollowing: false, isMe: true, avatarHue: 0.08),
+                   bio: "Collecting last light.", isFollowing: false, isMe: true, avatarHue: 0.08, isSeed: true),
             Person(id: SeedID.maya, displayName: "Maya Chen", handle: "maya", city: "San Francisco",
                    bio: "Chases pink over the Pacific. Always one ridge too far.",
-                   isFollowing: true, avatarHue: 0.92),
+                   isFollowing: true, avatarHue: 0.92, isSeed: true),
             Person(id: SeedID.jordan, displayName: "Jordan Hale", handle: "jordan", city: "Los Angeles",
                    bio: "Drama over color. Storms preferred.",
-                   isFollowing: true, avatarHue: 0.62),
+                   isFollowing: true, avatarHue: 0.62, isSeed: true),
             Person(id: SeedID.priya, displayName: "Priya Nair", handle: "priya", city: "Oakland",
                    bio: "Notes first, photos second.",
-                   isFollowing: true, avatarHue: 0.12),
+                   isFollowing: true, avatarHue: 0.12, isSeed: true),
             Person(id: SeedID.leo, displayName: "Leo Park", handle: "leo", city: "Malibu",
                    bio: "Knows every legal pull-out on PCH.",
-                   isFollowing: false, avatarHue: 0.48)
+                   isFollowing: false, avatarHue: 0.48, isSeed: true)
         ]
     }
 
     private static func makeCollections() -> [SkyCollection] {
         [
             SkyCollection(id: SeedID.pinkSkies, name: "Pink skies", detail: "Wash, blush, leftover daylight.",
-                          symbol: "heart.fill", accentToken: "rose"),
+                          symbol: "heart.fill", accentToken: "rose", isSeed: true),
             SkyCollection(id: SeedID.stormLight, name: "Storm light", detail: "When the weather writes.",
-                          symbol: "cloud.bolt.fill", accentToken: "storm"),
+                          symbol: "cloud.bolt.fill", accentToken: "storm", isSeed: true),
             SkyCollection(id: SeedID.favorites, name: "Favorites", detail: "The ones you keep returning to.",
-                          symbol: "star.fill", accentToken: "gold"),
+                          symbol: "star.fill", accentToken: "gold", isSeed: true),
             SkyCollection(id: SeedID.coastal, name: "Coastal", detail: "West-facing water.",
-                          symbol: "water.waves", accentToken: "ember")
+                          symbol: "water.waves", accentToken: "ember", isSeed: true)
         ]
     }
 

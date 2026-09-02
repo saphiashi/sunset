@@ -3,6 +3,7 @@ import SwiftUI
 struct RootView: View {
     @Environment(AppSession.self) private var session
     @Environment(Router.self) private var router
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         @Bindable var router = router
@@ -62,6 +63,10 @@ struct RootView: View {
             .environment(session)
             .environment(router)
         }
+        .sheet(isPresented: $session.signInPresented) {
+            SignInSheet()
+                .environment(session)
+        }
         .onChange(of: session.pendingLink) { _, link in
             if let link {
                 router.apply(link)
@@ -69,7 +74,7 @@ struct RootView: View {
             }
         }
         .task {
-            session.start()
+            session.start(context: context)
         }
     }
 }

@@ -1,0 +1,8 @@
+// Placeholder keys so the project builds without a live project.
+// Copy Secrets.xcconfig.example to Secrets.xcconfig and fill real values.
+// Secrets.xcconfig is gitignored and overrides the lines below.
+
+SUPABASE_URL = https:/$()/YOUR_PROJECT.supabase.co
+SUPABASE_ANON_KEY = your-anon-key
+
+#include? "Secrets.xcconfig"

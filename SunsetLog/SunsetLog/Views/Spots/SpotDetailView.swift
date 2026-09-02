@@ -26,7 +26,9 @@ struct SpotDetailView: View {
                         mapSnippet(spot)
                         actions(spot)
                         if didShare {
-                            SoftBanner(text: "Sent through the mock circle. A real backend would notify them.")
+                            SoftBanner(text: session.auth.isSignedIn
+                                ? "Sent. They’ll see it in their circle when they sync."
+                                : "Sent on this phone. Sign in to deliver it through the circle.")
                         }
                         incoming(spot)
                         recent(spot)
@@ -47,13 +49,15 @@ struct SpotDetailView: View {
     private func hero(_ spot: Spot) -> some View {
         let photo = spot.entries.sorted { $0.overallScore > $1.overallScore }.first
         return ZStack(alignment: .bottomLeading) {
-            SkyPhoto(
-                bundleName: photo?.photoBundleName,
-                fileName: photo?.photoFileName,
-                corner: 0
-            )
-            .frame(height: 380)
-            .overlay { SkyGradient.veil }
+            if let photo {
+                SkyPhoto(entry: photo, corner: 0)
+                    .frame(height: 380)
+                    .overlay { SkyGradient.veil }
+            } else {
+                SkyPhoto(corner: 0)
+                    .frame(height: 380)
+                    .overlay { SkyGradient.veil }
+            }
             VStack(alignment: .leading, spacing: 6) {
                 Text(spot.name)
                     .font(Typeface.italic(36))
@@ -168,7 +172,7 @@ struct SpotDetailView: View {
                             spotID: spot.id,
                             to: person.id,
                             message: shareMessage,
-                            from: "you",
+                            from: session.auth.profile?.handle ?? "you",
                             context: context
                         )
                         didShare = true
@@ -191,6 +195,7 @@ struct SpotDetailView: View {
 
 private struct SpotActionBar: View {
     @Environment(\.modelContext) private var context
+    @Environment(AppSession.self) private var session
     let spot: Spot
     let friends: [Person]
     @Binding var shareFriend: Person?
@@ -203,6 +208,7 @@ private struct SpotActionBar: View {
             ) {
                 spot.isSaved.toggle()
                 try? context.save()
+                session.cloud.schedule()
             }
             ShareLink(
                 item: DeepLink.spotURL(spot.id),

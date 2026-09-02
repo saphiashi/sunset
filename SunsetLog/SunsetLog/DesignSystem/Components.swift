@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 import UIKit
 
 struct EmberButton: View {
@@ -247,42 +248,56 @@ struct PersonMark: View {
 struct SkyPhoto: View {
     var bundleName: String? = nil
     var fileName: String? = nil
+    var remoteURL: String? = nil
     var image: UIImage? = nil
     var corner: CGFloat = 22
 
     var body: some View {
-        let photo = GeometryReader { geo in
-            resolved
-                .resizable()
-                .scaledToFill()
+        let fill = GeometryReader { geo in
+            contents
                 .frame(width: geo.size.width, height: geo.size.height)
                 .clipped()
         }
         .frame(maxWidth: .infinity)
 
         if corner > 0 {
-            photo
+            fill
                 .clipShape(RoundedRectangle(cornerRadius: corner, style: .continuous))
                 .background {
                     RoundedRectangle(cornerRadius: corner, style: .continuous)
                         .fill(SkyGradient.dusk)
                 }
         } else {
-            photo
+            fill
         }
     }
 
-    private var resolved: Image {
+    @ViewBuilder
+    private var contents: some View {
         if let image {
-            return Image(uiImage: image)
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+        } else if let fileName, let stored = ImageStore.load(fileName) {
+            Image(uiImage: stored)
+                .resizable()
+                .scaledToFill()
+        } else if let bundleName, let bundled = ImageStore.bundleImage(named: bundleName) {
+            Image(uiImage: bundled)
+                .resizable()
+                .scaledToFill()
+        } else if let remoteURL, let url = URL(string: remoteURL) {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let img):
+                    img.resizable().scaledToFill()
+                default:
+                    SkyGradient.dusk
+                }
+            }
+        } else {
+            SkyGradient.dusk
         }
-        if let fileName, let stored = ImageStore.load(fileName) {
-            return Image(uiImage: stored)
-        }
-        if let bundleName, let bundled = ImageStore.bundleImage(named: bundleName) {
-            return Image(uiImage: bundled)
-        }
-        return Image(systemName: "sun.horizon.fill")
     }
 }
 
@@ -291,6 +306,7 @@ extension SkyPhoto {
         self.init(
             bundleName: entry.photoBundleName,
             fileName: entry.photoFileName,
+            remoteURL: entry.photoURL,
             image: nil,
             corner: corner
         )

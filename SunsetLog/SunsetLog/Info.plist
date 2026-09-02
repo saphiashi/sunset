@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SUPABASE_URL</key>
+	<string>$(SUPABASE_URL)</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -18,7 +22,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Sunset Log uses the camera so you can photograph tonight’s sky as you log it.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Sunset Log looks through your camera roll for evenings taken near sunset, with a warm sky, so you can import them into your journal. Photographs stay on this device.</string>
+	<string>Sunset Log looks through your camera roll for evenings taken near sunset, with a warm sky, so you can import them into your journal. If you sign in, photographs you log can be stored in your Sunset Log account.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Sunset Log does not save back to your library; this is only requested if the system treats a read as a write.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

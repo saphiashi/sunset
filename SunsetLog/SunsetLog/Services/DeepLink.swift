@@ -8,6 +8,7 @@ enum DeepLink: Equatable {
         guard url.scheme == "sunsetlog" else { return nil }
         let parts = url.pathComponents.filter { $0 != "/" }
         let host = url.host
+        if host == "auth-callback" { return nil }
         if host == "spot", let raw = parts.first, let id = UUID(uuidString: raw) {
             return .spot(id)
         }

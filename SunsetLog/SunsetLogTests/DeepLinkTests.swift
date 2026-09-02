@@ -16,4 +16,8 @@ final class DeepLinkTests: XCTestCase {
     func testRejectsForeignScheme() {
         XCTAssertNil(DeepLink.parse(URL(string: "https://example.com/spot/1")!))
     }
+
+    func testIgnoresAuthCallback() {
+        XCTAssertNil(DeepLink.parse(URL(string: "sunsetlog://auth-callback")!))
+    }
 }

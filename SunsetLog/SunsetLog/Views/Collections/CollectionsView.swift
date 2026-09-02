@@ -5,6 +5,7 @@ struct CollectionDetailView: View {
     let collectionID: UUID
     @Query private var collections: [SkyCollection]
     @Environment(\.modelContext) private var context
+    @Environment(AppSession.self) private var session
     @State private var newName = ""
     @State private var showRename = false
 
@@ -71,6 +72,7 @@ struct CollectionDetailView: View {
                 if let collection, !newName.trimmingCharacters(in: .whitespaces).isEmpty {
                     collection.name = newName
                     try? context.save()
+                    session.cloud.schedule()
                 }
             }
             Button("Cancel", role: .cancel) {}
@@ -84,6 +86,7 @@ struct CollectionDetailView: View {
 struct NewCollectionSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
+    @Environment(AppSession.self) private var session
     @State private var name = ""
     @State private var detail = ""
     @State private var token = "ember"
@@ -113,6 +116,7 @@ struct NewCollectionSheet: View {
                         )
                         context.insert(collection)
                         try? context.save()
+                        session.cloud.schedule()
                         dismiss()
                     }
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)

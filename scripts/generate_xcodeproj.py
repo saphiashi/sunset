@@ -59,6 +59,11 @@ ids = {
     "assets_file": hid("assets_file"),
     "plist_file": hid("plist_file"),
     "privacy_file": hid("privacy_file"),
+    "xcconfig": hid("xcconfig"),
+    "entitlements": hid("entitlements"),
+    "supabase_pkg": hid("supabase_pkg"),
+    "supabase_product": hid("supabase_product"),
+    "supabase_build": hid("supabase_build"),
 }
 
 file_ids = {p: hid(f"file:{p.relative_to(ROOT)}") for p in swift_app + swift_tests + resources}
@@ -121,6 +126,12 @@ objects.append(
 objects.append(
     f'\t\t{ids["privacy_file"]} /* PrivacyInfo.xcprivacy */ = {{isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; }};\n'
 )
+objects.append(
+    f'\t\t{ids["xcconfig"]} /* Config.xcconfig */ = {{isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; }};\n'
+)
+objects.append(
+    f'\t\t{ids["entitlements"]} /* SunsetLog.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SunsetLog.entitlements; sourceTree = "<group>"; }};\n'
+)
 
 # Build files
 for p in swift_app:
@@ -141,6 +152,9 @@ objects.append(
 objects.append(
     f'\t\t{hid("privacy_build")} /* PrivacyInfo.xcprivacy in Resources */ = {{isa = PBXBuildFile; fileRef = {ids["privacy_file"]} /* PrivacyInfo.xcprivacy */; }};\n'
 )
+objects.append(
+    f'\t\t{ids["supabase_build"]} /* Supabase in Frameworks */ = {{isa = PBXBuildFile; productRef = {ids["supabase_product"]} /* Supabase */; }};\n'
+)
 
 # Groups — build from leaves
 # Map directory -> children file refs
@@ -154,6 +168,7 @@ for p in swift_app:
 dir_files[APP].append(f'{ids["assets_file"]} /* Assets.xcassets */')
 dir_files[APP].append(f'{ids["plist_file"]} /* Info.plist */')
 dir_files[APP].append(f'{ids["privacy_file"]} /* PrivacyInfo.xcprivacy */')
+dir_files[APP].append(f'{ids["entitlements"]} /* SunsetLog.entitlements */')
 
 # Subgroup IDs — include every ancestor so nested Views/ folders stay in the tree
 dir_ids = {APP: ids["app_group"]}
@@ -240,6 +255,7 @@ objects.append(
 \t\t\t\t{ids["app_group"]} /* SunsetLog */,
 \t\t\t\t{ids["test_group"]} /* SunsetLogTests */,
 \t\t\t\t{ids["products_group"]} /* Products */,
+\t\t\t\t{ids["xcconfig"]} /* Config.xcconfig */,
 \t\t\t);
 \t\t\tsourceTree = "<group>";
 \t\t}};
@@ -278,6 +294,7 @@ objects.append(
 \t\t\tisa = PBXFrameworksBuildPhase;
 \t\t\tbuildActionMask = 2147483647;
 \t\t\tfiles = (
+\t\t\t\t{ids["supabase_build"]} /* Supabase in Frameworks */,
 \t\t\t);
 \t\t\trunOnlyForDeploymentPostprocessing = 0;
 \t\t}};
@@ -321,6 +338,9 @@ objects.append(
 \t\t\tdependencies = (
 \t\t\t);
 \t\t\tname = SunsetLog;
+\t\t\tpackageProductDependencies = (
+\t\t\t\t{ids["supabase_product"]} /* Supabase */,
+\t\t\t);
 \t\t\tproductName = SunsetLog;
 \t\t\tproductReference = {ids["app_product"]} /* SunsetLog.app */;
 \t\t\tproductType = "com.apple.product-type.application";
@@ -397,6 +417,9 @@ objects.append(
 \t\t\tproductRefGroup = {ids["products_group"]} /* Products */;
 \t\t\tprojectDirPath = "";
 \t\t\tprojectRoot = "";
+\t\t\tpackageReferences = (
+\t\t\t\t{ids["supabase_pkg"]} /* XCRemoteSwiftPackageReference "supabase-swift" */,
+\t\t\t);
 \t\t\ttargets = (
 \t\t\t\t{ids["app_target"]} /* SunsetLog */,
 \t\t\t\t{ids["test_target"]} /* SunsetLogTests */,
@@ -487,6 +510,7 @@ objects.append(
 app_settings = """
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SunsetLog/SunsetLog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -518,6 +542,7 @@ app_settings = """
 objects.append(
     f"""\t\t{ids["app_debug"]} /* Debug */ = {{
 \t\t\tisa = XCBuildConfiguration;
+\t\t\tbaseConfigurationReference = {ids["xcconfig"]} /* Config.xcconfig */;
 \t\t\tbuildSettings = {{{app_settings}
 \t\t\t}};
 \t\t\tname = Debug;
@@ -527,6 +552,7 @@ objects.append(
 objects.append(
     f"""\t\t{ids["app_release"]} /* Release */ = {{
 \t\t\tisa = XCBuildConfiguration;
+\t\t\tbaseConfigurationReference = {ids["xcconfig"]} /* Config.xcconfig */;
 \t\t\tbuildSettings = {{{app_settings}
 \t\t\t}};
 \t\t\tname = Release;
@@ -584,6 +610,26 @@ def config_list(cid: str, debug: str, release: str, title: str) -> str:
 objects.append(config_list(ids["project_config_list"], ids["proj_debug"], ids["proj_release"], 'Build configuration list for PBXProject "SunsetLog"'))
 objects.append(config_list(ids["app_config_list"], ids["app_debug"], ids["app_release"], 'Build configuration list for PBXNativeTarget "SunsetLog"'))
 objects.append(config_list(ids["test_config_list"], ids["test_debug"], ids["test_release"], 'Build configuration list for PBXNativeTarget "SunsetLogTests"'))
+
+objects.append(
+    f"""\t\t{ids["supabase_pkg"]} /* XCRemoteSwiftPackageReference "supabase-swift" */ = {{
+\t\t\tisa = XCRemoteSwiftPackageReference;
+\t\t\trepositoryURL = "https://github.com/supabase/supabase-swift";
+\t\t\trequirement = {{
+\t\t\t\tkind = upToNextMajorVersion;
+\t\t\t\tminimumVersion = 2.29.0;
+\t\t\t}};
+\t\t}};
+"""
+)
+objects.append(
+    f"""\t\t{ids["supabase_product"]} /* Supabase */ = {{
+\t\t\tisa = XCSwiftPackageProductDependency;
+\t\t\tpackage = {ids["supabase_pkg"]} /* XCRemoteSwiftPackageReference "supabase-swift" */;
+\t\t\tproductName = Supabase;
+\t\t}};
+"""
+)
 
 body = "".join(objects)
 pbx = f"""// !$*UTF8*$!

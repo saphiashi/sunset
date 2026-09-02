@@ -12,3 +12,7 @@ DerivedData/
 *.playground
 agent-tools/
 .cursor/
+SunsetLog/Secrets.xcconfig
+.env
+.env.local
+.env.*.local

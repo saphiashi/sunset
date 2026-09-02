@@ -15,7 +15,7 @@ struct SunsetLogApp: App {
                 .environment(router)
                 .preferredColorScheme(nil)
                 .onOpenURL { url in
-                    session.pendingLink = DeepLink.parse(url)
+                    session.handleOpenURL(url)
                 }
         }
         .modelContainer(container)

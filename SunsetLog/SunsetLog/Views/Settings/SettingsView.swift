@@ -57,9 +57,27 @@ struct SettingsView: View {
                 }
             }
 
+            Section("Account") {
+                if session.auth.isSignedIn, let profile = session.auth.profile {
+                    LabeledContent("Signed in", value: "@\(profile.handle)")
+                    LabeledContent("Sync", value: session.cloud.lastStatus)
+                    Button("Account") { session.signInPresented = true }
+                    Button("Sign out", role: .destructive) {
+                        Task { await session.auth.signOut() }
+                    }
+                } else {
+                    Text(session.auth.isConfigured
+                         ? "The journal on this phone works without an account. Sign in to sync evenings and follow people."
+                         : "Placeholder Supabase keys. The journal stays on this phone until you add SUPABASE_URL and SUPABASE_ANON_KEY.")
+                        .font(Typeface.caption(13))
+                        .foregroundStyle(.secondary)
+                    Button("Sign in") { session.signInPresented = true }
+                }
+            }
+
             Section("About") {
-                LabeledContent("Social", value: "Mock client")
-                LabeledContent("Persistence", value: "SwiftData, on device")
+                LabeledContent("Social", value: session.auth.isSignedIn ? "Supabase" : "Local")
+                LabeledContent("Persistence", value: session.auth.isSignedIn ? "SwiftData + Supabase" : "SwiftData, on device")
                 Text("Share cards for Stories are not in this build. Sunrise logging is out of scope.")
                     .font(Typeface.caption(12))
                     .foregroundStyle(.secondary)

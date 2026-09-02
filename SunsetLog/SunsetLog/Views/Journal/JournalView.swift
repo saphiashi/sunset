@@ -195,6 +195,7 @@ private struct CollectionMembershipEditor: View {
 
 private struct CollectionMembershipRow: View {
     @Environment(\.modelContext) private var context
+    @Environment(AppSession.self) private var session
     let entry: SunsetEntry
     let collection: SkyCollection
 
@@ -224,5 +225,6 @@ private struct CollectionMembershipRow: View {
             collection.entries.append(entry)
         }
         try? context.save()
+        session.cloud.schedule()
     }
 }

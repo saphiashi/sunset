@@ -178,9 +178,10 @@ struct LogSunsetView: View {
             dramaScore: drama,
             overallScore: overall,
             photoFileName: file,
-            authorHandle: "you",
-            authorName: "You",
-            isMine: true
+            authorHandle: session.auth.profile?.handle ?? "you",
+            authorName: session.auth.profile?.displayName ?? "You",
+            isMine: true,
+            needsSync: true
         )
 
         if let selectedSpot {
@@ -195,7 +196,8 @@ struct LogSunsetView: View {
                     region: "",
                     blurb: "A place you named.",
                     latitude: coord.latitude,
-                    longitude: coord.longitude
+                    longitude: coord.longitude,
+                    needsSync: true
                 )
                 context.insert(spot)
                 entry.spot = spot
@@ -205,6 +207,7 @@ struct LogSunsetView: View {
         context.insert(entry)
         do {
             try context.save()
+            session.cloud.schedule()
             dismiss()
         } catch {
             self.error = "Could not save this evening."

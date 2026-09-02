@@ -23,6 +23,11 @@ enum ImageStore {
         }
     }
 
+    static func data(named fileName: String) -> Data? {
+        let url = directory.appendingPathComponent(fileName)
+        return try? Data(contentsOf: url)
+    }
+
     static func load(_ fileName: String) -> UIImage? {
         let url = directory.appendingPathComponent(fileName)
         guard let data = try? Data(contentsOf: url) else { return nil }
