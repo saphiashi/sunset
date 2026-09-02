@@ -35,6 +35,7 @@ struct JournalLightbox: View {
             ZStack(alignment: .topLeading) {
                 SkyPhoto(entry: entry, corner: 0)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onTapGesture { dismiss() }
                 LinearGradient(
                     colors: [.black.opacity(0.35), .clear, .black.opacity(0.45)],
                     startPoint: .top,
