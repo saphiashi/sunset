@@ -251,19 +251,24 @@ struct SkyPhoto: View {
     var corner: CGFloat = 22
 
     var body: some View {
-        GeometryReader { geo in
+        let photo = GeometryReader { geo in
             resolved
                 .resizable()
                 .scaledToFill()
                 .frame(width: geo.size.width, height: geo.size.height)
                 .clipped()
         }
-        .clipShape(RoundedRectangle(cornerRadius: corner, style: .continuous))
-        .background {
-            if corner > 0 {
-                RoundedRectangle(cornerRadius: corner, style: .continuous)
-                    .fill(SkyGradient.dusk)
-            }
+        .frame(maxWidth: .infinity)
+
+        if corner > 0 {
+            photo
+                .clipShape(RoundedRectangle(cornerRadius: corner, style: .continuous))
+                .background {
+                    RoundedRectangle(cornerRadius: corner, style: .continuous)
+                        .fill(SkyGradient.dusk)
+                }
+        } else {
+            photo
         }
     }
 

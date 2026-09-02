@@ -16,7 +16,9 @@ struct HomeView: View {
             }
             .padding(.top, 8)
             .padding(.bottom, 48)
+            .frame(maxWidth: .infinity)
         }
+        .contentMargins(.horizontal, 0, for: .scrollContent)
         .duskBackdrop()
         .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
@@ -114,8 +116,12 @@ struct HomeView: View {
                             JournalVeil(entry: entry, style: .compact)
                         }
                         .buttonStyle(VeilPressStyle())
+                        .frame(maxWidth: .infinity)
                     }
                 }
+                .frame(maxWidth: .infinity)
+                .containerRelativeFrame(.horizontal)
+                .ignoresSafeArea(edges: .horizontal)
             }
         }
     }

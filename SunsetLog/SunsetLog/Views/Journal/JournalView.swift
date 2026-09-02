@@ -21,7 +21,9 @@ struct JournalView: View {
                     .padding(.bottom, 8)
                 journalList
             }
+            .frame(maxWidth: .infinity)
         }
+        .contentMargins(.horizontal, 0, for: .scrollContent)
         .duskBackdrop()
         .toolbarBackground(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)

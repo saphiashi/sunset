@@ -32,10 +32,10 @@ struct JournalVeil: View {
                 .padding(.bottom, style == .page ? 8 : 4)
                 .frame(maxHeight: .infinity, alignment: .center)
         }
+        .frame(maxWidth: .infinity)
         .frame(height: style.height)
         .compositingGroup()
         .mask { WashMask() }
-        .mask { EdgeSoftMask() }
     }
 
     private var wash: some View {
@@ -78,8 +78,12 @@ struct JournalRibbon: View {
                     JournalVeil(entry: entry, style: style)
                 }
                 .buttonStyle(VeilPressStyle())
+                .frame(maxWidth: .infinity)
             }
         }
+        .frame(maxWidth: .infinity)
+        .containerRelativeFrame(.horizontal)
+        .ignoresSafeArea(edges: .horizontal)
         .padding(.top, style == .page ? 4 : 0)
         .padding(.bottom, 48)
     }
