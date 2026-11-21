@@ -25,6 +25,7 @@
 		3DCF44CDF5F89EE551895598 /* AuthNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNonce.swift; sourceTree = "<group>"; };
 		3009B6FF8F75AA1C4885FD50 /* CloudDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudDTOs.swift; sourceTree = "<group>"; };
 		6ADB77BD95997BB3A06148D9 /* CloudSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSync.swift; sourceTree = "<group>"; };
+		617826CDAA555BD744AC785D /* PhotoLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLinks.swift; sourceTree = "<group>"; };
 		56820543EC441B5D305081DF /* PhotoUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUploader.swift; sourceTree = "<group>"; };
 		E7BB571BB7304136DF4ECFB4 /* SupabaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseConfig.swift; sourceTree = "<group>"; };
 		E5B2039F69D34DCE50EAF046 /* SupabaseSocialClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseSocialClient.swift; sourceTree = "<group>"; };
@@ -89,6 +90,7 @@
 		1DA7B7419CA763AC3EB9A13B /* AuthNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF44CDF5F89EE551895598 /* AuthNonce.swift */; };
 		55B3A0E089287C4762F2B614 /* CloudDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3009B6FF8F75AA1C4885FD50 /* CloudDTOs.swift */; };
 		E019D6AAA4951A6A4D00477D /* CloudSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADB77BD95997BB3A06148D9 /* CloudSync.swift */; };
+		B7A0B1493349FD8A45B2E2C1 /* PhotoLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617826CDAA555BD744AC785D /* PhotoLinks.swift */; };
 		2E19750977FC3199B9D67838 /* PhotoUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56820543EC441B5D305081DF /* PhotoUploader.swift */; };
 		21C785E1B86634A9AADA9413 /* SupabaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BB571BB7304136DF4ECFB4 /* SupabaseConfig.swift */; };
 		0E68520236AB9868574E9C20 /* SupabaseSocialClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B2039F69D34DCE50EAF046 /* SupabaseSocialClient.swift */; };
@@ -227,6 +229,7 @@
 				3009B6FF8F75AA1C4885FD50 /* CloudDTOs.swift */,
 				3DCF44CDF5F89EE551895598 /* AuthNonce.swift */,
 				56820543EC441B5D305081DF /* PhotoUploader.swift */,
+				617826CDAA555BD744AC785D /* PhotoLinks.swift */,
 				6ADB77BD95997BB3A06148D9 /* CloudSync.swift */,
 				C7553E75EFAEEC1136AC0F30 /* AuthController.swift */,
 				E5B2039F69D34DCE50EAF046 /* SupabaseSocialClient.swift */,
@@ -407,6 +410,7 @@
 				1DA7B7419CA763AC3EB9A13B /* AuthNonce.swift in Sources */,
 				55B3A0E089287C4762F2B614 /* CloudDTOs.swift in Sources */,
 				E019D6AAA4951A6A4D00477D /* CloudSync.swift in Sources */,
+				B7A0B1493349FD8A45B2E2C1 /* PhotoLinks.swift in Sources */,
 				2E19750977FC3199B9D67838 /* PhotoUploader.swift in Sources */,
 				21C785E1B86634A9AADA9413 /* SupabaseConfig.swift in Sources */,
 				0E68520236AB9868574E9C20 /* SupabaseSocialClient.swift in Sources */,

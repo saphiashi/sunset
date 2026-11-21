@@ -20,7 +20,7 @@ enum PhotoUploader {
         userID: UUID,
         entryID: UUID,
         client: SupabaseClient
-    ) async throws -> (path: String, publicURL: URL) {
+    ) async throws -> String {
         let path = "\(userID.uuidString.lowercased())/\(entryID.uuidString.lowercased()).jpg"
         try await client.storage
             .from(bucket)
@@ -29,7 +29,14 @@ enum PhotoUploader {
                 data: data,
                 options: FileOptions(contentType: "image/jpeg", upsert: true)
             )
-        let url = try client.storage.from(bucket).getPublicURL(path: path)
-        return (path, url)
+        return path
+    }
+
+    /// Entries uploaded while the bucket was public stored a public URL instead of a path.
+    static func path(fromPublicURL url: String) -> String? {
+        let marker = "/object/public/\(bucket)/"
+        guard let range = url.range(of: marker) else { return nil }
+        let path = String(url[range.upperBound...])
+        return path.isEmpty ? nil : path
     }
 }

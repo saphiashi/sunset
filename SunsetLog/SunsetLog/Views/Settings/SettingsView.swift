@@ -57,9 +57,13 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Account") {
+            Section {
                 if session.auth.isSignedIn, let profile = session.auth.profile {
                     LabeledContent("Signed in", value: "@\(profile.handle)")
+                    Toggle("Private account", isOn: Binding(
+                        get: { profile.isPrivate },
+                        set: { new in Task { await session.auth.setPrivate(new) } }
+                    ))
                     LabeledContent("Sync", value: session.cloud.lastStatus)
                     Button("Account") { session.signInPresented = true }
                     Button("Sign out", role: .destructive) {
@@ -72,6 +76,12 @@ struct SettingsView: View {
                         .font(Typeface.caption(13))
                         .foregroundStyle(.secondary)
                     Button("Sign in") { session.signInPresented = true }
+                }
+            } header: {
+                Text("Account")
+            } footer: {
+                if session.auth.isSignedIn {
+                    Text("A private account approves each follower before they see your skies or photos. Photos are only readable by you and people you’ve accepted.")
                 }
             }
 

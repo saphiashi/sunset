@@ -100,19 +100,20 @@ final class CloudSync {
             existing.city = row.city
             existing.bio = row.bio
             existing.avatarHue = row.avatarHue
+            existing.isPrivate = row.isPrivate
             existing.isSeed = false
         } else {
-            context.insert(
-                Person(
-                    id: row.id,
-                    displayName: row.displayName,
-                    handle: row.handle,
-                    city: row.city,
-                    bio: row.bio,
-                    avatarHue: row.avatarHue,
-                    isSeed: false
-                )
+            let person = Person(
+                id: row.id,
+                displayName: row.displayName,
+                handle: row.handle,
+                city: row.city,
+                bio: row.bio,
+                avatarHue: row.avatarHue,
+                isSeed: false
             )
+            person.isPrivate = row.isPrivate
+            context.insert(person)
         }
     }
 
@@ -154,29 +155,40 @@ final class CloudSync {
         }
 
         let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
-        for person in people where !person.isMe && !person.isSeed {
+        for person in people where !person.isMe && !person.isSeed && person.followNeedsSync {
             if person.isFollowing {
+                // Do nothing on conflict: followers may not update an edge (that would self-accept).
                 try await client.from("follows").upsert(
-                    FollowRow(followerId: userID, followeeId: person.id)
+                    FollowRow(followerId: userID, followeeId: person.id),
+                    onConflict: "follower_id,followee_id",
+                    ignoreDuplicates: true
                 ).execute()
+            } else {
+                try await client.from("follows")
+                    .delete()
+                    .eq("follower_id", value: userID.uuidString.lowercased())
+                    .eq("followee_id", value: person.id.uuidString.lowercased())
+                    .execute()
             }
+            person.followNeedsSync = false
         }
     }
 
     private func pushEntry(_ entry: SunsetEntry, client: SupabaseClient, userID: UUID) async throws {
-        var photoURL = entry.photoURL
-        var photoPath: String?
-        if photoURL == nil, let data = PhotoUploader.jpegData(for: entry) {
-            let uploaded = try await PhotoUploader.upload(
+        var photoPath = entry.photoPath ?? entry.photoURL.flatMap(PhotoUploader.path(fromPublicURL:))
+        if photoPath == nil, entry.photoURL == nil, let data = PhotoUploader.jpegData(for: entry) {
+            photoPath = try await PhotoUploader.upload(
                 data: data,
                 userID: userID,
                 entryID: entry.id,
                 client: client
             )
-            photoURL = uploaded.publicURL.absoluteString
-            photoPath = uploaded.path
-            entry.photoURL = photoURL
         }
+        if photoPath != nil {
+            entry.photoPath = photoPath
+            entry.photoURL = nil
+        }
+        let photoURL = entry.photoURL
         let row = EntryRow(
             id: entry.id,
             userId: userID,
@@ -259,6 +271,8 @@ final class CloudSync {
             .value
 
         for follow in follows {
+            let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
+            if people.first(where: { $0.id == follow.followeeId })?.followNeedsSync == true { continue }
             let profiles: [ProfileRow] = try await client
                 .from("profiles")
                 .select()
@@ -269,8 +283,11 @@ final class CloudSync {
             if let profile = profiles.first {
                 rememberRemotePerson(profile, context: context)
             }
-            let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
-            people.first(where: { $0.id == follow.followeeId })?.isFollowing = true
+            let followee = ((try? context.fetch(FetchDescriptor<Person>())) ?? [])
+                .first(where: { $0.id == follow.followeeId })
+            followee?.isFollowing = true
+            followee?.followPending = follow.isPending
+            if follow.isPending { continue }
 
             let friendEntries: [EntryRow] = try await client
                 .from("sunset_entries")
@@ -297,6 +314,9 @@ final class CloudSync {
             }
         }
 
+        try await pullFollowers(client: client, userID: userID, context: context)
+        reconcileFollowing(follows, context: context)
+
         let notes: [SharedNoteRow] = try await client
             .from("shared_spot_notes")
             .select()
@@ -316,6 +336,55 @@ final class CloudSync {
                     sentAt: row.createdAt
                 )
             )
+        }
+    }
+
+    /// People who follow you or asked to. Pending rows show up as requests on Circle.
+    private func pullFollowers(client: SupabaseClient, userID: UUID, context: ModelContext) async throws {
+        let incoming: [FollowRow] = try await client
+            .from("follows")
+            .select()
+            .eq("followee_id", value: userID.uuidString.lowercased())
+            .execute()
+            .value
+        if !incoming.isEmpty {
+            let profiles: [ProfileRow] = try await client
+                .from("profiles")
+                .select()
+                .in("id", values: incoming.map { $0.followerId.uuidString.lowercased() })
+                .execute()
+                .value
+            for profile in profiles {
+                rememberRemotePerson(profile, context: context)
+            }
+        }
+        let byFollower = Dictionary(incoming.map { ($0.followerId, $0) }, uniquingKeysWith: { a, _ in a })
+        let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
+        for person in people where !person.isMe && !person.isSeed {
+            let edge = byFollower[person.id]
+            person.requestedToFollowMe = edge?.isPending == true
+            person.followsMe = edge.map { !$0.isPending } ?? false
+        }
+    }
+
+    /// The server is the truth for settled follows: declined requests and removals
+    /// clear locally, and skies you can no longer read leave the cache.
+    private func reconcileFollowing(_ follows: [FollowRow], context: ModelContext) {
+        let byFollowee = Dictionary(follows.map { ($0.followeeId, $0) }, uniquingKeysWith: { a, _ in a })
+        let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
+        var lostHandles = Set<String>()
+        for person in people where !person.isMe && !person.isSeed && !person.followNeedsSync {
+            let edge = byFollowee[person.id]
+            person.isFollowing = edge != nil
+            person.followPending = edge?.isPending == true
+            if !person.canSeeTheirSkies {
+                lostHandles.insert(person.handle)
+            }
+        }
+        guard !lostHandles.isEmpty else { return }
+        let entries = (try? context.fetch(FetchDescriptor<SunsetEntry>())) ?? []
+        for entry in entries where !entry.isMine && !entry.isSeed && lostHandles.contains(entry.authorHandle) {
+            context.delete(entry)
         }
     }
 
@@ -370,6 +439,7 @@ final class CloudSync {
             existing.dramaScore = row.dramaScore
             existing.overallScore = row.overallScore
             existing.photoURL = row.photoURL
+            existing.photoPath = row.photoPath ?? row.photoURL.flatMap(PhotoUploader.path(fromPublicURL:))
             existing.importedFromLibrary = row.imported
             existing.isMine = mine
             existing.needsSync = false
@@ -394,6 +464,7 @@ final class CloudSync {
             importedFromLibrary: row.imported,
             needsSync: false
         )
+        entry.photoPath = row.photoPath ?? row.photoURL.flatMap(PhotoUploader.path(fromPublicURL:))
         if let spotID = row.spotId {
             let spots = (try? context.fetch(FetchDescriptor<Spot>())) ?? []
             entry.spot = spots.first(where: { $0.id == spotID })
@@ -450,7 +521,12 @@ final class CloudSync {
     }
 
     private func isSeedPhoto(_ entry: SunsetEntry) -> Bool {
-        entry.isSeed || (entry.photoBundleName != nil && entry.photoFileName == nil && entry.photoURL == nil)
+        entry.isSeed || (
+            entry.photoBundleName != nil
+                && entry.photoFileName == nil
+                && entry.photoURL == nil
+                && entry.photoPath == nil
+        )
     }
 
     private func spotRow(_ spot: Spot, userID: UUID) -> SpotRow {

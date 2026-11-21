@@ -22,6 +22,7 @@ struct CircleHomeView: View {
                 collectionsRow
                 savedRow
                 if session.auth.isSignedIn {
+                    requests
                     findSomeone
                     friends(title: "Circle", people: people.filter { !$0.isMe && !$0.isSeed })
                     if people.contains(where: { !$0.isMe && $0.isSeed }) {
@@ -216,7 +217,7 @@ struct CircleHomeView: View {
                                     .foregroundStyle(.secondary)
                             }
                             Spacer()
-                            Text(person.isFollowing ? "Following" : "Follow")
+                            Text(person.followLabel)
                                 .font(Typeface.caption(12))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
@@ -226,6 +227,45 @@ struct CircleHomeView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var requests: some View {
+        let waiting = people.filter { !$0.isMe && $0.requestedToFollowMe }
+        if !waiting.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                SectionHeader(eyebrow: "Asking to follow", title: "Requests")
+                ForEach(waiting, id: \.id) { person in
+                    HStack(spacing: 12) {
+                        NavigationLink(value: Route.friend(person.id)) {
+                            HStack(spacing: 12) {
+                                PersonMark(name: person.displayName, hue: person.avatarHue)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(person.displayName)
+                                        .font(Typeface.body(16, weight: .semibold))
+                                        .foregroundStyle(.primary)
+                                    Text("@\(person.handle)")
+                                        .font(Typeface.caption(12))
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        Spacer()
+                        Button("Accept") {
+                            try? session.social.acceptFollower(personID: person.id, context: context)
+                        }
+                        .font(Typeface.body(14, weight: .semibold))
+                        .foregroundStyle(Palette.ember)
+                        Button("Decline") {
+                            try? session.social.removeFollower(personID: person.id, context: context)
+                        }
+                        .font(Typeface.body(14))
+                        .foregroundStyle(.secondary)
+                    }
                 }
             }
         }
@@ -261,7 +301,7 @@ struct CircleHomeView: View {
     }
 
     private var feed: some View {
-        let following = Set(people.filter(\.isFollowing).map(\.handle))
+        let following = Set(people.filter(\.canSeeTheirSkies).map(\.handle))
         let recent = entries.filter { !$0.isMine && following.contains($0.authorHandle) }.prefix(6)
         return VStack(alignment: .leading, spacing: 12) {
             SectionHeader(eyebrow: "Their last light", title: "From the circle")
@@ -309,7 +349,7 @@ struct FriendProfileView: View {
                         Text(person.bio)
                             .font(Typeface.body(16))
                         EmberButton(
-                            title: person.isFollowing ? "Following" : "Follow",
+                            title: person.followLabel,
                             fill: !person.isFollowing
                         ) {
                             try? session.social.setFollowing(
@@ -321,8 +361,22 @@ struct FriendProfileView: View {
                         if person.isSeed {
                             SoftBanner(text: "This person is on this phone’s demo circle. Sign in and look up a real handle to follow someone in the cloud.")
                         }
+                        if person.followsMe {
+                            Button("Remove follower", role: .destructive) {
+                                try? session.social.removeFollower(personID: person.id, context: context)
+                            }
+                            .font(Typeface.body(14))
+                        }
                         let theirs = entries.filter { $0.authorHandle == person.handle }
-                        if theirs.isEmpty {
+                        if person.isPrivate && !person.canSeeTheirSkies {
+                            QuietEmpty(
+                                symbol: "lock",
+                                title: "A private journal",
+                                detail: person.followPending
+                                    ? "Your request is waiting. Their skies land here once they accept."
+                                    : "Request to follow and their skies land here once they accept."
+                            )
+                        } else if theirs.isEmpty {
                             QuietEmpty(symbol: "sunset", title: "No evenings yet", detail: "When they log, their skies will land here.")
                         } else {
                             ForEach(theirs, id: \.id) { entry in

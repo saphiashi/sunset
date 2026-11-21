@@ -93,6 +93,8 @@ final class SunsetEntry {
     var photoBundleName: String?
     var photoFileName: String?
     var photoURL: String?
+    /// Storage object path in the private `sunset-photos` bucket.
+    var photoPath: String? = nil
     var photoAssetId: String?
     var authorHandle: String
     var authorName: String
@@ -204,6 +206,13 @@ final class Person: Identifiable {
     var isMe: Bool
     var avatarHue: Double
     var isSeed: Bool
+    var isPrivate: Bool = false
+    /// Outgoing follow is waiting on their approval.
+    var followPending: Bool = false
+    /// `isFollowing` changed locally and has not reached `follows` yet.
+    var followNeedsSync: Bool = false
+    var requestedToFollowMe: Bool = false
+    var followsMe: Bool = false
 
     init(
         id: UUID = UUID(),
@@ -225,6 +234,15 @@ final class Person: Identifiable {
         self.isMe = isMe
         self.avatarHue = avatarHue
         self.isSeed = isSeed
+    }
+}
+
+extension Person {
+    var canSeeTheirSkies: Bool { isFollowing && !followPending }
+
+    var followLabel: String {
+        if isFollowing { return followPending ? "Requested" : "Following" }
+        return followsMe ? "Follow back" : "Follow"
     }
 }
 
