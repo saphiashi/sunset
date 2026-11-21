@@ -211,6 +211,8 @@ final class Person: Identifiable {
     var followPending: Bool = false
     /// `isFollowing` changed locally and has not reached `follows` yet.
     var followNeedsSync: Bool = false
+    /// Accept/decline/remove of their follow of me still has to reach the server.
+    var followerNeedsSync: Bool = false
     var requestedToFollowMe: Bool = false
     var followsMe: Bool = false
 
