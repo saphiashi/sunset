@@ -153,3 +153,9 @@ $$;
 
 revoke execute on function public.delete_my_account() from public, anon;
 grant execute on function public.delete_my_account() to authenticated;
+
+-- A deleted user's spots must go with them: `created_by is null` means public catalog.
+alter table public.spots drop constraint spots_created_by_fkey;
+alter table public.spots
+  add constraint spots_created_by_fkey
+  foreign key (created_by) references public.profiles (id) on delete cascade;
