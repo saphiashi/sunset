@@ -22,7 +22,8 @@ create policy "blocks_all_own"
   using (blocker_id = auth.uid())
   with check (blocker_id = auth.uid());
 
-create or replace function public.is_blocked_between(_a uuid, _b uuid)
+-- Both helpers only answer about the caller, so they can't probe strangers' blocks.
+create or replace function public.is_blocked_with(_other uuid)
 returns boolean
 language sql
 stable
@@ -31,8 +32,22 @@ set search_path = public
 as $$
   select exists (
     select 1 from public.blocks
-    where (blocker_id = _a and blocked_id = _b)
-       or (blocker_id = _b and blocked_id = _a)
+    where (blocker_id = auth.uid() and blocked_id = _other)
+       or (blocker_id = _other and blocked_id = auth.uid())
+  );
+$$;
+
+-- Runs as definer: blocks RLS would otherwise hide the other person's block from the caller.
+create or replace function public.has_blocked_me(_user uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.blocks
+    where blocker_id = _user and blocked_id = auth.uid()
   );
 $$;
 
@@ -62,10 +77,7 @@ create policy "profiles_select_unblocked"
   to authenticated
   using (
     id = auth.uid()
-    or not exists (
-      select 1 from public.blocks b
-      where b.blocker_id = profiles.id and b.blocked_id = auth.uid()
-    )
+    or not public.has_blocked_me(id)
   );
 
 drop policy "follows_insert_own" on public.follows;
@@ -74,7 +86,7 @@ create policy "follows_insert_own_unblocked"
   to authenticated
   with check (
     follower_id = auth.uid()
-    and not public.is_blocked_between(follower_id, followee_id)
+    and not public.is_blocked_with(followee_id)
   );
 
 drop policy "shared_notes_insert_sender" on public.shared_spot_notes;
@@ -83,7 +95,7 @@ create policy "shared_notes_insert_sender_unblocked"
   to authenticated
   with check (
     from_user_id = auth.uid()
-    and not public.is_blocked_between(from_user_id, to_user_id)
+    and not public.is_blocked_with(to_user_id)
   );
 
 -- ---------------------------------------------------------------------------
@@ -116,7 +128,8 @@ create policy "reports_select_own"
 
 grant select, insert, update, delete on public.blocks to authenticated;
 grant select, insert on public.reports to authenticated;
-grant execute on function public.is_blocked_between(uuid, uuid) to authenticated;
+grant execute on function public.is_blocked_with(uuid) to authenticated;
+grant execute on function public.has_blocked_me(uuid) to authenticated;
 
 -- ---------------------------------------------------------------------------
 -- Account deletion. The app removes the user's Storage folder first (Storage
