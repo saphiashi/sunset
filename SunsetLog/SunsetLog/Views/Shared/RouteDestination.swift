@@ -22,6 +22,8 @@ struct RouteDestination: View {
             LibraryScanView()
         case .calendar:
             CalendarJournalView()
+        case .rankings:
+            RankingsView()
         }
     }
 }

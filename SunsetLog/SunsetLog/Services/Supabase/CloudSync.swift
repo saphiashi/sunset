@@ -189,7 +189,9 @@ final class CloudSync {
             photoURL: photoURL,
             photoPath: photoPath,
             imported: entry.importedFromLibrary,
-            isPublic: true
+            isPublic: true,
+            rankTier: entry.rankTier,
+            rankOrder: entry.rankOrder
         )
         try await client.from("sunset_entries").upsert(row).execute()
         entry.needsSync = false
@@ -371,6 +373,8 @@ final class CloudSync {
             existing.overallScore = row.overallScore
             existing.photoURL = row.photoURL
             existing.importedFromLibrary = row.imported
+            existing.rankTier = row.rankTier
+            existing.rankOrder = row.rankOrder
             existing.isMine = mine
             existing.needsSync = false
             if let spotID = row.spotId {
@@ -394,6 +398,8 @@ final class CloudSync {
             importedFromLibrary: row.imported,
             needsSync: false
         )
+        entry.rankTier = row.rankTier
+        entry.rankOrder = row.rankOrder
         if let spotID = row.spotId {
             let spots = (try? context.fetch(FetchDescriptor<Spot>())) ?? []
             entry.spot = spots.first(where: { $0.id == spotID })

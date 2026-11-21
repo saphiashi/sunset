@@ -51,8 +51,18 @@ struct RootView: View {
                 router.tab = .tonight
             }
         }
-        .sheet(isPresented: $session.logPresented) {
+        .sheet(isPresented: $session.logPresented, onDismiss: {
+            if let id = session.rankAfterLog {
+                session.rankAfterLog = nil
+                session.rankingEntry = RankTarget(id: id)
+            }
+        }) {
             LogSunsetView()
+                .environment(session)
+                .environment(router)
+        }
+        .sheet(item: $session.rankingEntry) { target in
+            RankFlowView(entryID: target.id)
                 .environment(session)
                 .environment(router)
         }

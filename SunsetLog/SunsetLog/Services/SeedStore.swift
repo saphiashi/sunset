@@ -39,6 +39,7 @@ enum SeedStore {
         let byID = Dictionary(uniqueKeysWithValues: spots.map { ($0.id, $0) })
         let col = Dictionary(uniqueKeysWithValues: collections.map { ($0.id, $0) })
 
+        var mine: [SunsetEntry] = []
         for draft in makeEntries() {
             let entry = SunsetEntry(
                 capturedAt: draft.when,
@@ -61,7 +62,13 @@ enum SeedStore {
                 col[cid]?.entries.append(entry)
             }
             context.insert(entry)
+            if draft.mine { mine.append(entry) }
         }
+        RankBook.renumber(
+            mine.sorted { $0.overallScore > $1.overallScore },
+            tier: .unforgettable,
+            markForSync: false
+        )
 
         if let baker = byID[SeedID.baker] {
             context.insert(

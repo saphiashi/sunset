@@ -48,17 +48,24 @@ struct JournalView: View {
                     .font(Typeface.italic(34))
             }
             Spacer()
-            Button {
-                router.open(.calendar, in: .journal)
-            } label: {
-                Image(systemName: "calendar")
-                    .font(.title3)
-                    .foregroundStyle(.white.opacity(0.9))
-                    .padding(12)
-                    .background(.ultraThinMaterial.opacity(0.5), in: Circle())
+            headerButton("list.number", label: "Ranking") {
+                router.open(.rankings, in: .journal)
             }
-            .accessibilityLabel("Calendar")
+            headerButton("calendar", label: "Calendar") {
+                router.open(.calendar, in: .journal)
+            }
         }
+    }
+
+    private func headerButton(_ symbol: String, label: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.title3)
+                .foregroundStyle(.white.opacity(0.9))
+                .padding(12)
+                .background(.ultraThinMaterial.opacity(0.5), in: Circle())
+        }
+        .accessibilityLabel(label)
     }
 
     private var filterChips: some View {
@@ -167,6 +174,7 @@ private struct EntryDetailLoaded: View {
                 }
             }
             if entry.isMine {
+                EntryRankRow(entry: entry)
                 CollectionMembershipEditor(entry: entry, collections: collections)
             }
         }
@@ -174,6 +182,32 @@ private struct EntryDetailLoaded: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 8)
         .padding(.bottom, 32)
+    }
+}
+
+private struct EntryRankRow: View {
+    @Environment(\.modelContext) private var context
+    @Environment(AppSession.self) private var session
+    let entry: SunsetEntry
+
+    var body: some View {
+        let position = RankBook.position(of: entry, context: context)
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(position.map { "#\($0.rank) of \($0.total)" } ?? "Not ranked yet")
+                    .font(Typeface.italic(22))
+                Text(entry.tier?.title ?? "Compare it with your other evenings")
+                    .font(Typeface.caption(12))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Button(entry.tier == nil ? "Rank it" : "Re-rank") {
+                session.rankingEntry = RankTarget(id: entry.id)
+            }
+            .font(Typeface.body(15, weight: .semibold))
+            .foregroundStyle(Palette.ember)
+        }
+        .padding(.top, 8)
     }
 }
 

@@ -101,6 +101,10 @@ final class SunsetEntry {
     var isSeed: Bool
     var needsSync: Bool
     var createdAt: Date
+    /// `RankTier` raw value; nil until the sky has been ranked.
+    var rankTier: Int? = nil
+    /// 0-based, best-first position inside `rankTier`.
+    var rankOrder: Int? = nil
 
     var spot: Spot?
 
@@ -147,6 +151,10 @@ final class SunsetEntry {
     }
 
     var resolvedBundleName: String? { photoBundleName }
+
+    var tier: RankTier? {
+        rankTier.flatMap(RankTier.init(rawValue:))
+    }
 
     var dayKey: Date {
         Calendar.current.startOfDay(for: capturedAt)

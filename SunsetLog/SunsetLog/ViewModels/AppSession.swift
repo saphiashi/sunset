@@ -17,6 +17,9 @@ final class AppSession {
     var logPresented = false
     var scanPresented = false
     var signInPresented = false
+    /// Set by the log sheet so ranking opens once it has closed.
+    var rankAfterLog: UUID?
+    var rankingEntry: RankTarget?
 
     private var clockTask: Task<Void, Never>?
 

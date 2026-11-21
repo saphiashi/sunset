@@ -48,6 +48,8 @@ struct EntryRow: Codable, Sendable {
     var photoPath: String?
     var imported: Bool
     var isPublic: Bool
+    var rankTier: Int?
+    var rankOrder: Int?
 
     enum CodingKeys: String, CodingKey {
         case id, note, imported
@@ -60,6 +62,8 @@ struct EntryRow: Codable, Sendable {
         case photoURL = "photo_url"
         case photoPath = "photo_path"
         case isPublic = "is_public"
+        case rankTier = "rank_tier"
+        case rankOrder = "rank_order"
     }
 }
 
