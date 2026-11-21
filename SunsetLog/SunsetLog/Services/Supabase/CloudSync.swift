@@ -27,6 +27,14 @@ final class CloudSync {
         self.context = context
     }
 
+    /// Clears the previous account's journal (back to the demo seed) before a new account syncs.
+    func resetLocalJournal() {
+        syncTask?.cancel()
+        guard let context else { return }
+        SeedStore.reset(context)
+        lastSyncedAt = nil
+    }
+
     /// Debounced so logging, follows, and collection toggles can fire together.
     func schedule() {
         syncTask?.cancel()

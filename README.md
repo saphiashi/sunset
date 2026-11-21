@@ -26,7 +26,7 @@ All day-one features are navigable on first launch from seed data. Signed-out yo
 
 | State | Journal | Circle |
 | --- | --- | --- |
-| **Signed out** | SwiftData on this phone, including California seed evenings | Demo circle on device. Follow/share stay local. Sign-in card on Circle |
+| **Signed out** | SwiftData on this phone, including California seed evenings. After sign-out the journal stays; if a *different* account signs in, the phone resets to the seed first so nothing crosses accounts (`journalOwnerID`) | Demo circle on device. Follow/share stay local. Sign-in card on Circle |
 | **Signed in** | SwiftData is the offline cache. Your new evenings, spots, collections, and saved pins upsert to Postgres. Photos go to the `sunset-photos` bucket | Look up a handle, follow, read that person’s **public** skies. Seed friends stay as “on this phone” and do not write `follows` rows (they are not Auth users) |
 | **Offline while signed in** | Logging still writes SwiftData (`needsSync`). Next launch / pull-to-refresh on Circle retries | Follow still sticks locally; the cloud write retries on the next sync |
 | **No keys in the build** | Same as signed out. Settings explains the placeholders | Sign-in sheet says keys are missing |

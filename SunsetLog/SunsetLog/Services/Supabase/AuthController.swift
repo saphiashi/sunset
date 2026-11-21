@@ -21,6 +21,13 @@ final class AuthController {
 
     var pendingNonce: String?
     var onSessionChange: (() -> Void)?
+    /// A different account signed in than the one whose data is on this phone.
+    /// Runs before the first sync so the old journal never uploads to the new account.
+    var onAccountSwitch: (() -> Void)?
+
+    /// The account whose journal is on this phone. Persists through sign-out, so
+    /// evenings logged while signed out sync only if that same account returns.
+    static let journalOwnerKey = "journalOwnerID"
 
     /// Exposed to CloudSync / PhotoUploader. Nil when keys are placeholders.
     let client: SupabaseClient?
@@ -109,7 +116,7 @@ final class AuthController {
         }
         isSignedIn = false
         profile = nil
-        statusMessage = "Signed out. The journal on this phone stays."
+        statusMessage = "Signed out. The journal stays on this phone until a different account signs in."
         onSessionChange?()
     }
 
@@ -192,6 +199,11 @@ final class AuthController {
             return
         }
         let userID = session.user.id
+        let defaults = UserDefaults.standard
+        if let owner = defaults.string(forKey: Self.journalOwnerKey), owner != userID.uuidString {
+            onAccountSwitch?()
+        }
+        defaults.set(userID.uuidString, forKey: Self.journalOwnerKey)
         isSignedIn = true
         var handle = "you"
         var displayName = session.user.email?.split(separator: "@").first.map(String.init) ?? "You"
