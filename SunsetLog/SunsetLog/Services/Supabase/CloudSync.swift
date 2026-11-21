@@ -120,6 +120,9 @@ final class CloudSync {
     // MARK: - Push
 
     private func pushAll(client: SupabaseClient, userID: UUID, context: ModelContext) async throws {
+        // Follows first: a rejected photo upload below must not strand an unfollow or a removal.
+        try await pushFollows(client: client, userID: userID, context: context)
+
         let spots = (try? context.fetch(FetchDescriptor<Spot>())) ?? []
         for spot in spots where !spot.isSeed && spot.needsSync {
             try await client.from("spots").upsert(spotRow(spot, userID: userID)).execute()
@@ -153,7 +156,9 @@ final class CloudSync {
                 ).execute()
             }
         }
+    }
 
+    private func pushFollows(client: SupabaseClient, userID: UUID, context: ModelContext) async throws {
         let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
         for person in people where !person.isMe && !person.isSeed && person.followNeedsSync {
             if person.isFollowing {
