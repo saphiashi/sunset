@@ -16,7 +16,7 @@ All day-one features are navigable on first launch from seed data. Signed-out yo
 | **Scan** | PhotoKit pass: time near local sunset + warm-sky pixels, then a review sheet to import and rate |
 | **Atlas** | MapKit of highly rated spots, with a San Francisco fallback when location is off |
 | **Spot pages** | Place profile, averages, pin, recent skies, save, system share, send-to-a-friend |
-| **Circle** | Sign in, follow (cloud when the person is a real account), recent public skies, spots they passed to you |
+| **Circle** | Sign in, follow (cloud when the person is a real account), recent public skies, spots they passed to you. Report or block from a profile’s ⋯ menu; report a friend’s sunset from its page |
 | **Collections** | Pink skies, storm light, favorites, coastal — add from an evening you logged |
 | **Reminder** | Local notification a chosen number of minutes before tonight’s sunset |
 
@@ -82,6 +82,8 @@ Or paste `supabase/migrations/20260902000000_init.sql` into the SQL editor and r
 - tables: `profiles`, `spots`, `sunset_entries`, `collections`, `collection_entries`, `follows`, `saved_spots`, `shared_spot_notes`
 - RLS so you only write your own rows; you can read a friend’s **public** entries/spots if you follow them
 - catalog California spots (same UUIDs as the iOS seed) so logs at Baker Beach still satisfy `spot_id` FKs
+- `blocks` (blocking drops follows both ways and hides your profile from them) and `reports` (insert-only for users; review them in the dashboard)
+- `delete_my_account()` RPC: deletes the auth user, cascading to every row they own. The app empties their Storage folder first
 - storage bucket `sunset-photos` (public read, write only into `{auth.uid()}/…`)
 - a trigger that inserts `profiles` when `auth.users` gets a row
 

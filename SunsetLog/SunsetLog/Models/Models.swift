@@ -204,6 +204,7 @@ final class Person: Identifiable {
     var isMe: Bool
     var avatarHue: Double
     var isSeed: Bool
+    var isBlocked: Bool = false
 
     init(
         id: UUID = UUID(),

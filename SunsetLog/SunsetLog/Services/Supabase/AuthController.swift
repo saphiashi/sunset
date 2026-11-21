@@ -132,6 +132,31 @@ final class AuthController {
         }
     }
 
+    /// Removes the Storage folder, then `delete_my_account` deletes the auth user,
+    /// which cascades to every row they own.
+    func deleteAccount() async -> Bool {
+        guard let client, let userID else { return false }
+        let folder = userID.uuidString.lowercased()
+        do {
+            let bucket = client.storage.from(PhotoUploader.bucket)
+            for _ in 0..<50 {
+                let files = try await bucket.list(path: folder)
+                guard !files.isEmpty else { break }
+                _ = try await bucket.remove(paths: files.map { "\(folder)/\($0.name)" })
+            }
+            try await client.rpc("delete_my_account").execute()
+        } catch {
+            lastError = error.localizedDescription
+            return false
+        }
+        try? await client.auth.signOut()
+        isSignedIn = false
+        profile = nil
+        statusMessage = "Account deleted."
+        onSessionChange?()
+        return true
+    }
+
     private func signInWithApple(_ authorization: ASAuthorization) async {
         guard let client else {
             lastError = "Add your Supabase URL and anon key in Secrets.xcconfig."

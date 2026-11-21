@@ -128,3 +128,28 @@ struct SharedNoteRow: Codable, Sendable {
         case createdAt = "created_at"
     }
 }
+
+struct BlockRow: Codable, Sendable {
+    var blockerId: UUID
+    var blockedId: UUID
+
+    enum CodingKeys: String, CodingKey {
+        case blockerId = "blocker_id"
+        case blockedId = "blocked_id"
+    }
+}
+
+struct ReportRow: Codable, Sendable {
+    var reporterId: UUID
+    var reportedUserId: UUID?
+    var entryId: UUID?
+    var reason: String
+    var details: String
+
+    enum CodingKeys: String, CodingKey {
+        case reason, details
+        case reporterId = "reporter_id"
+        case reportedUserId = "reported_user_id"
+        case entryId = "entry_id"
+    }
+}

@@ -40,6 +40,7 @@
 		243707850FBFA91817492877 /* JournalVeil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalVeil.swift; sourceTree = "<group>"; };
 		B757FAFBA0A933236950F8AC /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
 		B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSunsetView.swift; sourceTree = "<group>"; };
+		A626CD6A0A7CEC9E796A9A8C /* ReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSheet.swift; sourceTree = "<group>"; };
 		F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryScanView.swift; sourceTree = "<group>"; };
 		4551F193AE4BFA0611F14667 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		21198954065416E432333218 /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
@@ -104,6 +105,7 @@
 		B01FC73C859324684284E947 /* JournalVeil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243707850FBFA91817492877 /* JournalVeil.swift */; };
 		BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757FAFBA0A933236950F8AC /* JournalView.swift */; };
 		1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */; };
+		DA1C31E3A712167A7C0664D8 /* ReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626CD6A0A7CEC9E796A9A8C /* ReportSheet.swift */; };
 		D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */; };
 		4A9CACB3A1DACC98F3A6EE8D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4551F193AE4BFA0611F14667 /* SettingsView.swift */; };
 		34C182BECABA7ED90C3A6243 /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21198954065416E432333218 /* CameraPicker.swift */; };
@@ -254,6 +256,7 @@
 				F8B2B8769456F41ED54C8DA0 /* Home */,
 				DA8C9336BB1173179839ADDE /* Journal */,
 				CA28A6C04614A34D1DB6655A /* Log */,
+				091A12BE2FF24BA71E284368 /* Moderation */,
 				78E1AC313FB9E523DCAD1839 /* Scan */,
 				0D7626413CCF860C82715CA5 /* Settings */,
 				F4F2BA776A0C7F929FA2D0A5 /* Shared */,
@@ -319,6 +322,14 @@
 				B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */,
 			);
 			path = Log;
+			sourceTree = "<group>";
+		};
+		091A12BE2FF24BA71E284368 /* Moderation */ = {
+			isa = PBXGroup;
+			children = (
+				A626CD6A0A7CEC9E796A9A8C /* ReportSheet.swift */,
+			);
+			path = Moderation;
 			sourceTree = "<group>";
 		};
 		78E1AC313FB9E523DCAD1839 /* Scan */ = {
@@ -422,6 +433,7 @@
 				B01FC73C859324684284E947 /* JournalVeil.swift in Sources */,
 				BC19A7739C7DF6DC2CBCCFAC /* JournalView.swift in Sources */,
 				1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */,
+				DA1C31E3A712167A7C0664D8 /* ReportSheet.swift in Sources */,
 				D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */,
 				4A9CACB3A1DACC98F3A6EE8D /* SettingsView.swift in Sources */,
 				34C182BECABA7ED90C3A6243 /* CameraPicker.swift in Sources */,

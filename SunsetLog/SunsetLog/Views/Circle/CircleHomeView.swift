@@ -23,12 +23,12 @@ struct CircleHomeView: View {
                 savedRow
                 if session.auth.isSignedIn {
                     findSomeone
-                    friends(title: "Circle", people: people.filter { !$0.isMe && !$0.isSeed })
+                    friends(title: "Circle", people: people.filter { !$0.isMe && !$0.isSeed && !$0.isBlocked })
                     if people.contains(where: { !$0.isMe && $0.isSeed }) {
                         friends(title: "On this phone", people: people.filter { !$0.isMe && $0.isSeed })
                     }
                 } else {
-                    friends(title: "Circle", people: people.filter { !$0.isMe })
+                    friends(title: "Circle", people: people.filter { !$0.isMe && !$0.isBlocked })
                 }
                 inbox
                 feed
@@ -289,6 +289,8 @@ struct FriendProfileView: View {
     @Query(sort: \SunsetEntry.capturedAt, order: .reverse) private var entries: [SunsetEntry]
     @Environment(\.modelContext) private var context
     @Environment(AppSession.self) private var session
+    @State private var reporting: ReportTarget?
+    @State private var confirmBlock = false
 
     private var person: Person? { people.first { $0.id == personID } }
 
@@ -308,6 +310,9 @@ struct FriendProfileView: View {
                         }
                         Text(person.bio)
                             .font(Typeface.body(16))
+                        if person.isBlocked {
+                            SoftBanner(text: "Blocked. They can’t find you, follow you, or send you pins.")
+                        } else {
                         EmberButton(
                             title: person.isFollowing ? "Following" : "Follow",
                             fill: !person.isFollowing
@@ -317,6 +322,7 @@ struct FriendProfileView: View {
                                 isFollowing: !person.isFollowing,
                                 context: context
                             )
+                        }
                         }
                         if person.isSeed {
                             SoftBanner(text: "This person is on this phone’s demo circle. Sign in and look up a real handle to follow someone in the cloud.")
@@ -341,6 +347,44 @@ struct FriendProfileView: View {
         }
         .duskBackdrop()
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if let person {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button("Report @\(person.handle)", systemImage: "flag") {
+                            reporting = ReportTarget(personID: person.id, entryID: nil, handle: person.handle)
+                        }
+                        if person.isBlocked {
+                            Button("Unblock", systemImage: "hand.raised.slash") {
+                                try? session.social.setBlocked(personID: person.id, isBlocked: false, context: context)
+                            }
+                        } else {
+                            Button("Block", systemImage: "hand.raised", role: .destructive) {
+                                confirmBlock = true
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                    .accessibilityLabel("More")
+                }
+            }
+        }
+        .sheet(item: $reporting) { target in
+            ReportSheet(target: target)
+        }
+        .confirmationDialog(
+            "Block @\(person?.handle ?? "")?",
+            isPresented: $confirmBlock,
+            titleVisibility: .visible
+        ) {
+            Button("Block", role: .destructive) {
+                try? session.social.setBlocked(personID: personID, isBlocked: true, context: context)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("You’ll stop following each other and their skies leave this phone. They aren’t told.")
+        }
     }
 }
 

@@ -6,6 +6,9 @@ struct SettingsView: View {
     @Environment(\.modelContext) private var context
     @Query private var prefs: [UserPrefs]
     @State private var showReset = false
+    @State private var confirmDelete = false
+    @State private var deleting = false
+    @State private var deleteError: String?
     @State private var newCollection = false
 
     private var settings: UserPrefs {
@@ -65,6 +68,15 @@ struct SettingsView: View {
                     Button("Sign out", role: .destructive) {
                         Task { await session.auth.signOut() }
                     }
+                    Button(deleting ? "Deleting…" : "Delete account", role: .destructive) {
+                        confirmDelete = true
+                    }
+                    .disabled(deleting)
+                    if let deleteError {
+                        Text(deleteError)
+                            .font(Typeface.caption(12))
+                            .foregroundStyle(.red)
+                    }
                 } else {
                     Text(session.auth.isConfigured
                          ? "The journal on this phone works without an account. Sign in to sync evenings and follow people."
@@ -111,6 +123,29 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $newCollection) {
             NewCollectionSheet()
+        }
+        .confirmationDialog(
+            "Delete your account?",
+            isPresented: $confirmDelete,
+            titleVisibility: .visible
+        ) {
+            Button("Delete account and photos", role: .destructive) {
+                Task { await deleteAccount() }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Your profile, sunsets, photos, collections, and follows are removed from the cloud and this phone. This can’t be undone.")
+        }
+    }
+
+    private func deleteAccount() async {
+        deleting = true
+        deleteError = nil
+        defer { deleting = false }
+        if await session.auth.deleteAccount() {
+            SeedStore.reset(context)
+        } else {
+            deleteError = session.auth.lastError ?? "Couldn’t delete the account. Try again."
         }
     }
 

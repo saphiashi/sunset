@@ -154,7 +154,15 @@ final class CloudSync {
         }
 
         let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
-        for person in people where !person.isMe && !person.isSeed {
+        let blocked = people.filter { $0.isBlocked && !$0.isSeed && !$0.isMe }
+        if !blocked.isEmpty {
+            try await client.from("blocks").upsert(
+                blocked.map { BlockRow(blockerId: userID, blockedId: $0.id) },
+                onConflict: "blocker_id,blocked_id",
+                ignoreDuplicates: true
+            ).execute()
+        }
+        for person in people where !person.isMe && !person.isSeed && !person.isBlocked {
             if person.isFollowing {
                 try await client.from("follows").upsert(
                     FollowRow(followerId: userID, followeeId: person.id)
@@ -251,6 +259,17 @@ final class CloudSync {
             }
         }
 
+        let blocks: [BlockRow] = try await client
+            .from("blocks")
+            .select()
+            .eq("blocker_id", value: userID.uuidString.lowercased())
+            .execute()
+            .value
+        let blockedIDs = Set(blocks.map(\.blockedId))
+        for person in ((try? context.fetch(FetchDescriptor<Person>())) ?? []) where !person.isSeed && !person.isMe {
+            person.isBlocked = blockedIDs.contains(person.id)
+        }
+
         let follows: [FollowRow] = try await client
             .from("follows")
             .select()
@@ -258,7 +277,7 @@ final class CloudSync {
             .execute()
             .value
 
-        for follow in follows {
+        for follow in follows where !blockedIDs.contains(follow.followeeId) {
             let profiles: [ProfileRow] = try await client
                 .from("profiles")
                 .select()
