@@ -161,7 +161,8 @@ final class CloudSync {
     private func pushFollows(client: SupabaseClient, userID: UUID, context: ModelContext) async throws {
         let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
         for person in people where !person.isMe && !person.isSeed && person.followNeedsSync {
-            if person.isFollowing {
+            let wantsFollow = person.isFollowing
+            if wantsFollow {
                 // Do nothing on conflict: followers may not update an edge (that would self-accept).
                 try await client.from("follows").upsert(
                     FollowRow(followerId: userID, followeeId: person.id),
@@ -175,25 +176,29 @@ final class CloudSync {
                     .eq("followee_id", value: person.id.uuidString.lowercased())
                     .execute()
             }
-            person.followNeedsSync = false
+            // A tap during the write queued a newer choice; leave it for the next push.
+            if person.isFollowing == wantsFollow { person.followNeedsSync = false }
         }
 
         for person in people where !person.isMe && !person.isSeed && person.followerNeedsSync {
             let match = client.from("follows")
-            if person.followsMe {
+            let accepted = person.followsMe, requested = person.requestedToFollowMe
+            if accepted {
                 try await match
                     .update(["status": "accepted"])
                     .eq("follower_id", value: person.id.uuidString.lowercased())
                     .eq("followee_id", value: userID.uuidString.lowercased())
                     .execute()
-            } else if !person.requestedToFollowMe {
+            } else if !requested {
                 try await match
                     .delete()
                     .eq("follower_id", value: person.id.uuidString.lowercased())
                     .eq("followee_id", value: userID.uuidString.lowercased())
                     .execute()
             }
-            person.followerNeedsSync = false
+            if person.followsMe == accepted && person.requestedToFollowMe == requested {
+                person.followerNeedsSync = false
+            }
         }
     }
 
