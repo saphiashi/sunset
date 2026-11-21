@@ -123,6 +123,8 @@ as $$
     select 1
     from public.sunset_entries e
     where e.photo_path = _path
+      -- photo_path is client-written; only trust it inside the owner's own folder.
+      and split_part(_path, '/', 1) = e.user_id::text
       and (
         e.user_id = auth.uid()
         or (e.is_public and public.is_following(e.user_id))
