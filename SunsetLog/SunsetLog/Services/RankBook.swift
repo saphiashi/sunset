@@ -9,7 +9,24 @@ enum RankBook {
         let all = (try? context.fetch(FetchDescriptor<SunsetEntry>())) ?? []
         return all
             .filter { $0.isMine && $0.rankTier == tier.rawValue && $0.id != id }
-            .sorted { ($0.rankOrder ?? .max) < ($1.rankOrder ?? .max) }
+            .sorted(by: precedes)
+    }
+
+    /// Ties come from two devices ranking offline, or demo evenings next to
+    /// restored ones: real evenings first, then the newer sky.
+    private static func precedes(_ a: SunsetEntry, _ b: SunsetEntry) -> Bool {
+        let orderA = a.rankOrder ?? .max, orderB = b.rankOrder ?? .max
+        if orderA != orderB { return orderA < orderB }
+        if a.isSeed != b.isSeed { return !a.isSeed }
+        if a.capturedAt != b.capturedAt { return a.capturedAt > b.capturedAt }
+        return a.id.uuidString < b.id.uuidString
+    }
+
+    /// Re-packs every ladder to 0..<n after sync so merged positions never collide.
+    static func normalize(context: ModelContext) {
+        for tier in RankTier.allCases {
+            renumber(ladder(tier, context: context), tier: tier)
+        }
     }
 
     /// Every ranked sky of yours, best first across tiers.

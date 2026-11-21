@@ -64,6 +64,7 @@ final class CloudSync {
             await applyProfileToMe(context: context)
             try await pushAll(client: client, userID: userID, context: context)
             try await pullAll(client: client, userID: userID, context: context)
+            RankBook.normalize(context: context)
             try context.save()
             lastSyncedAt = Date()
             lastStatus = "Synced just now"
