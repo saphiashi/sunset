@@ -32,8 +32,16 @@ final class CloudSync {
         syncTask?.cancel()
         guard let context else { return }
         SeedStore.reset(context)
+        // Demo pins aren't the new account's choices: pull theirs before anything is pushed.
+        for spot in (try? context.fetch(FetchDescriptor<Spot>())) ?? [] {
+            spot.isSaved = false
+        }
+        try? context.save()
+        pullBeforePush = true
         lastSyncedAt = nil
     }
+
+    private var pullBeforePush = false
 
     /// Debounced so logging, follows, and collection toggles can fire together.
     func schedule() {
@@ -70,6 +78,10 @@ final class CloudSync {
 
         do {
             await applyProfileToMe(context: context)
+            if pullBeforePush {
+                try await pullAll(client: client, userID: userID, context: context)
+                pullBeforePush = false
+            }
             try await pushAll(client: client, userID: userID, context: context)
             try await pullAll(client: client, userID: userID, context: context)
             try context.save()
