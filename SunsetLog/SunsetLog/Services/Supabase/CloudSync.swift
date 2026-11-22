@@ -131,9 +131,15 @@ final class CloudSync {
         }
 
         let saved = spots.filter(\.isSaved)
-        let savedRows = saved.map { SavedSpotRow(userId: userID, spotId: $0.id) }
-        if !savedRows.isEmpty {
-            try await client.from("saved_spots").upsert(savedRows).execute()
+        for spot in saved {
+            do {
+                try await client.from("saved_spots")
+                    .upsert(SavedSpotRow(userId: userID, spotId: spot.id))
+                    .execute()
+            } catch let error as PostgrestError where error.code == "23503" {
+                // The spot is gone from the cloud (its owner deleted their account).
+                spot.isSaved = false
+            }
         }
         for spot in spots where !spot.isSaved {
             try await client.from("saved_spots")
