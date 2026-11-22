@@ -1,4 +1,4 @@
--- In-app account deletion (App Store 5.1.1(v)) and report/block (1.2).
+-- Report/block (App Store 1.2) and cascades for in-app account deletion (5.1.1(v)).
 
 -- ---------------------------------------------------------------------------
 -- Blocks
@@ -131,28 +131,8 @@ grant select, insert on public.reports to authenticated;
 grant execute on function public.is_blocked_with(uuid) to authenticated;
 grant execute on function public.has_blocked_me(uuid) to authenticated;
 
--- ---------------------------------------------------------------------------
--- Account deletion. The app removes the user's Storage folder first (Storage
--- objects can't be deleted from SQL); deleting auth.users cascades through
--- profiles to every row the user owns.
--- ---------------------------------------------------------------------------
-
-create or replace function public.delete_my_account()
-returns void
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  if auth.uid() is null then
-    raise exception 'not signed in';
-  end if;
-  delete from auth.users where id = auth.uid();
-end;
-$$;
-
-revoke execute on function public.delete_my_account() from public, anon;
-grant execute on function public.delete_my_account() to authenticated;
+-- Account deletion runs in the `delete-account` Edge Function (service role): it revokes
+-- the Apple token, deletes auth.users (cascading through profiles), then the Storage folder.
 
 -- A deleted user's spots must go with them: `created_by is null` means public catalog.
 alter table public.spots drop constraint spots_created_by_fkey;

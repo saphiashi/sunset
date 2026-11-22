@@ -83,7 +83,7 @@ Or paste `supabase/migrations/20260902000000_init.sql` into the SQL editor and r
 - RLS so you only write your own rows; you can read a friend’s **public** entries/spots if you follow them
 - catalog California spots (same UUIDs as the iOS seed) so logs at Baker Beach still satisfy `spot_id` FKs
 - `blocks` (blocking drops follows both ways and hides your profile from them) and `reports` (insert-only for users; review them in the dashboard)
-- `delete_my_account()` RPC: deletes the auth user, cascading to every row they own. The app empties their Storage folder first
+- Account deletion goes through the `delete-account` Edge Function (below). Users' spots, entries, follows and blocks cascade from `profiles`
 - storage bucket `sunset-photos` (public read, write only into `{auth.uid()}/…`)
 - a trigger that inserts `profiles` when `auth.users` gets a row
 
@@ -129,6 +129,19 @@ Email magic link is the documented fallback while Apple’s capability / Service
 - The anon key in the binary is expected; do not embed `SUPABASE_SERVICE_ROLE_KEY`.
 - First Apple sign-in is the only time Apple sends the person’s name — the app writes it to `profiles.display_name`.
 - Reviewers can walk the journal without signing in. Sign-in is required only for cloud sync and real follows.
+
+
+### Deploy the account-deletion function
+
+Settings → Delete account calls `supabase/functions/delete-account`. It revokes the user's Sign in with Apple token, deletes the auth user (which deletes all of their rows), then empties their photo folder.
+
+```bash
+supabase functions deploy delete-account
+supabase secrets set APPLE_TEAM_ID=XXXXXXXXXX APPLE_KEY_ID=XXXXXXXXXX \
+  APPLE_CLIENT_ID=com.sunsetlog.app APPLE_PRIVATE_KEY="$(cat AuthKey_XXXXXXXXXX.p8)"
+```
+
+Use the same Sign in with Apple key as the Supabase Apple provider. `APPLE_CLIENT_ID` is the app's bundle ID, because the app signs in natively. Without the Apple secrets, accounts are still deleted, but their Apple tokens aren't revoked.
 
 ## Schema (short)
 

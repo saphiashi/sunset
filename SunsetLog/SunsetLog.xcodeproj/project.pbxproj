@@ -42,6 +42,7 @@
 		B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSunsetView.swift; sourceTree = "<group>"; };
 		A626CD6A0A7CEC9E796A9A8C /* ReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSheet.swift; sourceTree = "<group>"; };
 		F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryScanView.swift; sourceTree = "<group>"; };
+		2EB39F5732C7BB88C771C13E /* DeleteAccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountSheet.swift; sourceTree = "<group>"; };
 		4551F193AE4BFA0611F14667 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		21198954065416E432333218 /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
 		9DD8FDAD8D1928D52A25D782 /* RouteDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDestination.swift; sourceTree = "<group>"; };
@@ -107,6 +108,7 @@
 		1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B597DDECB5C5CDE6DC95A37B /* LogSunsetView.swift */; };
 		DA1C31E3A712167A7C0664D8 /* ReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626CD6A0A7CEC9E796A9A8C /* ReportSheet.swift */; };
 		D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E9CEC91F333381A30D67AD /* LibraryScanView.swift */; };
+		4079BF69E7E74CA18296048A /* DeleteAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB39F5732C7BB88C771C13E /* DeleteAccountSheet.swift */; };
 		4A9CACB3A1DACC98F3A6EE8D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4551F193AE4BFA0611F14667 /* SettingsView.swift */; };
 		34C182BECABA7ED90C3A6243 /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21198954065416E432333218 /* CameraPicker.swift */; };
 		B00AE166D8D9D3F54EFB3F9C /* RouteDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD8FDAD8D1928D52A25D782 /* RouteDestination.swift */; };
@@ -343,6 +345,7 @@
 		0D7626413CCF860C82715CA5 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				2EB39F5732C7BB88C771C13E /* DeleteAccountSheet.swift */,
 				4551F193AE4BFA0611F14667 /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -435,6 +438,7 @@
 				1D5DEE4444C3FA06BFD3E67F /* LogSunsetView.swift in Sources */,
 				DA1C31E3A712167A7C0664D8 /* ReportSheet.swift in Sources */,
 				D20AE85E90689BDA58A16AF0 /* LibraryScanView.swift in Sources */,
+				4079BF69E7E74CA18296048A /* DeleteAccountSheet.swift in Sources */,
 				4A9CACB3A1DACC98F3A6EE8D /* SettingsView.swift in Sources */,
 				34C182BECABA7ED90C3A6243 /* CameraPicker.swift in Sources */,
 				B00AE166D8D9D3F54EFB3F9C /* RouteDestination.swift in Sources */,
