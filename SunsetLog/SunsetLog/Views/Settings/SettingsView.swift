@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Environment(AppSession.self) private var session
     @Environment(\.modelContext) private var context
     @Query private var prefs: [UserPrefs]
+    @Query(filter: #Predicate<Person> { $0.isBlocked }, sort: \Person.handle) private var blockedPeople: [Person]
     @State private var showReset = false
     @State private var confirmDelete = false
     @State private var newCollection = false
@@ -76,6 +77,24 @@ struct SettingsView: View {
                         .font(Typeface.caption(13))
                         .foregroundStyle(.secondary)
                     Button("Sign in") { session.signInPresented = true }
+                }
+            }
+
+            if !blockedPeople.isEmpty {
+                Section {
+                    ForEach(blockedPeople, id: \.id) { person in
+                        HStack {
+                            Text("@\(person.handle)")
+                            Spacer()
+                            Button("Unblock") {
+                                try? session.social.setBlocked(personID: person.id, isBlocked: false, context: context)
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Blocked")
+                } footer: {
+                    Text("Blocked people can’t find your profile, follow you, or send you pins.")
                 }
             }
 
