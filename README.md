@@ -133,7 +133,7 @@ Email magic link is the documented fallback while Apple’s capability / Service
 
 ### Deploy the account-deletion function
 
-Settings → Delete account calls `supabase/functions/delete-account`. It revokes the user's Sign in with Apple token, deletes the auth user (which deletes all of their rows), then empties their photo folder.
+Settings → Delete account calls `supabase/functions/delete-account`. It revokes the user's Sign in with Apple token, deletes their profile (which deletes all of their rows), empties their photo folder, then deletes the auth user. Supabase won't delete a user who still owns Storage objects, so the order matters.
 
 ```bash
 supabase functions deploy delete-account

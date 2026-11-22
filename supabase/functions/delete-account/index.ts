@@ -1,6 +1,6 @@
 // Deletes the calling user: revokes their Sign in with Apple token (when the app sends a
-// fresh authorization code), deletes the auth user (cascading to every row they own),
-// then empties their Storage folder.
+// fresh authorization code), deletes their rows, empties their Storage folder, then
+// deletes the auth user.
 //
 // Secrets (supabase secrets set ...): APPLE_TEAM_ID, APPLE_KEY_ID, APPLE_CLIENT_ID
 // (the app's bundle ID), APPLE_PRIVATE_KEY (contents of the .p8 key).
@@ -95,26 +95,23 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Delete the user before their photos: if this fails nothing is lost and the app can retry.
+  // Order matters: Supabase refuses to delete an auth user who still owns Storage objects,
+  // so rows go first (cascading from profiles), then photos, then the auth user. A failure
+  // at any step leaves nothing visible, and calling the function again finishes the job.
+  const { error: rowsError } = await admin.from("profiles").delete().eq("id", user.id);
+  if (rowsError) return json({ error: rowsError.message }, 500);
+
+  const bucket = admin.storage.from(BUCKET);
+  for (let round = 0; round < 50; round++) {
+    const { data: files, error } = await bucket.list(user.id, { limit: 1000 });
+    if (error) return json({ error: error.message }, 500);
+    if (!files?.length) break;
+    const { error: removeError } = await bucket.remove(files.map((f) => `${user.id}/${f.name}`));
+    if (removeError) return json({ error: removeError.message }, 500);
+  }
+
   const { error: deleteError } = await admin.auth.admin.deleteUser(user.id);
   if (deleteError) return json({ error: deleteError.message }, 500);
 
-  const bucket = admin.storage.from(BUCKET);
-  let photosRemoved = true;
-  for (let round = 0; round < 50; round++) {
-    const { data: files, error } = await bucket.list(user.id, { limit: 1000 });
-    if (error) {
-      photosRemoved = false;
-      break;
-    }
-    if (!files?.length) break;
-    const { error: removeError } = await bucket.remove(files.map((f) => `${user.id}/${f.name}`));
-    if (removeError) {
-      photosRemoved = false;
-      break;
-    }
-  }
-  if (!photosRemoved) console.error("Photos left in storage for deleted user", user.id);
-
-  return json({ deleted: true, apple_revoked: appleRevoked, photos_removed: photosRemoved });
+  return json({ deleted: true, apple_revoked: appleRevoked });
 });
