@@ -99,6 +99,7 @@ struct SettingsView: View {
             }
 
             Section("About") {
+                NavigationLink("Terms of Use") { TermsView() }
                 LabeledContent("Social", value: session.auth.isSignedIn ? "Supabase" : "Local")
                 LabeledContent("Persistence", value: session.auth.isSignedIn ? "SwiftData + Supabase" : "SwiftData, on device")
                 Text("Share cards for Stories are not in this build. Sunrise logging is out of scope.")
