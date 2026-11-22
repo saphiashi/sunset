@@ -164,9 +164,14 @@ final class CloudSync {
         }
         for person in people where !person.isMe && !person.isSeed && !person.isBlocked {
             if person.isFollowing {
-                try await client.from("follows").upsert(
-                    FollowRow(followerId: userID, followeeId: person.id)
-                ).execute()
+                do {
+                    try await client.from("follows").upsert(
+                        FollowRow(followerId: userID, followeeId: person.id)
+                    ).execute()
+                } catch let error as PostgrestError where error.code == "42501" {
+                    // RLS refused: one of you blocked the other, so this follow is gone for good.
+                    person.isFollowing = false
+                }
             }
         }
     }
