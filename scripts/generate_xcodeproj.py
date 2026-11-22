@@ -491,6 +491,7 @@ objects.append(
     f"""\t\t{ids["proj_debug"]} /* Debug */ = {{
 \t\t\tisa = XCBuildConfiguration;
 \t\t\tbuildSettings = {{{common_proj}
+\t\t\t\tONLY_ACTIVE_ARCH = YES;
 \t\t\t}};
 \t\t\tname = Debug;
 \t\t}};
