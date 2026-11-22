@@ -41,31 +41,15 @@ final class SupabaseSocialClient: SocialClient {
         }
     }
 
+    /// Pushed by CloudSync (`blockNeedsSync`) so an offline block or unblock retries.
     func setBlocked(personID: UUID, isBlocked: Bool, context: ModelContext) throws {
         try local.setBlocked(personID: personID, isBlocked: isBlocked, context: context)
-        guard auth.isSignedIn, let client = auth.client, let userID = auth.userID else { return }
         let people = try context.fetch(FetchDescriptor<Person>())
         guard let person = people.first(where: { $0.id == personID }), !person.isSeed else { return }
-        Task {
-            do {
-                if isBlocked {
-                    try await client.from("blocks").upsert(
-                        BlockRow(blockerId: userID, blockedId: personID),
-                        onConflict: "blocker_id,blocked_id",
-                        ignoreDuplicates: true
-                    ).execute()
-                } else {
-                    try await client.from("blocks")
-                        .delete()
-                        .eq("blocker_id", value: userID.uuidString.lowercased())
-                        .eq("blocked_id", value: personID.uuidString.lowercased())
-                        .execute()
-                }
-                await cloud.syncNow()
-            } catch {
-                // Local block already applied; CloudSync pushes `isBlocked` on the next sync.
-            }
-        }
+        person.blockNeedsSync = true
+        try context.save()
+        guard auth.isSignedIn else { return }
+        Task { await cloud.syncNow() }
     }
 
     func report(personID: UUID?, entryID: UUID?, reason: ReportReason, details: String) async throws {

@@ -154,13 +154,22 @@ final class CloudSync {
         }
 
         let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
-        let blocked = people.filter { $0.isBlocked && !$0.isSeed && !$0.isMe }
-        if !blocked.isEmpty {
-            try await client.from("blocks").upsert(
-                blocked.map { BlockRow(blockerId: userID, blockedId: $0.id) },
-                onConflict: "blocker_id,blocked_id",
-                ignoreDuplicates: true
-            ).execute()
+        for person in people where !person.isMe && !person.isSeed && person.blockNeedsSync {
+            let wantsBlock = person.isBlocked
+            if wantsBlock {
+                try await client.from("blocks").upsert(
+                    BlockRow(blockerId: userID, blockedId: person.id),
+                    onConflict: "blocker_id,blocked_id",
+                    ignoreDuplicates: true
+                ).execute()
+            } else {
+                try await client.from("blocks")
+                    .delete()
+                    .eq("blocker_id", value: userID.uuidString.lowercased())
+                    .eq("blocked_id", value: person.id.uuidString.lowercased())
+                    .execute()
+            }
+            if person.isBlocked == wantsBlock { person.blockNeedsSync = false }
         }
         for person in people where !person.isMe && !person.isSeed && !person.isBlocked {
             if person.isFollowing {
@@ -271,7 +280,7 @@ final class CloudSync {
             .execute()
             .value
         let blockedIDs = Set(blocks.map(\.blockedId))
-        for person in ((try? context.fetch(FetchDescriptor<Person>())) ?? []) where !person.isSeed && !person.isMe {
+        for person in ((try? context.fetch(FetchDescriptor<Person>())) ?? []) where !person.isSeed && !person.isMe && !person.blockNeedsSync {
             person.isBlocked = blockedIDs.contains(person.id)
         }
 
