@@ -6,7 +6,7 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
-ROOT = Path("/workspace/SunsetLog")
+ROOT = Path(__file__).resolve().parent.parent / "SunsetLog"
 APP = ROOT / "SunsetLog"
 TESTS = ROOT / "SunsetLogTests"
 PROJ = ROOT / "SunsetLog.xcodeproj"
@@ -491,6 +491,7 @@ objects.append(
     f"""\t\t{ids["proj_debug"]} /* Debug */ = {{
 \t\t\tisa = XCBuildConfiguration;
 \t\t\tbuildSettings = {{{common_proj}
+\t\t\t\tONLY_ACTIVE_ARCH = YES;
 \t\t\t}};
 \t\t\tname = Debug;
 \t\t}};

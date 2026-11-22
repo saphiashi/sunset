@@ -11,8 +11,9 @@ All day-one features are navigable on first launch from seed data. Signed-out yo
 | Surface | What it does |
 | --- | --- |
 | **Tonight** | Golden-hour countdown from your location (SunCalc / NOAA civil sunset), streak, recent evenings |
-| **Log** | Photo (library or camera), spot, date, note, tactile Color / Drama / Overall rails (1.0–10.0). Signed-in photos upload to Storage |
-| **Journal** | Feed of yours or the circle, plus a day calendar |
+| **Log** | Photo (library or camera), spot, date, note, tactile Color / Drama rails (1.0–10.0), then the ranking flow. Signed-in photos upload to Storage |
+| **Rank** | Beli-style: pick a feeling (Unforgettable / Lovely / Just okay), then answer “which sky stayed with you?” until the evening finds its slot. Overall score comes from position |
+| **Journal** | Feed of yours or the circle, a day calendar, and your ranking (best first, plus evenings not ranked yet) |
 | **Scan** | PhotoKit pass: time near local sunset + warm-sky pixels, then a review sheet to import and rate |
 | **Atlas** | MapKit of highly rated spots, with a San Francisco fallback when location is off |
 | **Spot pages** | Place profile, averages, pin, recent skies, save, system share, send-to-a-friend |
@@ -77,7 +78,7 @@ supabase link --project-ref YOUR_PROJECT_REF
 supabase db push
 ```
 
-Or paste `supabase/migrations/20260902000000_init.sql` into the SQL editor and run it once. That file creates:
+Or paste each file in `supabase/migrations/` into the SQL editor, oldest first. The init migration creates:
 
 - tables: `profiles`, `spots`, `sunset_entries`, `collections`, `collection_entries`, `follows`, `saved_spots`, `shared_spot_notes`
 - RLS so you only write your own rows; you can read a friend’s **public** entries/spots if you follow them
@@ -144,6 +145,10 @@ profiles + spots ──< shared_spot_notes
 
 Photos: Storage `sunset-photos` / `{user_id}/{entry_id}.jpg` → `sunset_entries.photo_url`.
 
+## Ranking
+
+Each of your evenings sits in one tier and at a best-first position inside it (`rank_tier`, `rank_order` on `sunset_entries`). New skies are placed by binary insertion, so a ladder of 100 needs at most 7 questions. “Too close to call” settles where you are. Scores are spread evenly through the tier’s band (Unforgettable 7.0–10.0, Lovely 4.0–6.9, Just okay 1.0–3.9) and rescored whenever the ladder changes. Library imports and older evenings start unranked; rank them from **Journal → Ranking** or an entry’s page.
+
 ## Simulator notes
 
 - **Location:** Features → Location → Apple or a custom coordinate. Until then the clock and atlas use San Francisco.
@@ -205,7 +210,7 @@ python3 scripts/generate_xcodeproj.py
 
 The generator keeps the supabase-swift SPM product (`Supabase`, 2.29+) and `Config.xcconfig`.
 
-Tests in `SunsetLogTests` cover solstice sunset hours for San Francisco, streak counting, deep-link parsing, and placeholder key detection.
+Tests in `SunsetLogTests` cover solstice sunset hours for San Francisco, streak counting, deep-link parsing, placeholder key detection, and ranking (binary insertion and tier scores).
 
 ## Product limits to know
 

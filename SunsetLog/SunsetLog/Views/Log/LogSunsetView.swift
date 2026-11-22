@@ -16,7 +16,6 @@ struct LogSunsetView: View {
     @State private var note = ""
     @State private var color = 7.4
     @State private var drama = 6.8
-    @State private var overall = 7.6
     @State private var selectedSpot: Spot?
     @State private var draftSpotName = ""
     @State private var error: String?
@@ -31,7 +30,6 @@ struct LogSunsetView: View {
                     spotBlock
                     ScoreRail(title: "Color", whisper: "Wash · glow · fire", value: $color, colors: Palette.colorTrack)
                     ScoreRail(title: "Drama", whisper: "Calm · weather · tempest", value: $drama, colors: Palette.dramaTrack)
-                    ScoreRail(title: "Overall", whisper: "Would you walk back for it?", value: $overall, colors: Palette.overallTrack)
                     VStack(alignment: .leading, spacing: 8) {
                         Text("A short note")
                             .font(Typeface.body(15, weight: .semibold))
@@ -45,7 +43,7 @@ struct LogSunsetView: View {
                             .font(Typeface.caption(13))
                             .foregroundStyle(.red)
                     }
-                    EmberButton(title: "Keep this evening", systemImage: "checkmark") {
+                    EmberButton(title: "Keep and rank it", systemImage: "checkmark") {
                         save()
                     }
                 }
@@ -176,7 +174,7 @@ struct LogSunsetView: View {
             note: note.trimmingCharacters(in: .whitespacesAndNewlines),
             colorScore: color,
             dramaScore: drama,
-            overallScore: overall,
+            overallScore: ((color + drama) / 2 * 10).rounded() / 10,
             photoFileName: file,
             authorHandle: session.auth.profile?.handle ?? "you",
             authorName: session.auth.profile?.displayName ?? "You",
@@ -208,6 +206,7 @@ struct LogSunsetView: View {
         do {
             try context.save()
             session.cloud.schedule()
+            session.rankAfterLog = entry.id
             dismiss()
         } catch {
             self.error = "Could not save this evening."

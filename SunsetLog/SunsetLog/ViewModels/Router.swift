@@ -18,6 +18,7 @@ enum Route: Hashable {
     case settings
     case scan
     case calendar
+    case rankings
 }
 
 @MainActor
@@ -53,7 +54,7 @@ final class Router {
     private func preferredTab(for route: Route) -> AppTab {
         switch route {
         case .spot: return .atlas
-        case .entry, .calendar: return .journal
+        case .entry, .calendar, .rankings: return .journal
         case .friend, .collection, .saved, .settings, .scan: return .circle
         }
     }
