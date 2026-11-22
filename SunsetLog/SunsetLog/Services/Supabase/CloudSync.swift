@@ -155,9 +155,15 @@ final class CloudSync {
         }
 
         let saved = spots.filter(\.isSaved)
-        let savedRows = saved.map { SavedSpotRow(userId: userID, spotId: $0.id) }
-        if !savedRows.isEmpty {
-            try await client.from("saved_spots").upsert(savedRows).execute()
+        for spot in saved {
+            do {
+                try await client.from("saved_spots")
+                    .upsert(SavedSpotRow(userId: userID, spotId: spot.id))
+                    .execute()
+            } catch let error as PostgrestError where error.code == "23503" {
+                // The spot is gone from the cloud (its owner deleted their account).
+                spot.isSaved = false
+            }
         }
         for spot in spots where !spot.isSaved {
             try await client.from("saved_spots")
@@ -178,11 +184,33 @@ final class CloudSync {
         }
 
         let people = (try? context.fetch(FetchDescriptor<Person>())) ?? []
-        for person in people where !person.isMe && !person.isSeed {
-            if person.isFollowing {
-                try await client.from("follows").upsert(
-                    FollowRow(followerId: userID, followeeId: person.id)
+        for person in people where !person.isMe && !person.isSeed && person.blockNeedsSync {
+            let wantsBlock = person.isBlocked
+            if wantsBlock {
+                try await client.from("blocks").upsert(
+                    BlockRow(blockerId: userID, blockedId: person.id),
+                    onConflict: "blocker_id,blocked_id",
+                    ignoreDuplicates: true
                 ).execute()
+            } else {
+                try await client.from("blocks")
+                    .delete()
+                    .eq("blocker_id", value: userID.uuidString.lowercased())
+                    .eq("blocked_id", value: person.id.uuidString.lowercased())
+                    .execute()
+            }
+            if person.isBlocked == wantsBlock { person.blockNeedsSync = false }
+        }
+        for person in people where !person.isMe && !person.isSeed && !person.isBlocked {
+            if person.isFollowing {
+                do {
+                    try await client.from("follows").upsert(
+                        FollowRow(followerId: userID, followeeId: person.id)
+                    ).execute()
+                } catch let error as PostgrestError where error.code == "42501" {
+                    // RLS refused: one of you blocked the other, so this follow is gone for good.
+                    person.isFollowing = false
+                }
             }
         }
     }
@@ -275,6 +303,17 @@ final class CloudSync {
             }
         }
 
+        let blocks: [BlockRow] = try await client
+            .from("blocks")
+            .select()
+            .eq("blocker_id", value: userID.uuidString.lowercased())
+            .execute()
+            .value
+        let blockedIDs = Set(blocks.map(\.blockedId))
+        for person in ((try? context.fetch(FetchDescriptor<Person>())) ?? []) where !person.isSeed && !person.isMe && !person.blockNeedsSync {
+            person.isBlocked = blockedIDs.contains(person.id)
+        }
+
         let follows: [FollowRow] = try await client
             .from("follows")
             .select()
@@ -282,7 +321,7 @@ final class CloudSync {
             .execute()
             .value
 
-        for follow in follows {
+        for follow in follows where !blockedIDs.contains(follow.followeeId) {
             let profiles: [ProfileRow] = try await client
                 .from("profiles")
                 .select()

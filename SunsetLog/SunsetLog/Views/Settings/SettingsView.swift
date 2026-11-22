@@ -5,7 +5,9 @@ struct SettingsView: View {
     @Environment(AppSession.self) private var session
     @Environment(\.modelContext) private var context
     @Query private var prefs: [UserPrefs]
+    @Query(filter: #Predicate<Person> { $0.isBlocked }, sort: \Person.handle) private var blockedPeople: [Person]
     @State private var showReset = false
+    @State private var confirmDelete = false
     @State private var newCollection = false
 
     private var settings: UserPrefs {
@@ -65,6 +67,9 @@ struct SettingsView: View {
                     Button("Sign out", role: .destructive) {
                         Task { await session.auth.signOut() }
                     }
+                    Button("Delete account", role: .destructive) {
+                        confirmDelete = true
+                    }
                 } else {
                     Text(session.auth.isConfigured
                          ? "The journal on this phone works without an account. Sign in to sync evenings and follow people."
@@ -75,7 +80,26 @@ struct SettingsView: View {
                 }
             }
 
+            if !blockedPeople.isEmpty {
+                Section {
+                    ForEach(blockedPeople, id: \.id) { person in
+                        HStack {
+                            Text("@\(person.handle)")
+                            Spacer()
+                            Button("Unblock") {
+                                try? session.social.setBlocked(personID: person.id, isBlocked: false, context: context)
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Blocked")
+                } footer: {
+                    Text("Blocked people can’t find your profile, follow you, or send you pins.")
+                }
+            }
+
             Section("About") {
+                NavigationLink("Terms of Use") { TermsView() }
                 LabeledContent("Social", value: session.auth.isSignedIn ? "Supabase" : "Local")
                 LabeledContent("Persistence", value: session.auth.isSignedIn ? "SwiftData + Supabase" : "SwiftData, on device")
                 Text("Share cards for Stories are not in this build. Sunrise logging is out of scope.")
@@ -111,6 +135,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $newCollection) {
             NewCollectionSheet()
+        }
+        .sheet(isPresented: $confirmDelete) {
+            DeleteAccountSheet()
         }
     }
 

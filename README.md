@@ -16,7 +16,7 @@ All day-one features are navigable on first launch from seed data. Signed-out yo
 | **Scan** | PhotoKit pass: time near local sunset + warm-sky pixels, then a review sheet to import and rate |
 | **Atlas** | MapKit of highly rated spots, with a San Francisco fallback when location is off |
 | **Spot pages** | Place profile, averages, pin, recent skies, save, system share, send-to-a-friend |
-| **Circle** | Sign in, follow (cloud when the person is a real account), recent public skies, spots they passed to you |
+| **Circle** | Sign in, follow (cloud when the person is a real account), recent public skies, spots they passed to you. Report or block from a profile’s ⋯ menu; report a friend’s sunset from its page |
 | **Collections** | Pink skies, storm light, favorites, coastal — add from an evening you logged |
 | **Reminder** | Local notification a chosen number of minutes before tonight’s sunset |
 
@@ -82,6 +82,8 @@ Or paste `supabase/migrations/20260902000000_init.sql` into the SQL editor and r
 - tables: `profiles`, `spots`, `sunset_entries`, `collections`, `collection_entries`, `follows`, `saved_spots`, `shared_spot_notes`
 - RLS so you only write your own rows; you can read a friend’s **public** entries/spots if you follow them
 - catalog California spots (same UUIDs as the iOS seed) so logs at Baker Beach still satisfy `spot_id` FKs
+- `blocks` (blocking drops follows both ways and hides your profile from them) and `reports` (insert-only for users; review them in the dashboard)
+- Account deletion goes through the `delete-account` Edge Function (below). Users' spots, entries, follows and blocks cascade from `profiles`
 - storage bucket `sunset-photos` (public read, write only into `{auth.uid()}/…`)
 - a trigger that inserts `profiles` when `auth.users` gets a row
 
@@ -127,6 +129,19 @@ Email magic link is the documented fallback while Apple’s capability / Service
 - The anon key in the binary is expected; do not embed `SUPABASE_SERVICE_ROLE_KEY`.
 - First Apple sign-in is the only time Apple sends the person’s name — the app writes it to `profiles.display_name`.
 - Reviewers can walk the journal without signing in. Sign-in is required only for cloud sync and real follows.
+
+
+### Deploy the account-deletion function
+
+Settings → Delete account calls `supabase/functions/delete-account`. It revokes the user's Sign in with Apple token, deletes their profile (which deletes all of their rows), empties their photo folder, then deletes the auth user. Supabase won't delete a user who still owns Storage objects, so the order matters.
+
+```bash
+supabase functions deploy delete-account
+supabase secrets set APPLE_TEAM_ID=XXXXXXXXXX APPLE_KEY_ID=XXXXXXXXXX \
+  APPLE_CLIENT_ID=com.sunsetlog.app APPLE_PRIVATE_KEY="$(cat AuthKey_XXXXXXXXXX.p8)"
+```
+
+Use the same Sign in with Apple key as the Supabase Apple provider. `APPLE_CLIENT_ID` is the app's bundle ID, because the app signs in natively. Without the Apple secrets, accounts are still deleted, but their Apple tokens aren't revoked.
 
 ## Schema (short)
 

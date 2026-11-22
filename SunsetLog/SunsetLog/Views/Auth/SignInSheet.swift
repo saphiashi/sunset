@@ -6,6 +6,9 @@ struct SignInSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var email = ""
     @State private var sent = false
+    @AppStorage(TermsView.acceptedKey) private var acceptedTerms = 0
+
+    private var agreed: Bool { acceptedTerms >= TermsView.version }
 
     var body: some View {
         NavigationStack {
@@ -25,8 +28,13 @@ struct SignInSheet: View {
                     } else if session.auth.isSignedIn {
                         signedInBlock
                     } else {
+                        termsBlock
                         appleBlock
+                            .disabled(!agreed)
+                            .opacity(agreed ? 1 : 0.5)
                         magicBlock
+                            .disabled(!agreed)
+                            .opacity(agreed ? 1 : 0.5)
                     }
 
                     if let error = session.auth.lastError, !error.isEmpty {
@@ -88,6 +96,25 @@ struct SignInSheet: View {
                     dismiss()
                 }
             }
+        }
+    }
+
+    private var termsBlock: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Toggle(isOn: Binding(
+                get: { agreed },
+                set: { acceptedTerms = $0 ? TermsView.version : 0 }
+            )) {
+                Text("I agree to the Terms of Use, including no tolerance for objectionable content or abusive behavior.")
+                    .font(Typeface.body(14))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .tint(Palette.ember)
+            NavigationLink("Read the Terms of Use") {
+                TermsView()
+            }
+            .font(Typeface.caption(13))
+            .foregroundStyle(Palette.ember)
         }
     }
 

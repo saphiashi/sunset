@@ -204,6 +204,9 @@ final class Person: Identifiable {
     var isMe: Bool
     var avatarHue: Double
     var isSeed: Bool
+    var isBlocked: Bool = false
+    /// A block/unblock still has to reach the server.
+    var blockNeedsSync: Bool = false
 
     init(
         id: UUID = UUID(),

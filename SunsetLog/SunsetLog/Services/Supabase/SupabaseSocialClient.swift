@@ -41,6 +41,32 @@ final class SupabaseSocialClient: SocialClient {
         }
     }
 
+    /// Pushed by CloudSync (`blockNeedsSync`) so an offline block or unblock retries.
+    func setBlocked(personID: UUID, isBlocked: Bool, context: ModelContext) throws {
+        try local.setBlocked(personID: personID, isBlocked: isBlocked, context: context)
+        let people = try context.fetch(FetchDescriptor<Person>())
+        guard let person = people.first(where: { $0.id == personID }), !person.isSeed else { return }
+        person.blockNeedsSync = true
+        try context.save()
+        guard auth.isSignedIn else { return }
+        Task { await cloud.syncNow() }
+    }
+
+    func report(personID: UUID?, entryID: UUID?, reason: ReportReason, details: String) async throws {
+        guard auth.isSignedIn, let client = auth.client, let userID = auth.userID else {
+            throw ReportError.signedOut
+        }
+        try await client.from("reports").insert(
+            ReportRow(
+                reporterId: userID,
+                reportedUserId: personID,
+                entryId: entryID,
+                reason: reason.rawValue,
+                details: String(details.prefix(1000))
+            )
+        ).execute()
+    }
+
     func shareSpot(
         spotID: UUID,
         to personID: UUID,
@@ -69,5 +95,13 @@ final class SupabaseSocialClient: SocialClient {
                 // Kept locally in SharedSpotNote.
             }
         }
+    }
+}
+
+enum ReportError: LocalizedError {
+    case signedOut
+
+    var errorDescription: String? {
+        "Sign in to send a report."
     }
 }

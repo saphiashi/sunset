@@ -37,9 +37,9 @@ final class SolarServiceTests: XCTestCase {
         XCTAssertEqual(hour, 16)
     }
 
-    func testNextSunsetSkipsAPassedSun() {
+    func testNextSunsetSkipsAPassedSun() throws {
         var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "America/Los_Angeles")
+        calendar.timeZone = try XCTUnwrap(TimeZone(identifier: "America/Los_Angeles"))
         let now = Date()
         let next = SolarService.nextSunset(
             after: now,

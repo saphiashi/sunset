@@ -3,6 +3,14 @@ import Observation
 import AuthenticationServices
 import Supabase
 
+private struct DeleteAccountRequest: Encodable {
+    var appleAuthorizationCode: String?
+
+    enum CodingKeys: String, CodingKey {
+        case appleAuthorizationCode = "apple_authorization_code"
+    }
+}
+
 struct AuthProfile: Equatable, Sendable {
     var userID: UUID
     var email: String?
@@ -18,6 +26,8 @@ final class AuthController {
     private(set) var profile: AuthProfile?
     private(set) var statusMessage: String?
     private(set) var lastError: String?
+    /// Apple accounts re-authorize before deletion so the server can revoke the token.
+    private(set) var signedInWithApple = false
 
     var pendingNonce: String?
     var onSessionChange: (() -> Void)?
@@ -139,6 +149,31 @@ final class AuthController {
         }
     }
 
+    /// The `delete-account` Edge Function revokes the Apple token (given a fresh
+    /// authorization code), deletes the auth user and everything they own, then their photos.
+    func deleteAccount(appleAuthorizationCode: String?) async -> Bool {
+        guard let client, isSignedIn else { return false }
+        do {
+            try await client.functions.invoke(
+                "delete-account",
+                options: FunctionInvokeOptions(
+                    method: .post,
+                    body: DeleteAccountRequest(appleAuthorizationCode: appleAuthorizationCode)
+                )
+            )
+        } catch {
+            lastError = error.localizedDescription
+            return false
+        }
+        try? await client.auth.signOut(scope: .local)
+        isSignedIn = false
+        signedInWithApple = false
+        profile = nil
+        statusMessage = "Account deleted."
+        onSessionChange?()
+        return true
+    }
+
     private func signInWithApple(_ authorization: ASAuthorization) async {
         guard let client else {
             lastError = "Add your Supabase URL and anon key in Secrets.xcconfig."
@@ -192,6 +227,7 @@ final class AuthController {
         let wasSignedIn = isSignedIn
         guard let session else {
             isSignedIn = false
+            signedInWithApple = false
             profile = nil
             if wasSignedIn {
                 onSessionChange?()
@@ -205,6 +241,7 @@ final class AuthController {
         }
         defaults.set(userID.uuidString, forKey: Self.journalOwnerKey)
         isSignedIn = true
+        signedInWithApple = session.user.identities?.contains { $0.provider == "apple" } ?? false
         var handle = "you"
         var displayName = session.user.email?.split(separator: "@").first.map(String.init) ?? "You"
         if let client {

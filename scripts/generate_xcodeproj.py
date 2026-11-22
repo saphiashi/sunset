@@ -6,7 +6,7 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
-ROOT = Path("/workspace/SunsetLog")
+ROOT = Path(__file__).resolve().parent.parent / "SunsetLog"
 APP = ROOT / "SunsetLog"
 TESTS = ROOT / "SunsetLogTests"
 PROJ = ROOT / "SunsetLog.xcodeproj"
@@ -472,6 +472,7 @@ common_proj = """
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -485,7 +486,7 @@ proj_release = common_proj.replace("ENABLE_TESTABILITY = YES;", "ENABLE_NS_ASSER
     'SWIFT_OPTIMIZATION_LEVEL = "-Onone";', 'SWIFT_OPTIMIZATION_LEVEL = "-O";'
 ).replace(
     "MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;", "MTL_ENABLE_DEBUG_INFO = NO;"
-)
+).replace("\t\t\t\tONLY_ACTIVE_ARCH = YES;\n", "")
 
 objects.append(
     f"""\t\t{ids["proj_debug"]} /* Debug */ = {{

@@ -130,6 +130,8 @@ struct EntryDetailView: View {
 private struct EntryDetailLoaded: View {
     let entry: SunsetEntry
     let collections: [SkyCollection]
+    @Query private var people: [Person]
+    @State private var reporting: ReportTarget?
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -139,6 +141,24 @@ private struct EntryDetailLoaded: View {
             }
         }
         .ignoresSafeArea(edges: .top)
+        .toolbar {
+            if !entry.isMine && !entry.isSeed {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button("Report this sunset", systemImage: "flag") {
+                            let author = people.first { $0.handle == entry.authorHandle && !$0.isMe }
+                            reporting = ReportTarget(personID: author?.id, entryID: entry.id, handle: entry.authorHandle)
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                    .accessibilityLabel("More")
+                }
+            }
+        }
+        .sheet(item: $reporting) { target in
+            ReportSheet(target: target)
+        }
     }
 
     private var hero: some View {
