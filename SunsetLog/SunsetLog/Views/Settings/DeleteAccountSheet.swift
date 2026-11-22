@@ -93,6 +93,7 @@ struct DeleteAccountSheet: View {
         defer { deleting = false }
         if await session.auth.deleteAccount(appleAuthorizationCode: appleCode) {
             SeedStore.reset(context)
+            ImageStore.removeAll()
             dismiss()
         } else {
             error = session.auth.lastError ?? "Couldn’t delete the account. Try again."

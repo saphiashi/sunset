@@ -23,6 +23,11 @@ enum ImageStore {
         }
     }
 
+    /// Erases every photo the user took in the app (account deletion).
+    static func removeAll() {
+        try? FileManager.default.removeItem(at: directory)
+    }
+
     static func data(named fileName: String) -> Data? {
         let url = directory.appendingPathComponent(fileName)
         return try? Data(contentsOf: url)
