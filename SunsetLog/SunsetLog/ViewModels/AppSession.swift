@@ -52,6 +52,9 @@ final class AppSession {
         auth.onSessionChange = { [weak cloud] in
             cloud?.schedule()
         }
+        auth.onAccountSwitch = { [weak cloud] in
+            cloud?.resetLocalJournal()
+        }
     }
 
     var solar: SolarService.Event? {
