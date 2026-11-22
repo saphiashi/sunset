@@ -8,6 +8,7 @@ struct AuthProfile: Equatable, Sendable {
     var email: String?
     var handle: String
     var displayName: String
+    var isPrivate: Bool = false
 }
 
 @MainActor
@@ -39,6 +40,7 @@ final class AuthController {
     init(client: SupabaseClient?) {
         self.client = client
         self.isConfigured = client != nil
+        PhotoLinks.shared.client = client
     }
 
     nonisolated static func makeClient() -> SupabaseClient? {
@@ -116,6 +118,7 @@ final class AuthController {
         }
         isSignedIn = false
         profile = nil
+        PhotoLinks.shared.clear()
         statusMessage = "Signed out. The journal stays on this phone until a different account signs in."
         onSessionChange?()
     }
@@ -134,6 +137,25 @@ final class AuthController {
                 profile.displayName = trimmed
                 self.profile = profile
             }
+        } catch {
+            lastError = error.localizedDescription
+        }
+    }
+
+    /// Private accounts approve each follower. Going public accepts everyone waiting (server trigger).
+    func setPrivate(_ isPrivate: Bool) async {
+        guard let client, let userID else { return }
+        do {
+            try await client
+                .from("profiles")
+                .update(["is_private": isPrivate])
+                .eq("id", value: userID.uuidString.lowercased())
+                .execute()
+            if var profile {
+                profile.isPrivate = isPrivate
+                self.profile = profile
+            }
+            onSessionChange?()
         } catch {
             lastError = error.localizedDescription
         }
@@ -207,6 +229,7 @@ final class AuthController {
         isSignedIn = true
         var handle = "you"
         var displayName = session.user.email?.split(separator: "@").first.map(String.init) ?? "You"
+        var isPrivate = false
         if let client {
             if let row: ProfileRow = try? await client
                 .from("profiles")
@@ -217,13 +240,15 @@ final class AuthController {
                 .value {
                 handle = row.handle
                 displayName = row.displayName
+                isPrivate = row.isPrivate
             }
         }
         profile = AuthProfile(
             userID: userID,
             email: session.user.email,
             handle: handle,
-            displayName: displayName
+            displayName: displayName,
+            isPrivate: isPrivate
         )
         onSessionChange?()
     }

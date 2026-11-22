@@ -7,11 +7,13 @@ struct ProfileRow: Codable, Sendable, Equatable {
     var city: String
     var bio: String
     var avatarHue: Double
+    var isPrivate: Bool
 
     enum CodingKeys: String, CodingKey {
         case id, handle, city, bio
         case displayName = "display_name"
         case avatarHue = "avatar_hue"
+        case isPrivate = "is_private"
     }
 }
 
@@ -91,8 +93,13 @@ struct CollectionEntryRow: Codable, Sendable {
 struct FollowRow: Codable, Sendable {
     var followerId: UUID
     var followeeId: UUID
+    /// Set by the server (`pending` until a private followee accepts). Never sent.
+    var status: String? = nil
+
+    var isPending: Bool { status == "pending" }
 
     enum CodingKeys: String, CodingKey {
+        case status
         case followerId = "follower_id"
         case followeeId = "followee_id"
     }

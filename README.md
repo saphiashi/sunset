@@ -16,7 +16,7 @@ All day-one features are navigable on first launch from seed data. Signed-out yo
 | **Scan** | PhotoKit pass: time near local sunset + warm-sky pixels, then a review sheet to import and rate |
 | **Atlas** | MapKit of highly rated spots, with a San Francisco fallback when location is off |
 | **Spot pages** | Place profile, averages, pin, recent skies, save, system share, send-to-a-friend |
-| **Circle** | Sign in, follow (cloud when the person is a real account), recent public skies, spots they passed to you |
+| **Circle** | Sign in, follow (cloud when the person is a real account), accept or decline follow requests, recent public skies, spots they passed to you |
 | **Collections** | Pink skies, storm light, favorites, coastal — add from an evening you logged |
 | **Reminder** | Local notification a chosen number of minutes before tonight’s sunset |
 
@@ -28,7 +28,7 @@ All day-one features are navigable on first launch from seed data. Signed-out yo
 | --- | --- | --- |
 | **Signed out** | SwiftData on this phone, including California seed evenings. After sign-out the journal stays; if a *different* account signs in, the phone resets to the seed first so nothing crosses accounts (`journalOwnerID`) | Demo circle on device. Follow/share stay local. Sign-in card on Circle |
 | **Signed in** | SwiftData is the offline cache. Your new evenings, spots, collections, and saved pins upsert to Postgres. Photos go to the `sunset-photos` bucket | Look up a handle, follow, read that person’s **public** skies. Seed friends stay as “on this phone” and do not write `follows` rows (they are not Auth users) |
-| **Offline while signed in** | Logging still writes SwiftData (`needsSync`). Next launch / pull-to-refresh on Circle retries | Follow still sticks locally; the cloud write retries on the next sync |
+| **Offline while signed in** | Logging still writes SwiftData (`needsSync`). Next launch / pull-to-refresh on Circle retries | Follow and unfollow stick locally (`followNeedsSync`); the cloud write retries on the next sync |
 | **No keys in the build** | Same as signed out. Settings explains the placeholders | Sign-in sheet says keys are missing |
 
 The app **does not require live Supabase credentials** to compile or to walk the journal. Placeholder `YOUR_PROJECT` / `your-anon-key` values are treated as unconfigured.
@@ -82,12 +82,13 @@ Or paste `supabase/migrations/20260902000000_init.sql` into the SQL editor and r
 - tables: `profiles`, `spots`, `sunset_entries`, `collections`, `collection_entries`, `follows`, `saved_spots`, `shared_spot_notes`
 - RLS so you only write your own rows; you can read a friend’s **public** entries/spots if you follow them
 - catalog California spots (same UUIDs as the iOS seed) so logs at Baker Beach still satisfy `spot_id` FKs
-- storage bucket `sunset-photos` (public read, write only into `{auth.uid()}/…`)
+- storage bucket `sunset-photos` (private; owners and accepted followers read through signed URLs, write only into `{auth.uid()}/…`)
+- private accounts (`profiles.is_private`) and follow requests (`follows.status` = `pending` until the followee accepts; set by a trigger, so clients can’t self-accept)
 - a trigger that inserts `profiles` when `auth.users` gets a row
 
 ### Storage bucket
 
-The migration inserts `sunset-photos`. Confirm in **Storage**: public bucket, 10 MB, JPEG/PNG/HEIC/WebP. Object path is `{user_uuid}/{entry_uuid}.jpg`. The public URL is stored on `sunset_entries.photo_url`.
+The migrations create `sunset-photos`. Confirm in **Storage**: private bucket, 10 MB, JPEG/PNG/HEIC/WebP. Object path is `{user_uuid}/{entry_uuid}.jpg`, stored on `sunset_entries.photo_path`. The app loads photos through one-hour signed URLs; Storage RLS lets you read your own folder and photos on public entries of people whose follow you accepted.
 
 If you create the bucket in the dashboard instead, still run the storage RLS statements in the migration.
 
@@ -142,7 +143,7 @@ profiles + spots ──< saved_spots
 profiles + spots ──< shared_spot_notes
 ```
 
-Photos: Storage `sunset-photos` / `{user_id}/{entry_id}.jpg` → `sunset_entries.photo_url`.
+Photos: Storage `sunset-photos` (private) / `{user_id}/{entry_id}.jpg` → `sunset_entries.photo_path`.
 
 ## Simulator notes
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
-ROOT = Path("/workspace/SunsetLog")
+ROOT = Path(__file__).resolve().parent.parent / "SunsetLog"
 APP = ROOT / "SunsetLog"
 TESTS = ROOT / "SunsetLogTests"
 PROJ = ROOT / "SunsetLog.xcodeproj"

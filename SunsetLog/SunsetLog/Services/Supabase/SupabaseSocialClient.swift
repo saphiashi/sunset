@@ -16,29 +16,37 @@ final class SupabaseSocialClient: SocialClient {
         self.auth = auth
     }
 
+    /// The follow/unfollow itself is pushed by CloudSync (`followNeedsSync`), so
+    /// an offline change retries on the next sync instead of being dropped.
     func setFollowing(personID: UUID, isFollowing: Bool, context: ModelContext) throws {
         try local.setFollowing(personID: personID, isFollowing: isFollowing, context: context)
-        guard auth.isSignedIn, let client = auth.client, let userID = auth.userID else { return }
         let people = try context.fetch(FetchDescriptor<Person>())
         guard let person = people.first(where: { $0.id == personID }), !person.isSeed else { return }
-        Task {
-            do {
-                if isFollowing {
-                    try await client.from("follows").upsert(
-                        FollowRow(followerId: userID, followeeId: personID)
-                    ).execute()
-                } else {
-                    try await client.from("follows")
-                        .delete()
-                        .eq("follower_id", value: userID.uuidString.lowercased())
-                        .eq("followee_id", value: personID.uuidString.lowercased())
-                        .execute()
-                }
-                await cloud.syncNow()
-            } catch {
-                // Local follow already stuck; next full sync retries.
-            }
-        }
+        person.followNeedsSync = true
+        try context.save()
+        guard auth.isSignedIn else { return }
+        Task { await cloud.syncNow() }
+    }
+
+    /// Like follows, accept/decline/remove are pushed by CloudSync (`followerNeedsSync`),
+    /// so a failed write retries instead of leaving the follower with access.
+    func acceptFollower(personID: UUID, context: ModelContext) throws {
+        try local.acceptFollower(personID: personID, context: context)
+        try markFollowerChange(personID, context: context)
+    }
+
+    func removeFollower(personID: UUID, context: ModelContext) throws {
+        try local.removeFollower(personID: personID, context: context)
+        try markFollowerChange(personID, context: context)
+    }
+
+    private func markFollowerChange(_ personID: UUID, context: ModelContext) throws {
+        let people = try context.fetch(FetchDescriptor<Person>())
+        guard let person = people.first(where: { $0.id == personID }), !person.isSeed else { return }
+        person.followerNeedsSync = true
+        try context.save()
+        guard auth.isSignedIn else { return }
+        Task { await cloud.syncNow() }
     }
 
     func shareSpot(

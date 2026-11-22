@@ -249,6 +249,7 @@ struct SkyPhoto: View {
     var bundleName: String? = nil
     var fileName: String? = nil
     var remoteURL: String? = nil
+    var remotePath: String? = nil
     var image: UIImage? = nil
     var corner: CGFloat = 22
 
@@ -286,6 +287,8 @@ struct SkyPhoto: View {
             Image(uiImage: bundled)
                 .resizable()
                 .scaledToFill()
+        } else if let remotePath {
+            SignedSkyImage(path: remotePath)
         } else if let remoteURL, let url = URL(string: remoteURL) {
             AsyncImage(url: url) { phase in
                 switch phase {
@@ -307,9 +310,35 @@ extension SkyPhoto {
             bundleName: entry.photoBundleName,
             fileName: entry.photoFileName,
             remoteURL: entry.photoURL,
+            remotePath: entry.photoPath,
             image: nil,
             corner: corner
         )
+    }
+}
+
+private struct SignedSkyImage: View {
+    let path: String
+    @State private var url: URL?
+
+    var body: some View {
+        Group {
+            if let url {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let img):
+                        img.resizable().scaledToFill()
+                    default:
+                        SkyGradient.dusk
+                    }
+                }
+            } else {
+                SkyGradient.dusk
+            }
+        }
+        .task(id: path) {
+            url = await PhotoLinks.shared.url(for: path)
+        }
     }
 }
 
