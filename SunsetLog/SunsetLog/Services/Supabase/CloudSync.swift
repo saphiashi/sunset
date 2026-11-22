@@ -41,7 +41,11 @@ final class CloudSync {
         lastSyncedAt = nil
     }
 
-    private var pullBeforePush = false
+    /// Persisted: a relaunch before the first pull must still pull before pushing.
+    private var pullBeforePush: Bool {
+        get { UserDefaults.standard.bool(forKey: "pullBeforePush") }
+        set { UserDefaults.standard.set(newValue, forKey: "pullBeforePush") }
+    }
 
     /// Debounced so logging, follows, and collection toggles can fire together.
     func schedule() {
