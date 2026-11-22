@@ -27,6 +27,26 @@ final class CloudSync {
         self.context = context
     }
 
+    /// Clears the previous account's journal (back to the demo seed) before a new account syncs.
+    func resetLocalJournal() {
+        syncTask?.cancel()
+        guard let context else { return }
+        SeedStore.reset(context)
+        // Demo pins aren't the new account's choices: pull theirs before anything is pushed.
+        for spot in (try? context.fetch(FetchDescriptor<Spot>())) ?? [] {
+            spot.isSaved = false
+        }
+        try? context.save()
+        pullBeforePush = true
+        lastSyncedAt = nil
+    }
+
+    /// Persisted: a relaunch before the first pull must still pull before pushing.
+    private var pullBeforePush: Bool {
+        get { UserDefaults.standard.bool(forKey: "pullBeforePush") }
+        set { UserDefaults.standard.set(newValue, forKey: "pullBeforePush") }
+    }
+
     /// Debounced so logging, follows, and collection toggles can fire together.
     func schedule() {
         syncTask?.cancel()
@@ -62,6 +82,10 @@ final class CloudSync {
 
         do {
             await applyProfileToMe(context: context)
+            if pullBeforePush {
+                try await pullAll(client: client, userID: userID, context: context)
+                pullBeforePush = false
+            }
             try await pushAll(client: client, userID: userID, context: context)
             try await pullAll(client: client, userID: userID, context: context)
             try context.save()
